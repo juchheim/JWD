@@ -26,6 +26,7 @@ async function proxyRequest(
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.delete("host");
+  requestHeaders.set("accept-encoding", "identity");
 
   const method = request.method.toUpperCase();
   const body =
@@ -40,10 +41,15 @@ async function proxyRequest(
     redirect: "manual",
   });
 
+  const responseHeaders = new Headers(upstream.headers);
+  responseHeaders.delete("content-encoding");
+  responseHeaders.delete("content-length");
+  responseHeaders.delete("transfer-encoding");
+
   return new Response(upstream.body, {
     status: upstream.status,
     statusText: upstream.statusText,
-    headers: upstream.headers,
+    headers: responseHeaders,
   });
 }
 
