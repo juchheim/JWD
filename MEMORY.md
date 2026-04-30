@@ -69,3 +69,5 @@
 - Updated category creation slug behavior to auto-suffix slug collisions (`-2`, `-3`, etc.) so punctuation variants like `test!` are accepted when names are unique.
 - Relaxed timeline step validation so `summary` can be empty; only step name and positive integer duration are required.
 - Added admin UI support for deleting case studies with confirmation, wired to existing Worker delete endpoint.
+- Disabled text selection while dragging the public case-study timeline scrubber to prevent accidental highlighted text.
+- Updated admin edit form category prefill to resolve category IDs from category names when IDs are absent in loaded case-study data.

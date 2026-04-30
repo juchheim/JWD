@@ -297,13 +297,23 @@ export default function AdminCaseStudiesPage() {
     }
   }
 
+  function resolveCategoryIdsForEdit(item: CaseStudy): string[] {
+    if (item.categoryIds && item.categoryIds.length > 0) return item.categoryIds;
+    if (!item.categories || item.categories.length === 0) return [];
+    const byLowerName = new Map(categories.map((category) => [category.name.toLowerCase(), category.id]));
+    const resolved = item.categories
+      .map((name) => byLowerName.get(name.toLowerCase()) ?? null)
+      .filter((id): id is string => Boolean(id));
+    return Array.from(new Set(resolved));
+  }
+
   function loadForEdit(item: CaseStudy) {
     setForm({
       id: item.id,
       title: item.title ?? "",
       slug: item.slug ?? "",
       shortDescription: item.shortDescription ?? "",
-      categoryIds: item.categoryIds ?? [],
+      categoryIds: resolveCategoryIdsForEdit(item),
       tagsCsv: (item.tags ?? []).join(", "),
       accentColor: item.accentColor ?? "#00d4a8",
       backgroundColor: item.backgroundColor ?? "#0a2218",

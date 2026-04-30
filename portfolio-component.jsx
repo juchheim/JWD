@@ -418,6 +418,15 @@ function CaseTimeline({ project, activeIndex, onSelect }) {
     return () => ro.disconnect();
   }, [measure]);
 
+  React.useEffect(() => {
+    if (!dragging) return undefined;
+    const previousUserSelect = document.body.style.userSelect;
+    document.body.style.userSelect = "none";
+    return () => {
+      document.body.style.userSelect = previousUserSelect;
+    };
+  }, [dragging]);
+
   // When not dragging, snap playhead to measured centre of active segment
   const naturalPct   = measuredCenters ? measuredCenters[activeIndex] : null;
   const displayPct   = (dragging && playheadPct !== null) ? playheadPct : naturalPct;
@@ -451,7 +460,13 @@ function CaseTimeline({ project, activeIndex, onSelect }) {
     return Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
   };
 
-  const handleStart = (e) => { setDragging(true); const p = getPctFromEvent(e); setPlayheadPct(p); onSelect(getIndexFromPct(p)); };
+  const handleStart = (e) => {
+    if (e.cancelable) e.preventDefault();
+    setDragging(true);
+    const p = getPctFromEvent(e);
+    setPlayheadPct(p);
+    onSelect(getIndexFromPct(p));
+  };
   const handleMove  = (e) => { if (!dragging) return; if (e.touches) e.preventDefault(); const p = getPctFromEvent(e); setPlayheadPct(p); onSelect(getIndexFromPct(p)); };
   const handleEnd   = () => { setDragging(false); setPlayheadPct(null); };
 
