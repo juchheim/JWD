@@ -156,6 +156,17 @@ export async function updateCaseStudy(
   }
 }
 
+export async function deleteCaseStudy(id: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/admin/case-studies/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  const body = await parseJson<ApiError>(response);
+  if (!response.ok) {
+    throw new Error(body.error?.message || "Failed to delete case study.");
+  }
+}
+
 export async function signUpload(input: {
   filename: string;
   contentType: string;

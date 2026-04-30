@@ -263,7 +263,7 @@ function parseTimelineSteps(input: unknown): CreateTimelineStepInput[] | null {
     const summary = typeof row?.summary === "string" ? row.summary.trim() : "";
     const sortOrderRaw = Number(row?.sortOrder);
     const sortOrder = Number.isFinite(sortOrderRaw) ? sortOrderRaw : i + 1;
-    if (!name || !summary || !Number.isInteger(durationWeeks) || durationWeeks < 1) return null;
+    if (!name || !Number.isInteger(durationWeeks) || durationWeeks < 1) return null;
     parsed.push({ name, durationWeeks, summary, sortOrder });
   }
   return parsed;

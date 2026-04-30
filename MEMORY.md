@@ -67,3 +67,5 @@
 - Added `DELETE /admin/categories/:id` with auth and conflict protection (`category_in_use`) when a category is still assigned.
 - Added admin UI delete controls for categories with confirmation, optimistic updates, and rollback via `refreshLists()` on failure.
 - Updated category creation slug behavior to auto-suffix slug collisions (`-2`, `-3`, etc.) so punctuation variants like `test!` are accepted when names are unique.
+- Relaxed timeline step validation so `summary` can be empty; only step name and positive integer duration are required.
+- Added admin UI support for deleting case studies with confirmation, wired to existing Worker delete endpoint.

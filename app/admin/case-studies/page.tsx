@@ -5,6 +5,7 @@ import {
   confirmAsset,
   createAdminCategory,
   createCaseStudy,
+  deleteCaseStudy,
   deleteAdminCategory,
   fetchAdminCaseStudies,
   fetchAdminCategories,
@@ -270,6 +271,27 @@ export default function AdminCaseStudiesPage() {
           ? 'Cannot delete: category is still used by one or more case studies. Remove it from those case studies first.'
           : message
       );
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function onDeleteCaseStudy(item: CaseStudy) {
+    const confirmed = window.confirm(`Delete case study "${item.title}"? This cannot be undone.`);
+    if (!confirmed) return;
+
+    setSaving(true);
+    setMessage(null);
+    setFieldError(null);
+    try {
+      await deleteCaseStudy(item.id);
+      if (form.id === item.id) {
+        setForm(defaultForm);
+      }
+      await refreshLists();
+      setMessage("Case study deleted.");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Failed to delete case study.");
     } finally {
       setSaving(false);
     }
@@ -594,6 +616,9 @@ export default function AdminCaseStudiesPage() {
               </div>
               <button type="button" onClick={() => loadForEdit(item)}>
                 Edit
+              </button>
+              <button type="button" disabled={saving} onClick={() => void onDeleteCaseStudy(item)}>
+                Delete
               </button>
             </div>
           ))}
