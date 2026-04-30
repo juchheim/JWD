@@ -1,10 +1,10 @@
 # Rollout Checklist (MVP)
 
 ## Phase 0: Foundation
-- [ ] Decide frontend baseline (`Next.js` + TypeScript recommended).
-- [ ] Create Worker project for API.
-- [ ] Set up MongoDB Atlas database and user.
-- [ ] Create R2 bucket for case-study assets.
+- [x] Decide frontend baseline (`Next.js` + TypeScript recommended).
+- [x] Create Worker project for API.
+- [x] Set up MongoDB Atlas database and user.
+- [x] Create R2 bucket for case-study assets.
 
 ## Phase 1: Data + API
 - [ ] Implement Mongo collections (`caseStudies`, `categories`).
@@ -16,9 +16,14 @@
 ## Phase 2: Asset Uploads
 - [ ] Implement signed R2 upload endpoint.
 - [ ] Implement upload confirm endpoint.
-- [ ] Implement signed read URL generation for image delivery.
+- [x] Implement signed read URL generation for image delivery.
 - [ ] Store image metadata in Mongo.
 - [ ] Add image ordering controls.
+
+## Completed Verification
+- [x] Local signed-read smoke test passes (`200` valid, `401` invalid signature).
+- [x] Remote (`--remote`) signed-read smoke test passes (`200` valid, `401` invalid signature).
+- [x] Worker deployed at [jwd-admin-api.terry-williams-god.workers.dev](https://jwd-admin-api.terry-williams-god.workers.dev).
 
 ## Phase 3: Admin UI
 - [ ] Build `/admin/login`.

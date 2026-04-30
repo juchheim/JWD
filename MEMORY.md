@@ -26,3 +26,7 @@
 - Added `worker-api/` with signed read URL issuance and verification endpoints.
 - Added Phase 0 env scaffolding in `.env.local` and `worker-api/.dev.vars`.
 - Added always-apply Cursor rule forbidding access to `.env.local` and `worker-api/.dev.vars`.
+- Verified local Worker binding for R2 (`env.ASSETS`) and smoke-tested signed delivery.
+- Fixed signed URL verifier edge case so malformed signatures return `401` instead of `500`.
+- Verified remote R2 smoke flow (`--remote`): upload + sign-read + valid `200` / invalid `401` via preview endpoint.
+- Updated `docs/admin/rollout-checklist.md` to mark Phase 0 complete and track signed URL verification/deploy status.

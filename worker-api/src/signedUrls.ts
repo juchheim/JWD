@@ -23,8 +23,14 @@ function fromBase64Url(input: string): Uint8Array {
 }
 
 function constantTimeEqual(a: string, b: string): boolean {
-  const aBytes = fromBase64Url(a);
-  const bBytes = fromBase64Url(b);
+  let aBytes: Uint8Array;
+  let bBytes: Uint8Array;
+  try {
+    aBytes = fromBase64Url(a);
+    bBytes = fromBase64Url(b);
+  } catch {
+    return false;
+  }
   if (aBytes.length !== bBytes.length) return false;
   let diff = 0;
   for (let i = 0; i < aBytes.length; i += 1) {
