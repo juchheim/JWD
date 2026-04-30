@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfolio — Juchheim Web Development</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<nav id="main-nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo" style="font-size:1.45rem;"><span class="bracket">&lt;</span><span class="logo-name" style="letter-spacing:-0.12em;margin-right:0.12em;"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html" class="active">Portfolio</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="nav-cta">Start a Project</a>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile-overlay" id="mobile-nav">
+  <a href="index.html">Home</a><a href="services.html">Services</a>
+  <a href="portfolio.html" class="active">Portfolio</a>
+  <a href="about.html">About</a>
+  <a href="contact.html" class="btn btn-primary nav-cta">Start a Project</a>
+</div>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="label">Our Work</span>
+    <h1>Products that perform<br/><em>in production.</em></h1>
+    <p>A curated selection of projects across SaaS, CMS, e-commerce, and business intelligence — each with a full case study breakdown.</p>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="container">
+    <div id="portfolio-root"></div>
+  </div>
+</section>
+
+<section style="background:var(--bg-surface);border-top:1px solid var(--border);padding-block:clamp(4rem,8vw,6rem);text-align:center;">
+  <div class="container">
+    <span class="label">Start Here</span>
+    <h2 style="margin-top:0.75rem;margin-bottom:1rem;">Your project could be next.</h2>
+    <p style="max-width:44ch;margin-inline:auto;margin-bottom:2rem;">We take on a limited number of new projects each quarter. Tell us what you're building and we'll let you know if we're a fit.</p>
+    <a href="contact.html" class="btn btn-primary" style="font-size:1rem;padding:0.9rem 2.25rem;">Get in Touch</a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand"><div class="nav-logo" style="font-size:1rem;"><span class="bracket">&lt;</span><span class="logo-name"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span></div><p>Engineering precision. Building futures.</p></div>
+      <div class="footer-col"><h5>Pages</h5><a href="index.html">Home</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+      <div class="footer-col"><h5>Services</h5><a href="services.html">SaaS Development</a><a href="services.html">CMS Solutions</a><a href="services.html">Performance</a><a href="services.html">API & Integrations</a></div>
+      <div class="footer-col"><h5>Contact</h5><a href="mailto:hello@juchheim.dev">hello@juchheim.dev</a><a href="contact.html">Start a project</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Juchheim Web Development.</span><span>Built with precision.</span></div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="portfolio-component.jsx"></script>
+<script type="text/babel">
+  const root = ReactDOM.createRoot(document.getElementById('portfolio-root'));
+  root.render(<PortfolioGrid />);
+</script>
+<script>
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40), {passive:true});
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+  hamburger.addEventListener('click', () => {
+    const open = hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    hamburger.classList.remove('open'); mobileNav.classList.remove('open'); document.body.style.overflow = '';
+  }));
+</script>
+</body>
+</html>

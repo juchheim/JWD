@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — Juchheim Web Development</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 5fr 4fr;
+      gap: clamp(2rem, 6vw, 5rem);
+      align-items: start;
+    }
+
+    /* Form */
+    .contact-form { display: flex; flex-direction: column; gap: 1.25rem; }
+    .field-group { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .field label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .field input,
+    .field textarea,
+    .field select {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      width: 100%;
+      -webkit-appearance: none;
+    }
+    .field input::placeholder,
+    .field textarea::placeholder { color: var(--text-muted); }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--accent-teal);
+      box-shadow: 0 0 0 3px rgba(0, 212, 168, 0.1);
+    }
+    .field select option { background: var(--bg-elevated); color: var(--text-primary); }
+    .field textarea { resize: vertical; min-height: 140px; line-height: 1.65; }
+
+    .form-submit {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .form-note { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* Success state */
+    .form-success {
+      display: none;
+      background: rgba(0,212,168,0.07);
+      border: 1px solid rgba(0,212,168,0.25);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+    }
+    .form-success.visible { display: block; }
+    .form-success h3 { font-family: var(--font-serif); color: var(--text-primary); margin-bottom: 0.5rem; }
+    .form-success p { font-size: 0.9rem; }
+
+    /* Field validation */
+    .field input.error,
+    .field textarea.error,
+    .field select.error {
+      border-color: #f87171;
+      box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.1);
+    }
+    .field-error { font-size: 0.75rem; color: #f87171; margin-top: 0.2rem; display: none; }
+    .field-error.visible { display: block; }
+
+    /* Sidebar */
+    .contact-sidebar {
+      position: sticky;
+      top: 8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .contact-detail {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+    }
+    .contact-detail-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .contact-detail-value {
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    .contact-detail-sub {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+    }
+
+    .availability-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.25);
+      color: #10b981;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.4rem 0.75rem;
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+    }
+    .availability-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.6; transform:scale(0.85); } }
+
+    /* FAQ */
+    #faq { background: var(--bg-surface); }
+    .faq-list { margin-top: 2.5rem; border-top: 1px solid var(--border); }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 0;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      list-style: none;
+    }
+    .faq-q::-webkit-details-marker { display: none; }
+    .faq-icon {
+      width: 24px; height: 24px;
+      border: 1px solid var(--border-light);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 1rem;
+      color: var(--accent-teal);
+      transition: transform 0.3s, background 0.3s;
+      font-style: normal;
+    }
+    details[open] .faq-icon { transform: rotate(45deg); background: var(--accent-teal-dim); }
+    .faq-a {
+      padding: 0 0 1.25rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      max-width: 64ch;
+    }
+
+    @media (max-width: 768px) {
+      .contact-grid { grid-template-columns: 1fr; }
+      .contact-sidebar { position: static; }
+      .field-group { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo" style="font-size:1.45rem;"><span class="bracket">&lt;</span><span class="logo-name" style="letter-spacing:-0.12em;margin-right:0.12em;"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="active nav-cta">Start a Project</a>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile-overlay" id="mobile-nav">
+  <a href="index.html">Home</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a><a href="about.html">About</a>
+  <a href="contact.html" class="btn btn-primary nav-cta active">Start a Project</a>
+</div>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="container">
+    <span class="label">Get in Touch</span>
+    <h1>Let's talk about<br/><em>what you're building.</em></h1>
+    <p>Share the brief — we'll respond within one business day with an honest assessment and a clear plan.</p>
+  </div>
+</section>
+
+<!-- Contact Form + Sidebar -->
+<section class="section-pad">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- Form -->
+      <div class="reveal">
+        <form class="contact-form" id="contact-form" novalidate>
+          <div class="field-group">
+            <div class="field">
+              <label for="name">Your Name</label>
+              <input type="text" id="name" name="name" placeholder="Marcus Juchheim" autocomplete="name"/>
+              <span class="field-error" id="name-error">Please enter your name.</span>
+            </div>
+            <div class="field">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="hello@yourcompany.com" autocomplete="email"/>
+              <span class="field-error" id="email-error">Please enter a valid email.</span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="field">
+              <label for="company">Company / Product</label>
+              <input type="text" id="company" name="company" placeholder="Acme Inc."/>
+            </div>
+            <div class="field">
+              <label for="budget">Approximate Budget</label>
+              <select id="budget" name="budget">
+                <option value="" disabled selected>Select a range</option>
+                <option>Under $10k</option>
+                <option>$10k – $25k</option>
+                <option>$25k – $50k</option>
+                <option>$50k – $100k</option>
+                <option>$100k+</option>
+                <option>Not sure yet</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="service">Type of Project</label>
+            <select id="service" name="service">
+              <option value="" disabled selected>What are you building?</option>
+              <option>SaaS / Web Application</option>
+              <option>CMS / WordPress Site</option>
+              <option>E-Commerce Platform</option>
+              <option>Performance Optimisation</option>
+              <option>API & Integrations</option>
+              <option>Retained Engineering</option>
+              <option>Something else</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="message">Tell Us More</label>
+            <textarea id="message" name="message" placeholder="Describe what you're building, the problem you're solving, and where you're at in the process. The more detail, the better."></textarea>
+            <span class="field-error" id="message-error">Please describe your project.</span>
+          </div>
+
+          <div class="form-submit">
+            <span class="form-note">We read every message personally. Expect a reply within 24 hours.</span>
+            <button type="submit" class="btn btn-primary" id="submit-btn" style="font-size:0.95rem;padding:0.8rem 2rem;">
+              Send Message
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+          </div>
+        </form>
+
+        <div class="form-success" id="form-success">
+          <div style="font-size:2rem;margin-bottom:0.75rem;">✓</div>
+          <h3>Message received.</h3>
+          <p>Thanks for reaching out. We'll be in touch within one business day.</p>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="contact-sidebar reveal reveal-delay-2">
+        <div class="contact-detail">
+          <div style="margin-bottom:0.75rem;">
+            <span class="availability-badge"><span class="availability-dot"></span>Taking new projects — Q3 2026</span>
+          </div>
+          <div class="contact-detail-sub">We typically have capacity for 2–3 new engagements per quarter.</div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-detail-label">Email</div>
+          <div class="contact-detail-value"><a href="mailto:hello@juchheim.dev" style="color:var(--accent-teal);">hello@juchheim.dev</a></div>
+          <div class="contact-detail-sub">For general enquiries and project briefs.</div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-detail-label">Response Time</div>
+          <div class="contact-detail-value">Within 1 business day</div>
+          <div class="contact-detail-sub">Mon–Fri, 9am–6pm CET. We read every message ourselves.</div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-detail-label">What Happens Next</div>
+          <div style="display:flex;flex-direction:column;gap:0.75rem;margin-top:0.5rem;">
+            <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+              <div style="width:22px;height:22px;border-radius:50%;background:var(--accent-teal-dim);border:1px solid rgba(0,212,168,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.65rem;font-weight:700;color:var(--accent-teal);">1</div>
+              <div style="font-size:0.85rem;color:var(--text-secondary);">We review your brief and reply with initial thoughts.</div>
+            </div>
+            <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+              <div style="width:22px;height:22px;border-radius:50%;background:var(--accent-teal-dim);border:1px solid rgba(0,212,168,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.65rem;font-weight:700;color:var(--accent-teal);">2</div>
+              <div style="font-size:0.85rem;color:var(--text-secondary);">30-min discovery call to dig into the details.</div>
+            </div>
+            <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+              <div style="width:22px;height:22px;border-radius:50%;background:var(--accent-teal-dim);border:1px solid rgba(0,212,168,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.65rem;font-weight:700;color:var(--accent-teal);">3</div>
+              <div style="font-size:0.85rem;color:var(--text-secondary);">Detailed proposal with scope, timeline, and fixed pricing.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="section-pad">
+  <div class="container" style="max-width:800px;">
+    <div class="section-header reveal">
+      <span class="label">Common Questions</span>
+      <h2>Before you write.</h2>
+    </div>
+    <div class="faq-list reveal reveal-delay-1">
+
+      <details class="faq-item">
+        <summary class="faq-q">How do you price projects?<span class="faq-icon">+</span></summary>
+        <div class="faq-a">We work on fixed-price contracts, scoped after a discovery call. You'll never receive a surprise invoice. For ongoing retained work, we offer a monthly engagement model with a defined weekly hour allocation.</div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">Do you work with early-stage startups?<span class="faq-icon">+</span></summary>
+        <div class="faq-a">Yes — some of our best work has been with founders pre-revenue. What matters more than stage is clarity of vision and realistic expectations around timeline and budget. We're happy to advise on scoping an MVP that doesn't create technical debt.</div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">What's your typical project timeline?<span class="faq-icon">+</span></summary>
+        <div class="faq-a">Most projects run 8–16 weeks depending on scope. We don't rush — a well-scoped 12-week project almost always produces better results than a rushed 6-week one. We'll give you a realistic timeline upfront and stick to it.</div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">Will I own the code?<span class="faq-icon">+</span></summary>
+        <div class="faq-a">Absolutely. All work product — code, design files, documentation — transfers to you upon final payment. We retain no licensing rights. We also make sure everything is well-documented so your internal team (or any future agency) can pick it up without friction.</div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">Do you offer post-launch support?<span class="faq-icon">+</span></summary>
+        <div class="faq-a">Yes. All projects include a 30-day bug-fix warranty at no extra cost. Beyond that, we offer a retained engineering model for ongoing support, feature development, and infrastructure monitoring. Many of our clients stay on retainer for years.</div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">Can you work with our existing codebase?<span class="faq-icon">+</span></summary>
+        <div class="faq-a">Yes, though we require a code audit before committing to any engagement on an inherited codebase. This lets us give you an accurate scope and flag any architectural issues upfront. The audit is billed separately and usually takes 2–3 days.</div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand"><div class="nav-logo" style="font-size:1rem;"><span class="bracket">&lt;</span><span class="logo-name"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span></div><p>Engineering precision. Building futures.</p></div>
+      <div class="footer-col"><h5>Pages</h5><a href="index.html">Home</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+      <div class="footer-col"><h5>Services</h5><a href="services.html">SaaS Development</a><a href="services.html">CMS Solutions</a><a href="services.html">Performance</a><a href="services.html">API & Integrations</a></div>
+      <div class="footer-col"><h5>Contact</h5><a href="mailto:hello@juchheim.dev">hello@juchheim.dev</a><a href="contact.html">Start a project</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Juchheim Web Development.</span><span>Built with precision.</span></div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40), {passive:true});
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+  hamburger.addEventListener('click', () => {
+    const open = hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    hamburger.classList.remove('open'); mobileNav.classList.remove('open'); document.body.style.overflow = '';
+  }));
+  const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }}), {threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Form validation + submission
+  const form = document.getElementById('contact-form');
+  const success = document.getElementById('form-success');
+
+  function validate() {
+    let valid = true;
+    const name = document.getElementById('name');
+    const email = document.getElementById('email');
+    const message = document.getElementById('message');
+
+    [name, email, message].forEach(f => { f.classList.remove('error'); });
+    document.querySelectorAll('.field-error').forEach(e => e.classList.remove('visible'));
+
+    if (!name.value.trim()) {
+      name.classList.add('error');
+      document.getElementById('name-error').classList.add('visible');
+      valid = false;
+    }
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRe.test(email.value.trim())) {
+      email.classList.add('error');
+      document.getElementById('email-error').classList.add('visible');
+      valid = false;
+    }
+    if (!message.value.trim()) {
+      message.classList.add('error');
+      document.getElementById('message-error').classList.add('visible');
+      valid = false;
+    }
+    return valid;
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    setTimeout(() => {
+      form.style.display = 'none';
+      success.classList.add('visible');
+    }, 900);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Juchheim Web Development — Engineering Precision. Building Futures.</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    /* ── Hero ────────────────────────────────────────────── */
+    #hero {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(59,111,245,0.08) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(0,212,168,0.06) 0%, transparent 60%),
+        linear-gradient(rgba(0,212,168,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,168,0.025) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 56px 56px, 56px 56px;
+      animation: gridDrift 20s linear infinite;
+    }
+    @keyframes gridDrift {
+      0%   { background-position: 0 0, 0 0, 0 0, 0 0; }
+      100% { background-position: 0 0, 0 0, 56px 56px, 56px 56px; }
+    }
+    /* Glowing orbs */
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .hero-orb-1 { width: 500px; height: 500px; background: rgba(59,111,245,0.07); top: -10%; left: -5%; animation: orbFloat 14s ease-in-out infinite; }
+    .hero-orb-2 { width: 400px; height: 400px; background: rgba(0,212,168,0.06); bottom: 0; right: 5%; animation: orbFloat 18s ease-in-out infinite reverse; }
+    @keyframes orbFloat { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-30px) scale(1.05); } }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      padding: 8rem 1.5rem 4rem;
+    }
+
+    /* ── Animated Logo ──── */
+    .hero-logo {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0;
+      font-family: var(--font-sans);
+      font-size: clamp(3rem, 9vw, 7rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      cursor: default;
+    }
+    .logo-bracket {
+      color: var(--accent-teal);
+      display: inline-block;
+      opacity: 0;
+      transition: text-shadow 0.4s ease;
+    }
+    .logo-bracket-l { animation: bracketSlideL 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.2s forwards; }
+    .logo-bracket-r { animation: bracketSlideR 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.2s forwards; }
+    @keyframes bracketSlideL { from { opacity:0; transform: translateX(-20px); } to { opacity:1; transform: none; } }
+    @keyframes bracketSlideR { from { opacity:0; transform: translateX(20px); } to { opacity:1; transform: none; } }
+
+    .logo-space { display: inline-block; width: 0.28em; }
+    .logo-slash { color: var(--accent-blue); }
+
+    .logo-letter {
+      color: var(--text-primary);
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(12px);
+      letter-spacing: -0.04em;
+      margin-right: -0.06em;
+    }
+    .logo-letter:nth-child(3) { animation: letterIn 0.3s ease 0.65s forwards; }
+    .logo-letter:nth-child(4) { animation: letterIn 0.3s ease 0.8s forwards; }
+    .logo-letter:nth-child(5) { animation: letterIn 0.3s ease 0.95s forwards; }
+    @keyframes letterIn { to { opacity:1; transform: none; } }
+
+    .logo-slash-char {
+      color: var(--accent-blue);
+      opacity: 0;
+      display: inline-block;
+      animation: letterIn 0.3s ease 1.2s forwards;
+    }
+    .logo-gt {
+      color: var(--accent-blue);
+      opacity: 0;
+      display: inline-block;
+      animation: letterIn 0.3s ease 1.35s forwards;
+    }
+    .logo-cursor {
+      display: inline-block;
+      width: 3px;
+      height: 0.75em;
+      background: var(--accent-teal);
+      border-radius: 2px;
+      vertical-align: -0.05em;
+      margin-left: 4px;
+      opacity: 0;
+      animation: cursorAppear 0.1s ease 1.5s forwards, cursorBlink 1.1s ease 1.5s infinite;
+    }
+    @keyframes cursorAppear { to { opacity: 1; } }
+    @keyframes cursorBlink { 0%,48% { opacity:1; } 50%,98% { opacity:0; } 100% { opacity:1; } }
+
+    .hero-logo:hover .logo-bracket {
+      text-shadow: 0 0 30px var(--accent-teal), 0 0 60px rgba(0,212,168,0.4);
+    }
+    .hero-logo:hover .logo-slash-char,
+    .hero-logo:hover .logo-gt {
+      text-shadow: 0 0 30px var(--accent-blue), 0 0 60px rgba(59,111,245,0.4);
+    }
+
+    /* Tagline */
+    .hero-tagline {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      color: var(--text-primary);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.2;
+      max-width: 18ch;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1.7s forwards;
+    }
+    .hero-sub {
+      color: var(--text-secondary);
+      font-size: clamp(0.9rem, 2vw, 1.05rem);
+      max-width: 42ch;
+      line-height: 1.75;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1.9s forwards;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 2.1s forwards;
+    }
+    @keyframes fadeUp { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: none; } }
+
+    .hero-scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 0;
+      right: 0;
+      margin-inline: auto;
+      width: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 2.5s forwards;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent-teal), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse { 0%,100% { opacity:0.4; transform: scaleY(1); } 50% { opacity:1; transform: scaleY(1.2); } }
+    .scroll-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      writing-mode: horizontal-tb;
+    }
+
+    /* ── About Section ───────────────────────────────── */
+    #about { background: var(--bg-surface); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 6vw, 5rem);
+      align-items: center;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .stat-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .stat-card:hover { border-color: var(--border-light); transform: translateY(-2px); }
+    .stat-num {
+      font-family: var(--font-serif);
+      font-size: 2.8rem;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .stat-num span { color: var(--accent-teal); }
+    .stat-label { font-size: 0.82rem; color: var(--text-muted); letter-spacing: 0.04em; font-weight: 500; }
+
+    /* ── Portfolio Section ───────────────────────────── */
+    #portfolio { background: var(--bg-base); }
+
+    /* ── CTA Band ────────────────────────────────────── */
+    #cta-band {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding-block: clamp(4rem, 8vw, 6rem);
+      text-align: center;
+    }
+    #cta-band h2 { font-size: clamp(2rem, 5vw, 3.2rem); margin-bottom: 1rem; }
+    #cta-band p { max-width: 44ch; margin-inline: auto; margin-bottom: 2rem; }
+
+    /* ── Responsive ──────────────────────────────────── */
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .about-stats { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+      .stat-num { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ──────────────────────────────────────────── -->
+<nav id="main-nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo" style="font-size:1.45rem;">
+      <span class="bracket">&lt;</span><span class="logo-name" style="letter-spacing:-0.12em;margin-right:0.12em;"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="nav-cta">Start a Project</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile overlay -->
+<div class="nav-mobile-overlay" id="mobile-nav">
+  <a href="index.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="portfolio.html">Portfolio</a>
+  <a href="about.html">About</a>
+  <a href="contact.html" class="btn btn-primary nav-cta">Start a Project</a>
+</div>
+
+<!-- ── Hero ────────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+
+  <div class="hero-content">
+    <!-- Animated Logo -->
+    <div class="hero-logo" role="img" aria-label="Juchheim Web Development">
+      <span class="logo-bracket logo-bracket-l">&lt;</span>
+      <span class="logo-space"></span>
+      <span class="logo-letter">J</span>
+      <span class="logo-letter">W</span>
+      <span class="logo-letter">D</span>
+      <span class="logo-space"></span>
+      <span class="logo-slash-char">/</span>
+      <span class="logo-gt">&gt;</span>
+      <span class="logo-cursor"></span>
+    </div>
+
+    <p style="font-family:var(--font-sans);font-size:clamp(0.72rem,1.5vw,0.85rem);font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:#6a7d9e;opacity:0;animation:fadeUp 0.6s ease 1.55s forwards;margin-top:-0.5rem;">Juchheim Web Development</p>
+
+    <h1 class="hero-tagline" id="hero-tagline">Precision<br/>is the product.</h1>
+
+    <p class="hero-sub">
+      We design and build web products that are fast, secure, and built to grow with your business — from custom SaaS to headless CMS.
+    </p>
+
+    <div class="hero-actions">
+      <a href="portfolio.html" class="btn btn-primary">View Our Work</a>
+      <a href="contact.html" class="btn btn-outline">Start a Project</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll-indicator">
+    <div class="scroll-line"></div>
+    <span class="scroll-label">Scroll</span>
+  </div>
+</section>
+
+<!-- ── About ────────────────────────────────────────────────── -->
+<section id="about" class="section-pad">
+  <div class="container">
+    <div class="about-grid">
+      <div class="reveal">
+        <span class="label">Who We Are</span>
+        <h2 style="margin-top:0.75rem; margin-bottom:1.25rem;">A small team.<br/>A serious standard.</h2>
+        <p style="margin-bottom:1rem;">
+          Juchheim Web Development is a boutique digital engineering studio specialising in high-performance web applications, SaaS architecture, and custom CMS solutions.
+        </p>
+        <p style="margin-bottom:1.75rem;">
+          We work closely with founders, product teams, and agencies who need a technical partner they can trust — one that brings both engineering rigour and design sensitivity to every engagement.
+        </p>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+          <a href="about.html" class="btn btn-outline" style="font-size:0.85rem;padding:0.6rem 1.25rem;">Meet the Team</a>
+          <a href="services.html" class="btn btn-outline" style="font-size:0.85rem;padding:0.6rem 1.25rem;">Our Services</a>
+        </div>
+      </div>
+
+      <div class="about-stats reveal reveal-delay-2">
+        <div class="stat-card">
+          <div class="stat-num">8<span>+</span></div>
+          <div class="stat-label">Years of practice</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">60<span>+</span></div>
+          <div class="stat-label">Projects shipped</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">99<span>%</span></div>
+          <div class="stat-label">Client retention</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">0<span>.</span>9<span>s</span></div>
+          <div class="stat-label">Avg. LCP target</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Portfolio ────────────────────────────────────────────── -->
+<section id="portfolio" class="section-pad">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">Selected Work</span>
+      <h2>Projects we're proud of.</h2>
+      <p>Every engagement is a long-term partnership. Here's a selection of what we've built.</p>
+    </div>
+    <div id="portfolio-root"></div>
+  </div>
+</section>
+
+<!-- ── CTA Band ──────────────────────────────────────────────── -->
+<section id="cta-band" class="reveal">
+  <div class="container">
+    <span class="label">Ready?</span>
+    <h2>Let's build something<br/>worth remembering.</h2>
+    <p>Share your brief and we'll respond within one business day with a clear plan of action.</p>
+    <a href="contact.html" class="btn btn-primary" style="font-size:1rem;padding:0.9rem 2.25rem;">Start a Conversation</a>
+  </div>
+</section>
+
+<!-- ── Footer ────────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo" style="font-size:1rem;">
+          <span class="bracket">&lt;</span><span class="logo-name"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span>
+        </div>
+        <p id="footer-tagline">Engineering precision. Building futures. A boutique web development studio.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Pages</h5>
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="portfolio.html">Portfolio</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <a href="services.html">SaaS Development</a>
+        <a href="services.html">CMS Solutions</a>
+        <a href="services.html">Performance</a>
+        <a href="services.html">API & Integrations</a>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <a href="mailto:hello@juchheim.dev">hello@juchheim.dev</a>
+        <a href="contact.html">Start a project</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Juchheim Web Development. All rights reserved.</span>
+      <span style="color:var(--text-muted);">Built with precision.</span>
+    </div>
+  </div>
+</footer>
+
+<div id="tweaks-root"></div>
+
+<!-- ── Scripts ───────────────────────────────────────────────── -->
+<script>
+var TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "tagline": "No shortcuts.\nNo excuses.",
+  "accentTeal": "#00d4a8",
+  "accentBlue": "#3b6ff5",
+  "showGrid": true,
+  "heroAlign": "center",
+  "footerTagline": "Small team. High standards. Real results."
+}/*EDITMODE-END*/;
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="portfolio-component.jsx"></script>
+<script type="text/babel">
+  // Mount portfolio grid
+  const portfolioRoot = ReactDOM.createRoot(document.getElementById('portfolio-root'));
+  portfolioRoot.render(<PortfolioGrid />);
+
+  // ── Tweaks ──────────────────────────────────────────────
+  const TAGLINE_OPTIONS = [
+    "Precision\nis the product.",
+    "Built right.\nThe first time.",
+    "No shortcuts.\nNo excuses.",
+    "Craft at\nevery commit.",
+    "The web,\nwithout compromise.",
+  ];
+
+  const FOOTER_OPTIONS = [
+    "Precision-built web products for ambitious teams.",
+    "Where engineering rigour meets product craft.",
+    "Serious software for serious businesses.",
+    "Small team. High standards. Real results.",
+    "Built to perform. Designed to last.",
+    "The web, without compromise.",
+  ];
+
+  function applyTweaks(t) {
+    // Accent colors
+    document.documentElement.style.setProperty('--accent-teal', t.accentTeal);
+    document.documentElement.style.setProperty('--accent-blue', t.accentBlue);
+    document.documentElement.style.setProperty('--accent-teal-glow', t.accentTeal + '2e');
+    document.documentElement.style.setProperty('--accent-teal-dim', t.accentTeal + '14');
+
+    // Tagline
+    const el = document.getElementById('hero-tagline');
+    if (el) {
+      const lines = t.tagline.split('\n');
+      el.innerHTML = lines.map((l, i) => i < lines.length - 1 ? l + '<br/>' : l).join('');
+    }
+
+    // Grid
+    const bg = document.querySelector('.hero-bg');
+    if (bg) bg.style.opacity = t.showGrid ? '1' : '0';
+
+    // Footer tagline
+    const ft = document.getElementById('footer-tagline');
+    if (ft) ft.textContent = t.footerTagline;
+
+    // Hero alignment
+    const content = document.querySelector('.hero-content');
+    if (content) {
+      content.style.textAlign = t.heroAlign;
+      content.style.alignItems = t.heroAlign === 'center' ? 'center' : 'flex-start';
+      content.style.paddingInline = t.heroAlign === 'left' ? 'clamp(1.5rem, 8vw, 8rem)' : '';
+    }
+  }
+
+  function JWDTweaks() {
+    const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+    React.useEffect(() => { applyTweaks(tweaks); }, [tweaks]);
+
+    return (
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Footer Tagline">
+          <TweakSelect
+            label="Studio description"
+            value={tweaks.footerTagline}
+            options={FOOTER_OPTIONS.map(o => ({ label: o, value: o }))}
+            onChange={v => setTweak('footerTagline', v)}
+          />
+        </TweakSection>
+
+        <TweakSection label="Tagline">
+          <TweakSelect
+            label="Hero tagline"
+            value={tweaks.tagline}
+            options={TAGLINE_OPTIONS.map(o => ({ label: o.replace('\n', ' / '), value: o }))}
+            onChange={v => setTweak('tagline', v)}
+          />
+        </TweakSection>
+
+        <TweakSection label="Accent Colors">
+          <TweakColor label="Teal (primary)" value={tweaks.accentTeal} onChange={v => setTweak('accentTeal', v)} />
+          <TweakColor label="Blue (secondary)" value={tweaks.accentBlue} onChange={v => setTweak('accentBlue', v)} />
+        </TweakSection>
+
+        <TweakSection label="Hero">
+          <TweakToggle label="Show background grid" value={tweaks.showGrid} onChange={v => setTweak('showGrid', v)} />
+          <TweakRadio
+            label="Text alignment"
+            value={tweaks.heroAlign}
+            options={[{ label: 'Center', value: 'center' }, { label: 'Left', value: 'left' }]}
+            onChange={v => setTweak('heroAlign', v)}
+          />
+        </TweakSection>
+      </TweaksPanel>
+    );
+  }
+
+  const tweaksRoot = ReactDOM.createRoot(document.getElementById('tweaks-root'));
+  tweaksRoot.render(<JWDTweaks />);
+</script>
+
+<script>
+  // Nav scroll behavior
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+  hamburger.addEventListener('click', () => {
+    const open = hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  mobileNav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileNav.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

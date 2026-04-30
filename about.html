@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About — Juchheim Web Development</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    /* Story */
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 6vw, 5rem);
+      align-items: start;
+    }
+    .story-text h2 { margin-bottom: 1.25rem; }
+    .story-text p { margin-bottom: 1rem; }
+
+    .story-visual {
+      position: sticky;
+      top: 8rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .timeline-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .tl-dot-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      padding-top: 4px;
+    }
+    .tl-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--accent-teal);
+      box-shadow: 0 0 10px rgba(0,212,168,0.5);
+      flex-shrink: 0;
+    }
+    .tl-line { width: 1px; flex: 1; background: var(--border); min-height: 24px; margin-top: 4px; }
+    .tl-year { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent-teal); margin-bottom: 0.25rem; }
+    .tl-event { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; }
+    .tl-event strong { color: var(--text-primary); font-weight: 600; display: block; margin-bottom: 0.15rem; }
+
+    /* Team */
+    #team { background: var(--bg-surface); }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .team-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .team-card:hover { border-color: var(--border-light); transform: translateY(-4px); }
+    .team-avatar {
+      height: 200px;
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 4rem;
+      color: var(--text-muted);
+      position: relative;
+      overflow: hidden;
+    }
+    .team-avatar::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, var(--bg-elevated));
+    }
+    .team-avatar-initials {
+      position: relative;
+      z-index: 1;
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem;
+      font-family: var(--font-serif);
+      font-weight: 400;
+      border: 2px solid var(--border-light);
+    }
+    .team-info { padding: 1.25rem; }
+    .team-name { font-family: var(--font-serif); font-size: 1.2rem; color: var(--text-primary); margin-bottom: 0.2rem; font-weight: 400; }
+    .team-role { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-teal); margin-bottom: 0.6rem; }
+    .team-bio { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+
+    /* Values */
+    #values { background: var(--bg-base); }
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .value-card {
+      padding: 1.75rem;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--bg-surface);
+      transition: border-color 0.3s;
+    }
+    .value-card:hover { border-color: var(--border-light); }
+    .value-num {
+      font-family: var(--font-serif);
+      font-size: 0.85rem;
+      color: var(--accent-teal);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+    }
+    .value-card h4 { color: var(--text-primary); font-size: 1rem; margin-bottom: 0.5rem; }
+    .value-card p { font-size: 0.88rem; }
+
+    @media (max-width: 768px) {
+      .story-grid { grid-template-columns: 1fr; }
+      .story-visual { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo" style="font-size:1.45rem;"><span class="bracket">&lt;</span><span class="logo-name" style="letter-spacing:-0.12em;margin-right:0.12em;"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="about.html" class="active">About</a>
+      <a href="contact.html" class="nav-cta">Start a Project</a>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile-overlay" id="mobile-nav">
+  <a href="index.html">Home</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a>
+  <a href="about.html" class="active">About</a>
+  <a href="contact.html" class="btn btn-primary nav-cta">Start a Project</a>
+</div>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="container">
+    <span class="label">Our Story</span>
+    <h1>Built by engineers<br/><em>who care about craft.</em></h1>
+    <p>Juchheim Web Development was founded on the belief that the gap between good and great software is entirely intentional — and entirely worth closing.</p>
+  </div>
+</section>
+
+<!-- Story -->
+<section class="section-pad" id="story">
+  <div class="container">
+    <div class="story-grid">
+      <div class="story-text reveal">
+        <span class="label" style="margin-bottom:0.75rem;display:block;">The Long Version</span>
+        <h2>Eight years of building things the right way.</h2>
+        <p>Juchheim Web Development started as a one-person consultancy in 2018, founded by Marcus Juchheim after spending five years as a lead engineer at a Series B SaaS company. The premise was simple: most agencies over-promise and under-deliver because they're optimised for sales, not craft.</p>
+        <p>We set out to do the opposite — keep the team small, stay close to the code, and build only the kind of products we'd be proud to put our names on. That meant turning down projects that didn't fit and investing deeply in the ones that did.</p>
+        <p>Over eight years, that approach compounded. We earned a reputation for shipping on time, writing code that didn't need to be rewritten, and communicating with the clarity that most clients rarely get from technical teams.</p>
+        <p>Today we're a tight team of four: two engineers, a designer, and a project lead. We take on a handful of new projects per quarter. Every client gets our full attention — not a junior team member managed at arm's length.</p>
+        <div style="margin-top:1.75rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+          <a href="contact.html" class="btn btn-primary" style="font-size:0.9rem;">Work With Us</a>
+          <a href="services.html" class="btn btn-outline" style="font-size:0.9rem;">View Services</a>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="story-visual reveal reveal-delay-2">
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;">Studio Timeline</div>
+
+        <div class="timeline-item">
+          <div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div><div class="tl-year">2018</div><div class="tl-event"><strong>Studio Founded</strong>Marcus Juchheim launches JWD as a solo consultancy, focusing on WordPress and custom PHP.</div></div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-dot-wrap"><div class="tl-dot" style="background:var(--accent-blue);box-shadow:0 0 10px rgba(59,111,245,0.5);"></div><div class="tl-line"></div></div>
+          <div><div class="tl-year" style="color:var(--accent-blue);">2020</div><div class="tl-event"><strong>First SaaS Engagement</strong>Delivered a multi-tenant project management app — a pivot into modern React and Node.js stacks.</div></div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div><div class="tl-year">2021</div><div class="tl-event"><strong>Team Grows to Four</strong>Hired a senior designer and two engineers. Adopted a sprint-based project model.</div></div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-dot-wrap"><div class="tl-dot" style="background:var(--accent-blue);box-shadow:0 0 10px rgba(59,111,245,0.5);"></div><div class="tl-line"></div></div>
+          <div><div class="tl-year" style="color:var(--accent-blue);">2023</div><div class="tl-event"><strong>Healthcare Vertical</strong>Completed first HIPAA-compliant SaaS project, establishing compliance expertise.</div></div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+          <div><div class="tl-year">2026</div><div class="tl-event"><strong>60+ Projects Shipped</strong>Across SaaS, CMS, e-commerce, and BI — with a 99% client retention rate.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Team -->
+<section id="team" class="section-pad">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">The Team</span>
+      <h2>Four people. Zero middlemen.</h2>
+      <p>You'll work directly with the people doing the work — every time.</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <div class="team-avatar">
+          <div class="team-avatar-initials" style="background:rgba(0,212,168,0.1);color:var(--accent-teal);">MJ</div>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Marcus Juchheim</div>
+          <div class="team-role">Founder · Lead Engineer</div>
+          <div class="team-bio">Full-stack architect with 13 years of experience. Specialises in SaaS systems design, API architecture, and performance engineering.</div>
+        </div>
+      </div>
+      <div class="team-card reveal reveal-delay-1">
+        <div class="team-avatar">
+          <div class="team-avatar-initials" style="background:rgba(59,111,245,0.1);color:var(--accent-blue);">SR</div>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Sofia Reyes</div>
+          <div class="team-role">Senior Designer</div>
+          <div class="team-bio">UX and design systems lead. Translates complex application logic into intuitive, accessible interfaces that hold up under real-world use.</div>
+        </div>
+      </div>
+      <div class="team-card reveal reveal-delay-2">
+        <div class="team-avatar">
+          <div class="team-avatar-initials" style="background:rgba(167,139,250,0.1);color:#a78bfa;">TK</div>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Thomas Krüger</div>
+          <div class="team-role">Senior Engineer</div>
+          <div class="team-bio">Backend and infrastructure specialist. Expert in cloud-native deployments, database optimisation, and high-throughput data systems.</div>
+        </div>
+      </div>
+      <div class="team-card reveal reveal-delay-3">
+        <div class="team-avatar">
+          <div class="team-avatar-initials" style="background:rgba(16,185,129,0.1);color:#10b981;">AL</div>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Aisha Lowe</div>
+          <div class="team-role">Project Lead</div>
+          <div class="team-bio">The connective tissue of every project. Aisha ensures timelines, communication, and client expectations are always aligned — no surprises.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Values -->
+<section id="values" class="section-pad">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">What We Stand For</span>
+      <h2>Principles, not platitudes.</h2>
+    </div>
+    <div class="values-grid">
+      <div class="value-card reveal">
+        <div class="value-num">01 / Precision</div>
+        <h4>Measure twice, ship once.</h4>
+        <p>We spend time on architecture and scoping upfront so we don't build the wrong thing with excellence.</p>
+      </div>
+      <div class="value-card reveal reveal-delay-1">
+        <div class="value-num">02 / Transparency</div>
+        <h4>No black boxes.</h4>
+        <p>Weekly written updates. Staging environments from day one. You always know exactly where your project stands.</p>
+      </div>
+      <div class="value-card reveal reveal-delay-2">
+        <div class="value-num">03 / Longevity</div>
+        <h4>Code you can hand off.</h4>
+        <p>We write for the next engineer, not just ourselves. Documentation, test coverage, and clean architecture are non-negotiable.</p>
+      </div>
+      <div class="value-card reveal reveal-delay-3">
+        <div class="value-num">04 / Selectivity</div>
+        <h4>We say no when it matters.</h4>
+        <p>Keeping the team small means we can only do a few things at a time. We only take on work we can do properly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand"><div class="nav-logo" style="font-size:1rem;"><span class="bracket">&lt;</span><span class="logo-name"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span></div><p>Engineering precision. Building futures.</p></div>
+      <div class="footer-col"><h5>Pages</h5><a href="index.html">Home</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+      <div class="footer-col"><h5>Services</h5><a href="services.html">SaaS Development</a><a href="services.html">CMS Solutions</a><a href="services.html">Performance</a><a href="services.html">API & Integrations</a></div>
+      <div class="footer-col"><h5>Contact</h5><a href="mailto:hello@juchheim.dev">hello@juchheim.dev</a><a href="contact.html">Start a project</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Juchheim Web Development.</span><span>Built with precision.</span></div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40), {passive:true});
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+  hamburger.addEventListener('click', () => {
+    const open = hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    hamburger.classList.remove('open'); mobileNav.classList.remove('open'); document.body.style.overflow = '';
+  }));
+  const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }}), {threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

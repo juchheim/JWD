@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Services — Juchheim Web Development</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .service-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--card-accent, var(--accent-teal)), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .service-card:hover { border-color: var(--border-light); transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.4); }
+    .service-card:hover::before { opacity: 1; }
+
+    .service-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: var(--accent-teal-dim);
+      border: 1px solid var(--border-light);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+    .service-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      font-weight: 400;
+    }
+    .service-card > p { font-size: 0.92rem; margin-bottom: 1.25rem; }
+    .service-features { display: flex; flex-direction: column; gap: 0.4rem; }
+    .service-feature {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-size: 0.82rem; color: var(--text-secondary);
+    }
+    .service-feature::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--card-accent, var(--accent-teal));
+      flex-shrink: 0;
+    }
+
+    /* Process */
+    #process { background: var(--bg-surface); }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0;
+      position: relative;
+      margin-top: 3rem;
+    }
+    .process-step {
+      padding: 2rem 1.5rem;
+      position: relative;
+      border-right: 1px solid var(--border);
+    }
+    .process-step:last-child { border-right: none; }
+    .step-num {
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      color: var(--accent-teal);
+      opacity: 0.2;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+    .process-step h4 { color: var(--text-primary); margin-bottom: 0.5rem; }
+    .process-step p { font-size: 0.85rem; }
+
+    /* Tech stack */
+    #stack { background: var(--bg-base); }
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+    .stack-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.03em;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .stack-item:hover { border-color: var(--accent-teal); color: var(--accent-teal); }
+    .stack-category {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+
+    @media (max-width: 640px) {
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .process-step { border-right: none; border-bottom: 1px solid var(--border); }
+      .process-step:nth-child(odd) { border-right: 1px solid var(--border); }
+      .process-step:last-child, .process-step:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo" style="font-size:1.45rem;">
+      <span class="bracket">&lt;</span><span class="logo-name" style="letter-spacing:-0.12em;margin-right:0.12em;"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="services.html" class="active">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="nav-cta">Start a Project</a>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile-overlay" id="mobile-nav">
+  <a href="index.html">Home</a>
+  <a href="services.html" class="active">Services</a>
+  <a href="portfolio.html">Portfolio</a>
+  <a href="about.html">About</a>
+  <a href="contact.html" class="btn btn-primary nav-cta">Start a Project</a>
+</div>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="container">
+    <span class="label">What We Do</span>
+    <h1>Services built for<br/><em>serious products.</em></h1>
+    <p>From greenfield SaaS to complex CMS migrations — we bring engineering depth and design care to every layer of your stack.</p>
+  </div>
+</section>
+
+<!-- Services Grid -->
+<section class="section-pad" id="services">
+  <div class="container">
+    <div class="services-grid">
+
+      <div class="service-card reveal" style="--card-accent: #00d4a8;">
+        <div class="service-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="8" height="8" rx="2" stroke="#00d4a8" strokeWidth="1.5"/><rect x="12" y="2" width="8" height="8" rx="2" stroke="#00d4a8" strokeWidth="1.5"/><rect x="2" y="12" width="8" height="8" rx="2" stroke="#00d4a8" strokeWidth="1.5"/><circle cx="16" cy="16" r="4" stroke="#00d4a8" strokeWidth="1.5"/></svg>
+        </div>
+        <h3>SaaS Architecture & Development</h3>
+        <p>End-to-end engineering for web-based software products — from schema design to production deployment.</p>
+        <div class="service-features">
+          <div class="service-feature">Multi-tenant data architecture</div>
+          <div class="service-feature">Role-based access control</div>
+          <div class="service-feature">Realtime features & WebSockets</div>
+          <div class="service-feature">Subscription billing (Stripe)</div>
+          <div class="service-feature">Usage analytics & dashboards</div>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-1" style="--card-accent: #3b6ff5;">
+        <div class="service-icon" style="background:rgba(59,111,245,0.1);border-color:rgba(59,111,245,0.2);">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 6h16M3 11h10M3 16h6" stroke="#3b6ff5" strokeWidth="1.5" strokeLinecap="round"/><circle cx="17" cy="15" r="3" stroke="#3b6ff5" strokeWidth="1.5"/><path d="M19.5 17.5l2 2" stroke="#3b6ff5" strokeWidth="1.5" strokeLinecap="round"/></svg>
+        </div>
+        <h3>Custom CMS Solutions</h3>
+        <p>WordPress, Sanity, and headless CMS builds that empower editors and don't slow down your frontend.</p>
+        <div class="service-features">
+          <div class="service-feature">Gutenberg block libraries</div>
+          <div class="service-feature">Headless WordPress + Next.js</div>
+          <div class="service-feature">Sanity Studio configuration</div>
+          <div class="service-feature">Content migration & URL preservation</div>
+          <div class="service-feature">Editor onboarding & documentation</div>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-2" style="--card-accent: #a78bfa;">
+        <div class="service-icon" style="background:rgba(167,139,250,0.1);border-color:rgba(167,139,250,0.2);">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2L2 7v8l9 5 9-5V7L11 2z" stroke="#a78bfa" strokeWidth="1.5" strokeLinejoin="round"/><path d="M11 12V22M2 7l9 5 9-5" stroke="#a78bfa" strokeWidth="1.5"/></svg>
+        </div>
+        <h3>Web Application Design</h3>
+        <p>High-fidelity UI/UX for complex applications — component systems, interaction design, and accessibility.</p>
+        <div class="service-features">
+          <div class="service-feature">Design systems & component libraries</div>
+          <div class="service-feature">Figma prototyping & handoff</div>
+          <div class="service-feature">WCAG AA accessibility</div>
+          <div class="service-feature">Usability testing & iteration</div>
+          <div class="service-feature">Motion & interaction design</div>
+        </div>
+      </div>
+
+      <div class="service-card reveal" style="--card-accent: #f59e0b;">
+        <div class="service-icon" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M13 2L4 13h7l-2 7 9-11h-7l2-7z" stroke="#f59e0b" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round"/></svg>
+        </div>
+        <h3>Performance Optimisation</h3>
+        <p>Systematic audits and targeted fixes to bring your Core Web Vitals into the green.</p>
+        <div class="service-features">
+          <div class="service-feature">Core Web Vitals (LCP, CLS, INP)</div>
+          <div class="service-feature">Image pipeline & CDN strategy</div>
+          <div class="service-feature">JS bundle analysis & splitting</div>
+          <div class="service-feature">Edge caching architecture</div>
+          <div class="service-feature">Lighthouse CI integration</div>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-1" style="--card-accent: #10b981;">
+        <div class="service-icon" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.2);">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M5 11h4l2-7 4 14 2-7h4" stroke="#10b981" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </div>
+        <h3>API & Integrations</h3>
+        <p>Robust REST and GraphQL APIs, third-party integrations, and data pipeline engineering.</p>
+        <div class="service-features">
+          <div class="service-feature">REST & GraphQL API design</div>
+          <div class="service-feature">OAuth 2.0 & SSO (SAML)</div>
+          <div class="service-feature">Webhook systems & event queues</div>
+          <div class="service-feature">EHR / FHIR integrations</div>
+          <div class="service-feature">Third-party SaaS connectors</div>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-delay-2" style="--card-accent: #f472b6;">
+        <div class="service-icon" style="background:rgba(244,114,182,0.1);border-color:rgba(244,114,182,0.2);">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 3a8 8 0 100 16A8 8 0 0011 3z" stroke="#f472b6" strokeWidth="1.5"/><path d="M11 7v4l3 3" stroke="#f472b6" strokeWidth="1.5" strokeLinecap="round"/></svg>
+        </div>
+        <h3>Retained Engineering</h3>
+        <p>An ongoing technical partnership — sprint-based or on-demand — for teams that need trusted engineers in their corner.</p>
+        <div class="service-features">
+          <div class="service-feature">Weekly sprint cadence</div>
+          <div class="service-feature">Dedicated Slack channel</div>
+          <div class="service-feature">Code review & PR oversight</div>
+          <div class="service-feature">Architecture consulting</div>
+          <div class="service-feature">Flexible scope adjustments</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+<section id="process" class="section-pad">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">How We Work</span>
+      <h2>A process that removes surprises.</h2>
+      <p>We believe clarity at the start leads to confidence at the end.</p>
+    </div>
+    <div class="process-steps reveal reveal-delay-1">
+      <div class="process-step">
+        <div class="step-num">01</div>
+        <h4>Discovery Call</h4>
+        <p style="font-size:0.85rem;">Understand your goals, constraints, and timeline. No-obligation.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">02</div>
+        <h4>Scoping & Proposal</h4>
+        <p style="font-size:0.85rem;">Detailed technical brief, milestone plan, and fixed-price quote within 48 hours.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">03</div>
+        <h4>Design & Build</h4>
+        <p style="font-size:0.85rem;">Iterative sprints with staged reviews. You see progress weekly, not at the end.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">04</div>
+        <h4>Launch & Handoff</h4>
+        <p style="font-size:0.85rem;">Zero-downtime deploys, full documentation, and onboarding for your team.</p>
+      </div>
+      <div class="process-step" style="border-right:none;">
+        <div class="step-num">05</div>
+        <h4>Ongoing Support</h4>
+        <p style="font-size:0.85rem;">Optional retained partnership to maintain, monitor, and keep growing your product.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stack -->
+<section id="stack" class="section-pad">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">Technology</span>
+      <h2>Tools we trust.</h2>
+      <p>We choose frameworks for longevity and performance — not hype.</p>
+    </div>
+    <div class="stack-grid reveal reveal-delay-1">
+      <div class="stack-item"><div class="stack-category">Frontend</div>Next.js</div>
+      <div class="stack-item"><div class="stack-category">Frontend</div>React</div>
+      <div class="stack-item"><div class="stack-category">Frontend</div>TypeScript</div>
+      <div class="stack-item"><div class="stack-category">Styling</div>Tailwind CSS</div>
+      <div class="stack-item"><div class="stack-category">Backend</div>Node.js</div>
+      <div class="stack-item"><div class="stack-category">Backend</div>Django</div>
+      <div class="stack-item"><div class="stack-category">Backend</div>FastAPI</div>
+      <div class="stack-item"><div class="stack-category">Database</div>PostgreSQL</div>
+      <div class="stack-item"><div class="stack-category">Database</div>Supabase</div>
+      <div class="stack-item"><div class="stack-category">CMS</div>WordPress</div>
+      <div class="stack-item"><div class="stack-category">CMS</div>Sanity</div>
+      <div class="stack-item"><div class="stack-category">Deploy</div>Vercel</div>
+      <div class="stack-item"><div class="stack-category">Deploy</div>AWS</div>
+      <div class="stack-item"><div class="stack-category">Payments</div>Stripe</div>
+      <div class="stack-item"><div class="stack-category">Search</div>Elasticsearch</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="background:var(--bg-surface);border-top:1px solid var(--border);padding-block:clamp(4rem,8vw,6rem);text-align:center;" class="reveal">
+  <div class="container">
+    <span class="label">Next Step</span>
+    <h2 style="margin-top:0.75rem;margin-bottom:1rem;">Have a project in mind?</h2>
+    <p style="max-width:44ch;margin-inline:auto;margin-bottom:2rem;">Tell us what you're building — we'll come back with a clear technical plan and honest pricing.</p>
+    <a href="contact.html" class="btn btn-primary" style="font-size:1rem;padding:0.9rem 2.25rem;">Start a Conversation</a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo" style="font-size:1rem;"><span class="bracket">&lt;</span><span class="logo-name"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span></div>
+        <p>Engineering precision. Building futures.</p>
+      </div>
+      <div class="footer-col"><h5>Pages</h5><a href="index.html">Home</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+      <div class="footer-col"><h5>Services</h5><a href="services.html">SaaS Development</a><a href="services.html">CMS Solutions</a><a href="services.html">Performance</a><a href="services.html">API & Integrations</a></div>
+      <div class="footer-col"><h5>Contact</h5><a href="mailto:hello@juchheim.dev">hello@juchheim.dev</a><a href="contact.html">Start a project</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Juchheim Web Development.</span><span>Built with precision.</span></div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40), {passive:true});
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+  hamburger.addEventListener('click', () => {
+    const open = hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    hamburger.classList.remove('open'); mobileNav.classList.remove('open'); document.body.style.overflow = '';
+  }));
+  const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }}), {threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
