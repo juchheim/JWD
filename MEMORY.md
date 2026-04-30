@@ -49,3 +49,4 @@
 - Implemented Phase 2 upload flow: signed upload URL endpoint, upload PUT handler, asset confirm endpoint, and admin UI file upload wiring.
 - Implemented Phase 4 public integration on `app/page.tsx` with live case-study API fetch, signed image rendering, and proportional timeline segments.
 - Implemented Phase 5 hardening: CORS allowlist support, login rate limiting, structured JSON logging, and D1 backup export script.
+- Added one-page production deployment guide at `docs/admin/production-deploy-checklist.md`.
