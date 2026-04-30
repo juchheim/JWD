@@ -11,6 +11,7 @@
 - `SiteFileRouter`: Next.js route handlers that serve the original supplied static site files directly.
 - `CrossSiteAdminSession`: Worker cookie policy for admin auth across Vercel frontend and workers.dev API.
 - `NextWorkerProxy`: Next.js same-origin API proxy under `/api/worker/*` forwarding requests to Worker API.
+- `CategoryLifecycle`: Admin category create/delete lifecycle with usage guardrails.
 
 ## Relationships
 - `Website` includes `PortfolioModule` on `portfolio.html`.
@@ -27,6 +28,7 @@
 - `PortfolioModule` now reads live `CaseStudy` data from `WorkerAPI` while preserving the original supplied UI structure.
 - `CrossSiteAdminSession` depends on `WorkerAPI` setting `SameSite=None; Secure` when requests are HTTPS.
 - `NextAdminUI` now uses `NextWorkerProxy` so browser cookies stay first-party on the Vercel domain.
+- `CategoryLifecycle` is enforced by `WorkerAPI` with a delete safety check preventing removal of categories assigned to case studies.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -62,3 +64,5 @@
 - Updated `portfolio-component.jsx` to keep its original presentation while fetching live case studies and signed image URLs from the Worker API, with the original hardcoded projects retained as a fallback.
 - Updated admin session cookies to use `SameSite=None` for secure requests so cross-site admin auth works from `vercel.app` to `workers.dev` with credentials.
 - Added a Next.js catch-all API proxy route at `/api/worker/*` and switched `lib/api.ts` to use it, avoiding browser third-party cookie blocking for admin sessions.
+- Added `DELETE /admin/categories/:id` with auth and conflict protection (`category_in_use`) when a category is still assigned.
+- Added admin UI delete controls for categories with confirmation, optimistic updates, and rollback via `refreshLists()` on failure.

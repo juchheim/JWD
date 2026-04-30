@@ -103,6 +103,17 @@ export async function createAdminCategory(input: {
   return body.category;
 }
 
+export async function deleteAdminCategory(id: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/admin/categories/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  const body = await parseJson<ApiError>(response);
+  if (!response.ok) {
+    throw new Error(body.error?.message || "Failed to delete category.");
+  }
+}
+
 export async function createCaseStudy(payload: CaseStudyWritePayload): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/admin/case-studies`, {
     method: "POST",

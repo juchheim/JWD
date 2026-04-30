@@ -604,6 +604,39 @@ async function handleCreateCategory(request: Request, env: Env): Promise<Respons
   return json({ ok: true, category: { id, name, slug, sortOrder } }, 201);
 }
 
+async function handleDeleteCategory(env: Env, categoryId: string): Promise<Response> {
+  const trimmedId = categoryId.trim();
+  if (!trimmedId) return badRequest("categoryId is required.");
+
+  const category = await env.DB.prepare("SELECT id FROM categories WHERE id = ?")
+    .bind(trimmedId)
+    .first<{ id: string }>();
+  if (!category) {
+    return json({ error: { code: "not_found", message: "Category not found." } }, 404);
+  }
+
+  const usage = await env.DB.prepare(
+    "SELECT COUNT(*) AS count FROM case_study_categories WHERE category_id = ?"
+  )
+    .bind(trimmedId)
+    .first<{ count: number | string }>();
+  const usageCount = Number(usage?.count ?? 0);
+  if (usageCount > 0) {
+    return json(
+      {
+        error: {
+          code: "category_in_use",
+          message: "Cannot delete category because it is assigned to one or more case studies.",
+        },
+      },
+      409
+    );
+  }
+
+  await env.DB.prepare("DELETE FROM categories WHERE id = ?").bind(trimmedId).run();
+  return json({ ok: true, deletedId: trimmedId });
+}
+
 async function handleSignUpload(request: Request, env: Env): Promise<Response> {
   let body: SignUploadPayload;
   try {
@@ -936,6 +969,7 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     const caseStudyMatch = /^\/admin\/case-studies\/([^/]+)$/.exec(url.pathname);
+    const categoryMatch = /^\/admin\/categories\/([^/]+)$/.exec(url.pathname);
     const requestId = crypto.randomUUID();
     const startedAt = Date.now();
 
@@ -978,6 +1012,9 @@ export default {
       } else if (request.method === "POST" && url.pathname === "/admin/categories") {
         const unauthorized = await requireAdminSession(request, env);
         response = unauthorized ?? (await handleCreateCategory(request, env));
+      } else if (request.method === "DELETE" && categoryMatch) {
+        const unauthorized = await requireAdminSession(request, env);
+        response = unauthorized ?? (await handleDeleteCategory(env, categoryMatch[1]));
       } else if (request.method === "PUT" && caseStudyMatch) {
         const unauthorized = await requireAdminSession(request, env);
         response = unauthorized ?? (await handleUpdateCaseStudy(request, env, caseStudyMatch[1]));

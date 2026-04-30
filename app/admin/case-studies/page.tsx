@@ -5,6 +5,7 @@ import {
   confirmAsset,
   createAdminCategory,
   createCaseStudy,
+  deleteAdminCategory,
   fetchAdminCaseStudies,
   fetchAdminCategories,
   signUpload,
@@ -245,6 +246,32 @@ export default function AdminCaseStudiesPage() {
     }
   }
 
+  async function onDeleteCategory(category: AdminCategory) {
+    const confirmed = window.confirm(
+      `Delete category "${category.name}"? This only works if it is not assigned to any case studies.`
+    );
+    if (!confirmed) return;
+
+    setSaving(true);
+    setMessage(null);
+    setFieldError(null);
+    try {
+      setCategories((prev) => prev.filter((item) => item.id !== category.id));
+      setForm((prev) => ({
+        ...prev,
+        categoryIds: prev.categoryIds.filter((id) => id !== category.id),
+      }));
+      await deleteAdminCategory(category.id);
+      await refreshLists();
+      setMessage("Category deleted.");
+    } catch (error) {
+      await refreshLists();
+      setMessage(error instanceof Error ? error.message : "Failed to delete category.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   function loadForEdit(item: CaseStudy) {
     setForm({
       id: item.id,
@@ -291,25 +318,37 @@ export default function AdminCaseStudiesPage() {
         />
         <div className="stack">
           <strong>Categories</strong>
-          <div className="row wrap">
+          <div className="stack">
             {categories.map((category) => {
               const selected = form.categoryIds.includes(category.id);
               return (
-                <label key={category.id} className="row">
-                  <input
-                    type="checkbox"
-                    checked={selected}
-                    onChange={(e) => {
-                      const checked = e.target.checked;
-                      setField(
-                        "categoryIds",
-                        checked
-                          ? [...form.categoryIds, category.id]
-                          : form.categoryIds.filter((id) => id !== category.id)
-                      );
+                <label key={category.id} className="row" style={{ width: "100%" }}>
+                  <div className="row" style={{ flex: 1 }}>
+                    <input
+                      type="checkbox"
+                      checked={selected}
+                      onChange={(e) => {
+                        const checked = e.target.checked;
+                        setField(
+                          "categoryIds",
+                          checked
+                            ? [...form.categoryIds, category.id]
+                            : form.categoryIds.filter((id) => id !== category.id)
+                        );
+                      }}
+                    />
+                    <span>{category.name}</span>
+                  </div>
+                  <button
+                    type="button"
+                    disabled={saving}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      void onDeleteCategory(category);
                     }}
-                  />
-                  <span>{category.name}</span>
+                  >
+                    Delete
+                  </button>
                 </label>
               );
             })}
