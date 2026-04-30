@@ -4,6 +4,13 @@ type ApiError = {
   error?: {
     code?: string;
     message?: string;
+    details?: {
+      usedBy?: Array<{
+        id?: string;
+        title?: string;
+        slug?: string;
+      }>;
+    };
   };
 };
 
@@ -110,6 +117,12 @@ export async function deleteAdminCategory(id: string): Promise<void> {
   });
   const body = await parseJson<ApiError>(response);
   if (!response.ok) {
+    if (body.error?.code === "category_in_use" && body.error.details?.usedBy?.length) {
+      const labels = body.error.details.usedBy
+        .map((item) => item.title || item.slug || item.id || "Unknown case study")
+        .join(", ");
+      throw new Error(`Cannot delete category. Still assigned to: ${labels}`);
+    }
     throw new Error(body.error?.message || "Failed to delete category.");
   }
 }

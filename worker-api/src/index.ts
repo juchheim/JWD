@@ -626,18 +626,29 @@ async function handleDeleteCategory(env: Env, categoryId: string): Promise<Respo
     return json({ error: { code: "not_found", message: "Category not found." } }, 404);
   }
 
-  const usage = await env.DB.prepare(
-    "SELECT COUNT(*) AS count FROM case_study_categories WHERE category_id = ?"
+  const assignments = await env.DB.prepare(
+    `SELECT cs.id, cs.title, cs.slug
+     FROM case_study_categories csc
+     JOIN case_studies cs ON cs.id = csc.case_study_id
+     WHERE csc.category_id = ?
+     ORDER BY cs.updated_at DESC, cs.created_at DESC`
   )
     .bind(trimmedId)
-    .first<{ count: number | string }>();
-  const usageCount = Number(usage?.count ?? 0);
-  if (usageCount > 0) {
+    .all<{ id: string; title: string; slug: string }>();
+  const usedBy = assignments.results ?? [];
+  if (usedBy.length > 0) {
     return json(
       {
         error: {
           code: "category_in_use",
           message: "Cannot delete category because it is assigned to one or more case studies.",
+          details: {
+            usedBy: usedBy.map((item) => ({
+              id: item.id,
+              title: item.title,
+              slug: item.slug,
+            })),
+          },
         },
       },
       409
