@@ -578,19 +578,30 @@ async function handleCreateCategory(request: Request, env: Env): Promise<Respons
   const name = typeof body.name === "string" ? body.name.trim() : "";
   if (!name) return badRequest("name is required.");
   const slugInput = typeof body.slug === "string" && body.slug.trim() ? body.slug : name;
-  const slug = slugify(slugInput);
-  if (!slug) return badRequest("slug is required and must contain alphanumeric characters.");
+  const baseSlug = slugify(slugInput);
+  if (!baseSlug) return badRequest("name must include at least one letter or number.");
   const sortOrder = Number.isFinite(Number(body.sortOrder)) ? Number(body.sortOrder) : 0;
-
-  const existsBySlug = await env.DB.prepare("SELECT id FROM categories WHERE slug = ?")
-    .bind(slug)
-    .first<{ id: string }>();
-  if (existsBySlug) return badRequest("slug already exists. Please choose another.");
 
   const existsByName = await env.DB.prepare("SELECT id FROM categories WHERE lower(name) = lower(?)")
     .bind(name)
     .first<{ id: string }>();
   if (existsByName) return badRequest("name already exists. Please choose another.");
+
+  // Auto-resolve slug collisions so punctuation variants like "test!" can still be created.
+  const existingSlugRows = await env.DB.prepare(
+    "SELECT slug FROM categories WHERE slug = ? OR slug LIKE ?"
+  )
+    .bind(baseSlug, `${baseSlug}-%`)
+    .all<{ slug: string }>();
+  const usedSlugs = new Set((existingSlugRows.results ?? []).map((row) => row.slug));
+  let slug = baseSlug;
+  if (usedSlugs.has(slug)) {
+    let nextSuffix = 2;
+    while (usedSlugs.has(`${baseSlug}-${nextSuffix}`)) {
+      nextSuffix += 1;
+    }
+    slug = `${baseSlug}-${nextSuffix}`;
+  }
 
   const id = crypto.randomUUID();
   const now = new Date().toISOString();

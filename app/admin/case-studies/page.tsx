@@ -256,17 +256,20 @@ export default function AdminCaseStudiesPage() {
     setMessage(null);
     setFieldError(null);
     try {
-      setCategories((prev) => prev.filter((item) => item.id !== category.id));
+      await deleteAdminCategory(category.id);
       setForm((prev) => ({
         ...prev,
         categoryIds: prev.categoryIds.filter((id) => id !== category.id),
       }));
-      await deleteAdminCategory(category.id);
       await refreshLists();
       setMessage("Category deleted.");
     } catch (error) {
-      await refreshLists();
-      setMessage(error instanceof Error ? error.message : "Failed to delete category.");
+      const message = error instanceof Error ? error.message : "Failed to delete category.";
+      setMessage(
+        message.includes("assigned to one or more case studies")
+          ? 'Cannot delete: category is still used by one or more case studies. Remove it from those case studies first.'
+          : message
+      );
     } finally {
       setSaving(false);
     }

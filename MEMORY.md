@@ -66,3 +66,4 @@
 - Added a Next.js catch-all API proxy route at `/api/worker/*` and switched `lib/api.ts` to use it, avoiding browser third-party cookie blocking for admin sessions.
 - Added `DELETE /admin/categories/:id` with auth and conflict protection (`category_in_use`) when a category is still assigned.
 - Added admin UI delete controls for categories with confirmation, optimistic updates, and rollback via `refreshLists()` on failure.
+- Updated category creation slug behavior to auto-suffix slug collisions (`-2`, `-3`, etc.) so punctuation variants like `test!` are accepted when names are unique.
