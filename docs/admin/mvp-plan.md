@@ -4,7 +4,7 @@
 Make the portfolio editable with the smallest reliable stack:
 - Frontend hosted on Vercel.
 - Admin/content API on Cloudflare Workers.
-- Data in MongoDB Atlas.
+- Data in Cloudflare D1.
 - Images in Cloudflare R2.
 - Single shared password for admin access.
 

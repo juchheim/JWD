@@ -7,6 +7,7 @@
 - `AdminMVP`: Planned CMS surface for managing portfolio content only.
 - `WorkerAPI`: Cloudflare Worker scaffold for signed R2 asset delivery.
 - `CursorRule`: Always-on project rule for best practices and secret safety.
+- `D1Schema`: SQLite schema for case studies, categories, timelines, images, and category joins.
 
 ## Relationships
 - `Website` includes `PortfolioModule` on `portfolio.html`.
@@ -15,6 +16,9 @@
 - `CaseStudy` now relates to many `Category` entities (multi-category support).
 - `WorkerAPI` signs and serves `CaseStudy` image assets from private R2.
 - `CursorRule` governs agent behavior across all project tasks.
+- `WorkerAPI` now reads public case-study data from D1 via `env.DB`.
+- `D1Schema` is applied through Wrangler migrations to local and remote environments.
+- `WorkerAPI` now also exposes authenticated admin read endpoints for case studies and categories.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -30,3 +34,11 @@
 - Fixed signed URL verifier edge case so malformed signatures return `401` instead of `500`.
 - Verified remote R2 smoke flow (`--remote`): upload + sign-read + valid `200` / invalid `401` via preview endpoint.
 - Updated `docs/admin/rollout-checklist.md` to mark Phase 0 complete and track signed URL verification/deploy status.
+- Implemented Phase 1 foundation endpoints: `GET /public/case-studies`, `POST /admin/auth/login`, `POST /admin/auth/logout`.
+- Added HTTP-only cookie session signing/verification and D1-backed public case-studies query logic.
+- Created D1 database `jwd-admin-db`, bound it in `wrangler.jsonc`, and applied migrations locally/remotely.
+- Added onboarding doc `docs/admin/d1-setup-guide.md` for first-time D1 usage.
+- Seeded remote D1 with initial category/case-study/timeline/image rows for API validation.
+- Verified deployed `GET /public/case-studies` returns seeded data and admin endpoints enforce auth.
+- Implemented `POST /admin/case-studies` with validation for required fields, category existence, timeline structure, and color format.
+- Implemented `POST /admin/categories`, `PUT /admin/case-studies/:id`, and `DELETE /admin/case-studies/:id` with auth guards and validation.

@@ -3,10 +3,22 @@ import {
   parseSignedAssetRequest,
   verifySignature,
 } from "./signedUrls";
+import {
+  ADMIN_SESSION_COOKIE,
+  buildAdminSessionCookie,
+  clearAdminSessionCookie,
+  createAdminSessionToken,
+  getCookieValue,
+  safePasswordCompare,
+  verifyAdminSessionToken,
+} from "./adminAuth";
 
 type Env = {
   ASSETS: R2Bucket;
+  DB: D1Database;
   ASSET_SIGNING_SECRET: string;
+  ADMIN_SHARED_PASSWORD: string;
+  ADMIN_SESSION_SECRET?: string;
 };
 
 const DEFAULT_SIGNED_URL_TTL_SECONDS = 5 * 60;
@@ -19,6 +31,616 @@ function json(data: unknown, status = 200): Response {
       "cache-control": "no-store",
     },
   });
+}
+
+function secureCookieForRequest(request: Request): boolean {
+  return new URL(request.url).protocol === "https:";
+}
+
+type CaseStudyRow = {
+  id: string;
+  slug: string;
+  title: string;
+  short_description: string;
+  tags_json: string | null;
+  accent_color: string;
+  background_color: string;
+  sort_order: number;
+  is_active: number;
+};
+
+type TimelineStepRow = {
+  id: string;
+  case_study_id: string;
+  name: string;
+  duration_weeks: number;
+  summary: string;
+  sort_order: number;
+};
+
+type ImageRow = {
+  id: string;
+  case_study_id: string;
+  r2_key: string;
+  alt: string;
+  sort_order: number;
+};
+
+type CategoryRow = {
+  case_study_id: string;
+  category_name: string;
+};
+
+type CategoryListRow = {
+  id: string;
+  name: string;
+  slug: string;
+  sort_order: number;
+};
+
+type CreateCaseStudyPayload = {
+  title?: unknown;
+  slug?: unknown;
+  shortDescription?: unknown;
+  categoryIds?: unknown;
+  tags?: unknown;
+  accentColor?: unknown;
+  backgroundColor?: unknown;
+  images?: unknown;
+  timelineSteps?: unknown;
+  sortOrder?: unknown;
+  isActive?: unknown;
+};
+
+type CreateTimelineStepInput = {
+  name: string;
+  durationWeeks: number;
+  summary: string;
+  sortOrder: number;
+};
+
+type CreateImageInput = {
+  r2Key: string;
+  alt: string;
+  sortOrder: number;
+};
+
+type CreateCategoryPayload = {
+  name?: unknown;
+  slug?: unknown;
+  sortOrder?: unknown;
+};
+
+function slugify(input: string): string {
+  return input
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function isValidHexColor(value: string): boolean {
+  return /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(value);
+}
+
+function badRequest(message: string, details?: unknown): Response {
+  return json({ error: { code: "validation_error", message, details } }, 400);
+}
+
+function normalizeStringArray(input: unknown): string[] {
+  if (!Array.isArray(input)) return [];
+  return input
+    .filter((item): item is string => typeof item === "string")
+    .map((item) => item.trim())
+    .filter((item) => item.length > 0);
+}
+
+function parseTimelineSteps(input: unknown): CreateTimelineStepInput[] | null {
+  if (!Array.isArray(input) || input.length < 1) return null;
+  const parsed: CreateTimelineStepInput[] = [];
+  for (let i = 0; i < input.length; i += 1) {
+    const row = input[i] as Record<string, unknown>;
+    const name = typeof row?.name === "string" ? row.name.trim() : "";
+    const durationWeeks = Number(row?.durationWeeks);
+    const summary = typeof row?.summary === "string" ? row.summary.trim() : "";
+    const sortOrderRaw = Number(row?.sortOrder);
+    const sortOrder = Number.isFinite(sortOrderRaw) ? sortOrderRaw : i + 1;
+    if (!name || !summary || !Number.isInteger(durationWeeks) || durationWeeks < 1) return null;
+    parsed.push({ name, durationWeeks, summary, sortOrder });
+  }
+  return parsed;
+}
+
+function parseImages(input: unknown): CreateImageInput[] | null {
+  if (!Array.isArray(input)) return [];
+  const parsed: CreateImageInput[] = [];
+  for (let i = 0; i < input.length; i += 1) {
+    const row = input[i] as Record<string, unknown>;
+    const r2Key = typeof row?.r2Key === "string" ? row.r2Key.trim() : "";
+    const alt = typeof row?.alt === "string" ? row.alt.trim() : "";
+    const sortOrderRaw = Number(row?.sortOrder);
+    const sortOrder = Number.isFinite(sortOrderRaw) ? sortOrderRaw : i + 1;
+    if (!r2Key) return null;
+    parsed.push({ r2Key, alt, sortOrder });
+  }
+  return parsed;
+}
+
+async function loadCaseStudies(
+  env: Env,
+  includeInactive = false
+): Promise<
+  Array<{
+    id: string;
+    slug: string;
+    title: string;
+    shortDescription: string;
+    categories: string[];
+    tags: string[];
+    accentColor: string;
+    backgroundColor: string;
+    images: Array<{ id: string; r2Key: string; alt: string; sortOrder: number }>;
+    timelineSteps: Array<{
+      id: string;
+      name: string;
+      durationWeeks: number;
+      summary: string;
+      sortOrder: number;
+    }>;
+    sortOrder: number;
+    isActive: boolean;
+  }>
+> {
+  const caseStudiesQuery = includeInactive
+    ? `SELECT id, slug, title, short_description, tags_json, accent_color, background_color, sort_order, is_active
+       FROM case_studies
+       ORDER BY sort_order ASC, created_at ASC`
+    : `SELECT id, slug, title, short_description, tags_json, accent_color, background_color, sort_order, is_active
+       FROM case_studies
+       WHERE is_active = 1
+       ORDER BY sort_order ASC, created_at ASC`;
+
+  const caseStudiesResult = await env.DB.prepare(caseStudiesQuery).all<CaseStudyRow>();
+
+  const caseStudies = caseStudiesResult.results ?? [];
+  if (caseStudies.length === 0) return [];
+
+  const ids = caseStudies.map((cs) => cs.id);
+  const placeholders = ids.map(() => "?").join(", ");
+
+  const timelineStepsResult = await env.DB.prepare(
+    `SELECT id, case_study_id, name, duration_weeks, summary, sort_order
+     FROM timeline_steps
+     WHERE case_study_id IN (${placeholders})
+     ORDER BY sort_order ASC, created_at ASC`
+  )
+    .bind(...ids)
+    .all<TimelineStepRow>();
+
+  const imagesResult = await env.DB.prepare(
+    `SELECT id, case_study_id, r2_key, alt, sort_order
+     FROM case_study_images
+     WHERE case_study_id IN (${placeholders})
+     ORDER BY sort_order ASC, created_at ASC`
+  )
+    .bind(...ids)
+    .all<ImageRow>();
+
+  const categoriesResult = await env.DB.prepare(
+    `SELECT csc.case_study_id as case_study_id, c.name as category_name
+     FROM case_study_categories csc
+     JOIN categories c ON c.id = csc.category_id
+     WHERE csc.case_study_id IN (${placeholders})
+     ORDER BY c.sort_order ASC, c.name ASC`
+  )
+    .bind(...ids)
+    .all<CategoryRow>();
+
+  const timelineByCaseStudy = new Map<string, TimelineStepRow[]>();
+  for (const step of timelineStepsResult.results ?? []) {
+    const list = timelineByCaseStudy.get(step.case_study_id) ?? [];
+    list.push(step);
+    timelineByCaseStudy.set(step.case_study_id, list);
+  }
+
+  const imagesByCaseStudy = new Map<string, ImageRow[]>();
+  for (const image of imagesResult.results ?? []) {
+    const list = imagesByCaseStudy.get(image.case_study_id) ?? [];
+    list.push(image);
+    imagesByCaseStudy.set(image.case_study_id, list);
+  }
+
+  const categoriesByCaseStudy = new Map<string, string[]>();
+  for (const category of categoriesResult.results ?? []) {
+    const list = categoriesByCaseStudy.get(category.case_study_id) ?? [];
+    list.push(category.category_name);
+    categoriesByCaseStudy.set(category.case_study_id, list);
+  }
+
+  return caseStudies.map((caseStudy) => ({
+      id: caseStudy.id,
+      slug: caseStudy.slug,
+      title: caseStudy.title,
+      shortDescription: caseStudy.short_description,
+      categories: categoriesByCaseStudy.get(caseStudy.id) ?? [],
+      tags: caseStudy.tags_json ? JSON.parse(caseStudy.tags_json) : [],
+      accentColor: caseStudy.accent_color,
+      backgroundColor: caseStudy.background_color,
+      images: (imagesByCaseStudy.get(caseStudy.id) ?? []).map((image) => ({
+        id: image.id,
+        r2Key: image.r2_key,
+        alt: image.alt,
+        sortOrder: image.sort_order,
+      })),
+      timelineSteps: (timelineByCaseStudy.get(caseStudy.id) ?? []).map((step) => ({
+        id: step.id,
+        name: step.name,
+        durationWeeks: step.duration_weeks,
+        summary: step.summary,
+        sortOrder: step.sort_order,
+      })),
+      sortOrder: caseStudy.sort_order,
+      isActive: caseStudy.is_active === 1,
+    }));
+}
+
+async function handlePublicCaseStudies(env: Env): Promise<Response> {
+  const caseStudies = await loadCaseStudies(env, false);
+  return json({ caseStudies });
+}
+
+async function handleAdminCaseStudies(env: Env): Promise<Response> {
+  const caseStudies = await loadCaseStudies(env, true);
+  return json({ caseStudies });
+}
+
+async function handleAdminCategories(env: Env): Promise<Response> {
+  const categories = await env.DB.prepare(
+    `SELECT id, name, slug, sort_order
+     FROM categories
+     ORDER BY sort_order ASC, name ASC`
+  ).all<CategoryListRow>();
+  return json({
+    categories: (categories.results ?? []).map((category) => ({
+      id: category.id,
+      name: category.name,
+      slug: category.slug,
+      sortOrder: category.sort_order,
+    })),
+  });
+}
+
+async function handleCreateCaseStudy(request: Request, env: Env): Promise<Response> {
+  let body: CreateCaseStudyPayload;
+  try {
+    body = (await request.json()) as CreateCaseStudyPayload;
+  } catch {
+    return json({ error: { code: "bad_json", message: "Invalid JSON body." } }, 400);
+  }
+
+  const title = typeof body.title === "string" ? body.title.trim() : "";
+  const shortDescription =
+    typeof body.shortDescription === "string" ? body.shortDescription.trim() : "";
+  const candidateSlug =
+    typeof body.slug === "string" && body.slug.trim().length > 0 ? body.slug.trim() : title;
+  const slug = slugify(candidateSlug);
+
+  const categoryIds = normalizeStringArray(body.categoryIds);
+  const tags = normalizeStringArray(body.tags);
+  const accentColor =
+    typeof body.accentColor === "string" ? body.accentColor.trim() : "#00d4a8";
+  const backgroundColor =
+    typeof body.backgroundColor === "string" ? body.backgroundColor.trim() : "#0a2218";
+  const sortOrder = Number.isFinite(Number(body.sortOrder)) ? Number(body.sortOrder) : 0;
+  const isActive = Boolean(body.isActive ?? true);
+
+  if (!title) return badRequest("title is required.");
+  if (!shortDescription) return badRequest("shortDescription is required.");
+  if (!slug) return badRequest("slug is required and must contain alphanumeric characters.");
+  if (categoryIds.length < 1) return badRequest("categoryIds must include at least one ID.");
+  if (!isValidHexColor(accentColor)) return badRequest("accentColor must be a valid hex color.");
+  if (!isValidHexColor(backgroundColor))
+    return badRequest("backgroundColor must be a valid hex color.");
+
+  const timelineSteps = parseTimelineSteps(body.timelineSteps);
+  if (!timelineSteps) {
+    return badRequest("timelineSteps must include at least one valid step.");
+  }
+
+  const images = parseImages(body.images);
+  if (!images) return badRequest("images contains invalid rows.");
+
+  const placeholders = categoryIds.map(() => "?").join(", ");
+  const categoryQuery = await env.DB.prepare(
+    `SELECT id FROM categories WHERE id IN (${placeholders})`
+  )
+    .bind(...categoryIds)
+    .all<{ id: string }>();
+  const foundCategoryIds = new Set((categoryQuery.results ?? []).map((row) => row.id));
+  const missingCategoryIds = categoryIds.filter((id) => !foundCategoryIds.has(id));
+  if (missingCategoryIds.length > 0) {
+    return badRequest("Some categoryIds do not exist.", { missingCategoryIds });
+  }
+
+  const existing = await env.DB.prepare("SELECT id FROM case_studies WHERE slug = ?")
+    .bind(slug)
+    .first<{ id: string }>();
+  if (existing) {
+    return badRequest("slug already exists. Please choose another.");
+  }
+
+  const caseStudyId = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const statements: D1PreparedStatement[] = [];
+
+  statements.push(
+    env.DB.prepare(
+      `INSERT INTO case_studies (
+        id, slug, title, short_description, tags_json, accent_color, background_color, sort_order, is_active, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ).bind(
+      caseStudyId,
+      slug,
+      title,
+      shortDescription,
+      JSON.stringify(tags),
+      accentColor,
+      backgroundColor,
+      sortOrder,
+      isActive ? 1 : 0,
+      now,
+      now
+    )
+  );
+
+  for (const categoryId of categoryIds) {
+    statements.push(
+      env.DB.prepare(
+        "INSERT INTO case_study_categories (case_study_id, category_id, created_at) VALUES (?, ?, ?)"
+      ).bind(caseStudyId, categoryId, now)
+    );
+  }
+
+  for (const step of timelineSteps) {
+    statements.push(
+      env.DB.prepare(
+        `INSERT INTO timeline_steps (
+          id, case_study_id, name, duration_weeks, summary, sort_order, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+      ).bind(
+        crypto.randomUUID(),
+        caseStudyId,
+        step.name,
+        step.durationWeeks,
+        step.summary,
+        step.sortOrder,
+        now,
+        now
+      )
+    );
+  }
+
+  for (const image of images) {
+    statements.push(
+      env.DB.prepare(
+        `INSERT INTO case_study_images (
+          id, case_study_id, r2_key, alt, sort_order, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?)`
+      ).bind(
+        crypto.randomUUID(),
+        caseStudyId,
+        image.r2Key,
+        image.alt,
+        image.sortOrder,
+        now,
+        now
+      )
+    );
+  }
+
+  await env.DB.batch(statements);
+
+  return json(
+    {
+      ok: true,
+      caseStudy: { id: caseStudyId, slug, title, shortDescription, sortOrder, isActive },
+    },
+    201
+  );
+}
+
+async function handleCreateCategory(request: Request, env: Env): Promise<Response> {
+  let body: CreateCategoryPayload;
+  try {
+    body = (await request.json()) as CreateCategoryPayload;
+  } catch {
+    return json({ error: { code: "bad_json", message: "Invalid JSON body." } }, 400);
+  }
+
+  const name = typeof body.name === "string" ? body.name.trim() : "";
+  if (!name) return badRequest("name is required.");
+  const slugInput = typeof body.slug === "string" && body.slug.trim() ? body.slug : name;
+  const slug = slugify(slugInput);
+  if (!slug) return badRequest("slug is required and must contain alphanumeric characters.");
+  const sortOrder = Number.isFinite(Number(body.sortOrder)) ? Number(body.sortOrder) : 0;
+
+  const existsBySlug = await env.DB.prepare("SELECT id FROM categories WHERE slug = ?")
+    .bind(slug)
+    .first<{ id: string }>();
+  if (existsBySlug) return badRequest("slug already exists. Please choose another.");
+
+  const existsByName = await env.DB.prepare("SELECT id FROM categories WHERE lower(name) = lower(?)")
+    .bind(name)
+    .first<{ id: string }>();
+  if (existsByName) return badRequest("name already exists. Please choose another.");
+
+  const id = crypto.randomUUID();
+  const now = new Date().toISOString();
+  await env.DB.prepare(
+    `INSERT INTO categories (id, name, slug, sort_order, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?)`
+  )
+    .bind(id, name, slug, sortOrder, now, now)
+    .run();
+
+  return json({ ok: true, category: { id, name, slug, sortOrder } }, 201);
+}
+
+async function handleUpdateCaseStudy(
+  request: Request,
+  env: Env,
+  caseStudyId: string
+): Promise<Response> {
+  const existing = await env.DB.prepare("SELECT id FROM case_studies WHERE id = ?")
+    .bind(caseStudyId)
+    .first<{ id: string }>();
+  if (!existing) return json({ error: { code: "not_found", message: "Case study not found." } }, 404);
+
+  let body: CreateCaseStudyPayload;
+  try {
+    body = (await request.json()) as CreateCaseStudyPayload;
+  } catch {
+    return json({ error: { code: "bad_json", message: "Invalid JSON body." } }, 400);
+  }
+
+  const title = typeof body.title === "string" ? body.title.trim() : "";
+  const shortDescription =
+    typeof body.shortDescription === "string" ? body.shortDescription.trim() : "";
+  const candidateSlug =
+    typeof body.slug === "string" && body.slug.trim().length > 0 ? body.slug.trim() : title;
+  const slug = slugify(candidateSlug);
+  const categoryIds = normalizeStringArray(body.categoryIds);
+  const tags = normalizeStringArray(body.tags);
+  const accentColor = typeof body.accentColor === "string" ? body.accentColor.trim() : "";
+  const backgroundColor = typeof body.backgroundColor === "string" ? body.backgroundColor.trim() : "";
+  const sortOrder = Number.isFinite(Number(body.sortOrder)) ? Number(body.sortOrder) : 0;
+  const isActive = Boolean(body.isActive ?? true);
+
+  if (!title) return badRequest("title is required.");
+  if (!shortDescription) return badRequest("shortDescription is required.");
+  if (!slug) return badRequest("slug is required and must contain alphanumeric characters.");
+  if (categoryIds.length < 1) return badRequest("categoryIds must include at least one ID.");
+  if (!isValidHexColor(accentColor)) return badRequest("accentColor must be a valid hex color.");
+  if (!isValidHexColor(backgroundColor)) return badRequest("backgroundColor must be a valid hex color.");
+
+  const timelineSteps = parseTimelineSteps(body.timelineSteps);
+  if (!timelineSteps) return badRequest("timelineSteps must include at least one valid step.");
+  const images = parseImages(body.images);
+  if (!images) return badRequest("images contains invalid rows.");
+
+  const placeholders = categoryIds.map(() => "?").join(", ");
+  const categoryQuery = await env.DB.prepare(
+    `SELECT id FROM categories WHERE id IN (${placeholders})`
+  )
+    .bind(...categoryIds)
+    .all<{ id: string }>();
+  const foundCategoryIds = new Set((categoryQuery.results ?? []).map((row) => row.id));
+  const missingCategoryIds = categoryIds.filter((id) => !foundCategoryIds.has(id));
+  if (missingCategoryIds.length > 0) return badRequest("Some categoryIds do not exist.", { missingCategoryIds });
+
+  const duplicateSlug = await env.DB.prepare("SELECT id FROM case_studies WHERE slug = ? AND id != ?")
+    .bind(slug, caseStudyId)
+    .first<{ id: string }>();
+  if (duplicateSlug) return badRequest("slug already exists. Please choose another.");
+
+  const now = new Date().toISOString();
+  const statements: D1PreparedStatement[] = [];
+  statements.push(
+    env.DB.prepare(
+      `UPDATE case_studies
+       SET slug = ?, title = ?, short_description = ?, tags_json = ?, accent_color = ?, background_color = ?, sort_order = ?, is_active = ?, updated_at = ?
+       WHERE id = ?`
+    ).bind(
+      slug,
+      title,
+      shortDescription,
+      JSON.stringify(tags),
+      accentColor,
+      backgroundColor,
+      sortOrder,
+      isActive ? 1 : 0,
+      now,
+      caseStudyId
+    )
+  );
+  statements.push(env.DB.prepare("DELETE FROM case_study_categories WHERE case_study_id = ?").bind(caseStudyId));
+  statements.push(env.DB.prepare("DELETE FROM timeline_steps WHERE case_study_id = ?").bind(caseStudyId));
+  statements.push(env.DB.prepare("DELETE FROM case_study_images WHERE case_study_id = ?").bind(caseStudyId));
+
+  for (const categoryId of categoryIds) {
+    statements.push(
+      env.DB.prepare(
+        "INSERT INTO case_study_categories (case_study_id, category_id, created_at) VALUES (?, ?, ?)"
+      ).bind(caseStudyId, categoryId, now)
+    );
+  }
+  for (const step of timelineSteps) {
+    statements.push(
+      env.DB.prepare(
+        `INSERT INTO timeline_steps (id, case_study_id, name, duration_weeks, summary, sort_order, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+      ).bind(crypto.randomUUID(), caseStudyId, step.name, step.durationWeeks, step.summary, step.sortOrder, now, now)
+    );
+  }
+  for (const image of images) {
+    statements.push(
+      env.DB.prepare(
+        `INSERT INTO case_study_images (id, case_study_id, r2_key, alt, sort_order, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`
+      ).bind(crypto.randomUUID(), caseStudyId, image.r2Key, image.alt, image.sortOrder, now, now)
+    );
+  }
+  await env.DB.batch(statements);
+  return json({ ok: true, caseStudy: { id: caseStudyId, slug, title, shortDescription, sortOrder, isActive } });
+}
+
+async function handleDeleteCaseStudy(env: Env, caseStudyId: string): Promise<Response> {
+  const result = await env.DB.prepare("DELETE FROM case_studies WHERE id = ?").bind(caseStudyId).run();
+  if (!result.success) return json({ error: { code: "delete_failed", message: "Delete failed." } }, 500);
+  if ((result.meta?.changes ?? 0) < 1) {
+    return json({ error: { code: "not_found", message: "Case study not found." } }, 404);
+  }
+  return json({ ok: true });
+}
+
+async function handleAdminLogin(request: Request, env: Env): Promise<Response> {
+  let body: { password?: string };
+  try {
+    body = (await request.json()) as { password?: string };
+  } catch {
+    return json({ error: { code: "bad_json", message: "Invalid JSON body." } }, 400);
+  }
+
+  const password = body.password ?? "";
+  const validPassword = await safePasswordCompare(password, env.ADMIN_SHARED_PASSWORD);
+  if (!validPassword) {
+    return json({ error: { code: "invalid_credentials", message: "Invalid password." } }, 401);
+  }
+
+  const sessionSecret = env.ADMIN_SESSION_SECRET || env.ASSET_SIGNING_SECRET;
+  const { token, expiresAt } = await createAdminSessionToken(sessionSecret);
+  const response = json({ ok: true, expiresAt });
+  response.headers.set("set-cookie", buildAdminSessionCookie(token, secureCookieForRequest(request)));
+  return response;
+}
+
+async function requireAdminSession(request: Request, env: Env): Promise<Response | null> {
+  const token = getCookieValue(request, ADMIN_SESSION_COOKIE);
+  if (!token) {
+    return json({ error: { code: "unauthorized", message: "Missing admin session." } }, 401);
+  }
+  const sessionSecret = env.ADMIN_SESSION_SECRET || env.ASSET_SIGNING_SECRET;
+  const valid = await verifyAdminSessionToken(token, sessionSecret);
+  if (!valid) {
+    return json({ error: { code: "unauthorized", message: "Invalid admin session." } }, 401);
+  }
+  return null;
+}
+
+async function handleAdminLogout(request: Request): Promise<Response> {
+  const response = json({ ok: true });
+  response.headers.set("set-cookie", clearAdminSessionCookie(secureCookieForRequest(request)));
+  return response;
 }
 
 async function handleSignRead(request: Request, env: Env): Promise<Response> {
@@ -87,9 +709,60 @@ async function handleAssetDelivery(request: Request, env: Env): Promise<Response
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+    const caseStudyMatch = /^\/admin\/case-studies\/([^/]+)$/.exec(url.pathname);
+
+    if (request.method === "GET" && url.pathname === "/public/case-studies") {
+      return handlePublicCaseStudies(env);
+    }
 
     if (request.method === "POST" && url.pathname === "/public/assets/sign-read") {
       return handleSignRead(request, env);
+    }
+
+    if (request.method === "POST" && url.pathname === "/admin/auth/login") {
+      return handleAdminLogin(request, env);
+    }
+
+    if (request.method === "POST" && url.pathname === "/admin/auth/logout") {
+      const unauthorized = await requireAdminSession(request, env);
+      if (unauthorized) return unauthorized;
+      return handleAdminLogout(request);
+    }
+
+    if (request.method === "GET" && url.pathname === "/admin/case-studies") {
+      const unauthorized = await requireAdminSession(request, env);
+      if (unauthorized) return unauthorized;
+      return handleAdminCaseStudies(env);
+    }
+
+    if (request.method === "GET" && url.pathname === "/admin/categories") {
+      const unauthorized = await requireAdminSession(request, env);
+      if (unauthorized) return unauthorized;
+      return handleAdminCategories(env);
+    }
+
+    if (request.method === "POST" && url.pathname === "/admin/case-studies") {
+      const unauthorized = await requireAdminSession(request, env);
+      if (unauthorized) return unauthorized;
+      return handleCreateCaseStudy(request, env);
+    }
+
+    if (request.method === "POST" && url.pathname === "/admin/categories") {
+      const unauthorized = await requireAdminSession(request, env);
+      if (unauthorized) return unauthorized;
+      return handleCreateCategory(request, env);
+    }
+
+    if (request.method === "PUT" && caseStudyMatch) {
+      const unauthorized = await requireAdminSession(request, env);
+      if (unauthorized) return unauthorized;
+      return handleUpdateCaseStudy(request, env, caseStudyMatch[1]);
+    }
+
+    if (request.method === "DELETE" && caseStudyMatch) {
+      const unauthorized = await requireAdminSession(request, env);
+      if (unauthorized) return unauthorized;
+      return handleDeleteCaseStudy(env, caseStudyMatch[1]);
     }
 
     if (request.method === "GET" && url.pathname.startsWith("/public/assets/")) {

@@ -8,60 +8,62 @@
   - Auth check for admin endpoints.
   - CRUD for `caseStudies` and `categories`.
   - Signed upload URLs for R2.
-- `MongoDB Atlas`:
+- `Cloudflare D1`:
   - Metadata and structured content.
 - `Cloudflare R2`:
   - Case-study images.
 
 ## Request Flow
 - Public portfolio page:
-  - Browser -> Worker `GET /public/case-studies` -> MongoDB.
+  - Browser -> Worker `GET /public/case-studies` -> D1.
 - Admin list/edit:
-  - Browser -> Worker `/admin/*` endpoints with auth header/cookie -> MongoDB.
+  - Browser -> Worker `/admin/*` endpoints with auth header/cookie -> D1.
 - Image upload:
   - Browser -> Worker `POST /admin/uploads/sign` -> signed URL.
   - Browser -> R2 direct upload.
-  - Browser -> Worker `POST /admin/assets/confirm` (save metadata in MongoDB).
+  - Browser -> Worker `POST /admin/assets/confirm` (save metadata in D1).
 
-## Collections
+## D1 Tables
 
 ### `categories`
-- `_id`
+- `id`
 - `slug` (unique)
 - `name` (unique)
-- `sortOrder` (number)
-- `createdAt`
-- `updatedAt`
+- `sort_order`
+- `created_at`
+- `updated_at`
 
-### `caseStudies`
-- `_id`
+### `case_studies`
+- `id`
 - `slug` (unique)
 - `title`
-- `shortDescription` (maps current `tagline`)
-- `categoryIds` (array of refs to `categories._id`)
-- `tags` (string[])
-- `accentColor` (hex)
-- `backgroundColor` (hex)
-- `images` (array of image objects)
-- `timelineSteps` (array)
-- `sortOrder` (number)
-- `isActive` (boolean; if false hidden from public)
-- `createdAt`
-- `updatedAt`
+- `short_description`
+- `tags_json` (stringified JSON array)
+- `accent_color`
+- `background_color`
+- `sort_order`
+- `is_active` (`0/1`)
+- `created_at`
+- `updated_at`
 
-### `images[]` object
+### `case_study_categories`
+- `case_study_id`
+- `category_id`
+
+### `case_study_images`
 - `id`
-- `r2Key`
-- `url`
+- `case_study_id`
+- `r2_key`
 - `alt`
-- `sortOrder`
+- `sort_order`
 
-### `timelineSteps[]` object
+### `timeline_steps`
 - `id`
+- `case_study_id`
 - `name`
-- `durationWeeks` (int >= 1)
+- `duration_weeks` (int >= 1)
 - `summary`
-- `sortOrder`
+- `sort_order`
 
 ## Auth (MVP)
 - Single shared password in Worker secret: `ADMIN_SHARED_PASSWORD`.

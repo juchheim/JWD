@@ -3,15 +3,15 @@
 ## Phase 0: Foundation
 - [x] Decide frontend baseline (`Next.js` + TypeScript recommended).
 - [x] Create Worker project for API.
-- [x] Set up MongoDB Atlas database and user.
+- [x] Create D1 database and bind it to the Worker.
 - [x] Create R2 bucket for case-study assets.
 
 ## Phase 1: Data + API
-- [ ] Implement Mongo collections (`caseStudies`, `categories`).
-- [ ] Implement public portfolio endpoint.
-- [ ] Implement admin auth login/logout with HTTP-only cookie sessions.
-- [ ] Implement admin CRUD endpoints.
-- [ ] Add request validation for timeline, colors, and multi-category assignment.
+- [x] Implement D1 schema (`case_studies`, `categories`, `timeline_steps`, `case_study_images`, `case_study_categories`).
+- [x] Implement public portfolio endpoint.
+- [x] Implement admin auth login/logout with HTTP-only cookie sessions.
+- [x] Implement admin CRUD endpoints. (`GET /admin/case-studies`, `GET /admin/categories`, `POST /admin/case-studies`, `POST /admin/categories`, `PUT /admin/case-studies/:id`, `DELETE /admin/case-studies/:id`)
+- [x] Add request validation for timeline, colors, and multi-category assignment.
 
 ## Phase 2: Asset Uploads
 - [ ] Implement signed R2 upload endpoint.
@@ -42,7 +42,7 @@
 - [ ] Add basic rate limit on auth endpoint.
 - [ ] Add CORS allowlist for frontend domain.
 - [ ] Add structured logging in Worker.
-- [ ] Add backup/export script for Mongo data.
+- [ ] Add backup/export script for D1 data.
 
 ## Acceptance Criteria
 - [ ] You can log in to `/admin` with shared password.
