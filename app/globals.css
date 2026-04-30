@@ -23,6 +23,38 @@ main {
   padding: 2rem 1rem;
 }
 
+.hero {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 30%, rgba(59, 111, 245, 0.18) 0%, transparent 70%),
+    #060b16;
+  border-bottom: 1px solid #1f2a3d;
+}
+
+.label {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8fa2c6;
+}
+
+.hero-title {
+  margin: 0;
+  font-size: clamp(2rem, 7vw, 4.5rem);
+  line-height: 1.05;
+}
+
+.hero-subtitle {
+  max-width: 52ch;
+  color: #b5c3df;
+}
+
+.section-head h2 {
+  margin: 0;
+}
+
 .panel {
   background: #121929;
   border: 1px solid #263146;
@@ -49,6 +81,23 @@ input,
 textarea,
 button {
   font: inherit;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: #1d4ed8;
+  color: white;
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  border: 1px solid transparent;
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: #35508a;
 }
 
 input,

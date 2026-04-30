@@ -53,63 +53,78 @@ export default function HomePage() {
   );
 
   return (
-    <main className="stack">
-      <h1>Portfolio</h1>
-      <p>Live case studies from Worker API + D1.</p>
-      <div className="panel stack">
-        <Link href="/admin/login">Go to Admin Login</Link>
-        <Link href="/admin/case-studies">Go to Case Studies</Link>
-      </div>
+    <>
+      <section className="hero">
+        <main className="stack">
+          <span className="label">Juchheim Web Development</span>
+          <h1 className="hero-title">Precision is the product.</h1>
+          <p className="hero-subtitle">
+            We design and build web products that are fast, secure, and built to grow with your business.
+          </p>
+          <div className="row wrap">
+            <a className="btn" href="#portfolio">View Our Work</a>
+            <Link className="btn btn-outline" href="/admin/login">Admin Login</Link>
+          </div>
+        </main>
+      </section>
 
-      {loading && <p>Loading portfolio...</p>}
-      {error && <p className="error-text">{error}</p>}
+      <main className="stack" id="portfolio">
+        <div className="section-head stack">
+          <span className="label">Selected Work</span>
+          <h2>Projects we&apos;re proud of.</h2>
+          <p>Live portfolio data from your Worker API + D1.</p>
+        </div>
 
-      {!loading &&
-        !error &&
-        sortedItems.map((item) => {
-          const totalWeeks = Math.max(
-            1,
-            item.timelineSteps.reduce((sum, step) => sum + step.durationWeeks, 0)
-          );
-          return (
-            <article className="panel stack" key={item.id}>
-              <div className="row wrap">
-                <h2 style={{ margin: 0 }}>{item.title}</h2>
-                <span>{item.categories.join(" · ")}</span>
-              </div>
-              <p>{item.shortDescription}</p>
-              {item.signedImageUrls[0] ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={item.signedImageUrls[0]}
-                  alt={item.images?.[0]?.alt || item.title}
-                  style={{
-                    width: "100%",
-                    maxHeight: "280px",
-                    objectFit: "cover",
-                    borderRadius: "10px",
-                    border: "1px solid #2b3852",
-                  }}
-                />
-              ) : null}
+        {loading && <p>Loading portfolio...</p>}
+        {error && <p className="error-text">{error}</p>}
 
-              <div className="timeline-track">
-                {item.timelineSteps.map((step) => (
-                  <div
-                    key={step.id || `${item.id}-${step.sortOrder}-${step.name}`}
-                    className="timeline-segment"
-                    style={{ flexGrow: step.durationWeeks, borderColor: item.accentColor }}
-                    title={`${step.name} (${step.durationWeeks} wk)`}
-                  >
-                    <div className="timeline-name">{step.name}</div>
-                    <div className="timeline-duration">{step.durationWeeks} wk</div>
-                  </div>
-                ))}
-              </div>
-              <small>Total timeline: {totalWeeks} weeks</small>
-            </article>
-          );
-        })}
-    </main>
+        {!loading &&
+          !error &&
+          sortedItems.map((item) => {
+            const totalWeeks = Math.max(
+              1,
+              item.timelineSteps.reduce((sum, step) => sum + step.durationWeeks, 0)
+            );
+            return (
+              <article className="panel stack" key={item.id}>
+                <div className="row wrap">
+                  <h3 style={{ margin: 0 }}>{item.title}</h3>
+                  <span>{item.categories.join(" · ")}</span>
+                </div>
+                <p>{item.shortDescription}</p>
+                {item.signedImageUrls[0] ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={item.signedImageUrls[0]}
+                    alt={item.images?.[0]?.alt || item.title}
+                    style={{
+                      width: "100%",
+                      maxHeight: "280px",
+                      objectFit: "cover",
+                      borderRadius: "10px",
+                      border: "1px solid #2b3852",
+                    }}
+                  />
+                ) : null}
+
+                <div className="timeline-track">
+                  {item.timelineSteps.map((step) => (
+                    <div
+                      key={step.id || `${item.id}-${step.sortOrder}-${step.name}`}
+                      className="timeline-segment"
+                      style={{ flexGrow: step.durationWeeks, borderColor: item.accentColor }}
+                      title={`${step.name} (${step.durationWeeks} wk)`}
+                    >
+                      <div className="timeline-name">{step.name}</div>
+                      <div className="timeline-duration">{step.durationWeeks} wk</div>
+                    </div>
+                  ))}
+                </div>
+                <small>Total timeline: {totalWeeks} weeks</small>
+              </article>
+            );
+          })}
+      </main>
+    </>
   );
 }
