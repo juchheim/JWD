@@ -84,11 +84,12 @@ export function buildAdminSessionCookie(
   token: string,
   secure = true
 ): string {
+  const sameSite = secure ? "None" : "Lax";
   const attributes = [
     `${ADMIN_SESSION_COOKIE}=${token}`,
     "HttpOnly",
     "Path=/",
-    "SameSite=Lax",
+    `SameSite=${sameSite}`,
     `Max-Age=${ADMIN_SESSION_TTL_SECONDS}`,
   ];
   if (secure) attributes.push("Secure");
@@ -96,11 +97,12 @@ export function buildAdminSessionCookie(
 }
 
 export function clearAdminSessionCookie(secure = true): string {
+  const sameSite = secure ? "None" : "Lax";
   const attributes = [
     `${ADMIN_SESSION_COOKIE}=`,
     "HttpOnly",
     "Path=/",
-    "SameSite=Lax",
+    `SameSite=${sameSite}`,
     "Max-Age=0",
   ];
   if (secure) attributes.push("Secure");

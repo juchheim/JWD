@@ -9,6 +9,8 @@
 - `CursorRule`: Always-on project rule for best practices and secret safety.
 - `D1Schema`: SQLite schema for case studies, categories, timelines, images, and category joins.
 - `SiteFileRouter`: Next.js route handlers that serve the original supplied static site files directly.
+- `CrossSiteAdminSession`: Worker cookie policy for admin auth across Vercel frontend and workers.dev API.
+- `NextWorkerProxy`: Next.js same-origin API proxy under `/api/worker/*` forwarding requests to Worker API.
 
 ## Relationships
 - `Website` includes `PortfolioModule` on `portfolio.html`.
@@ -23,6 +25,8 @@
 - `NextAdminUI`: Next.js + TypeScript admin shell with login and case-study list pages.
 - `SiteFileRouter` serves the original `.html`, `.css`, and browser-side `.jsx` files at the public site routes.
 - `PortfolioModule` now reads live `CaseStudy` data from `WorkerAPI` while preserving the original supplied UI structure.
+- `CrossSiteAdminSession` depends on `WorkerAPI` setting `SameSite=None; Secure` when requests are HTTPS.
+- `NextAdminUI` now uses `NextWorkerProxy` so browser cookies stay first-party on the Vercel domain.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -56,3 +60,5 @@
 - Replaced the fabricated Next.js homepage with route handlers that serve the original supplied HTML/CSS/JS files directly at `/` and their original asset paths.
 - Added `site-config.js` so the original browser-side portfolio code can read `NEXT_PUBLIC_API_BASE_URL` without redesigning the frontend.
 - Updated `portfolio-component.jsx` to keep its original presentation while fetching live case studies and signed image URLs from the Worker API, with the original hardcoded projects retained as a fallback.
+- Updated admin session cookies to use `SameSite=None` for secure requests so cross-site admin auth works from `vercel.app` to `workers.dev` with credentials.
+- Added a Next.js catch-all API proxy route at `/api/worker/*` and switched `lib/api.ts` to use it, avoiding browser third-party cookie blocking for admin sessions.
