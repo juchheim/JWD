@@ -433,9 +433,18 @@ function CaseTimeline({ project, activeIndex, onSelect }) {
     };
   }, [dragging]);
 
-  // When not dragging, snap playhead to measured centre of active segment
+  // Keep a local playhead position so release never briefly snaps back to stale active state.
   const naturalPct   = measuredCenters ? measuredCenters[activeIndex] : null;
-  const displayPct   = (dragging && playheadPct !== null) ? playheadPct : naturalPct;
+  const displayPct   = playheadPct ?? naturalPct;
+
+  React.useEffect(() => {
+    if (dragging) return;
+    if (naturalPct === null || naturalPct === undefined) return;
+    setPlayheadPct((prev) => {
+      if (prev === null) return naturalPct;
+      return Math.abs(prev - naturalPct) < 0.001 ? prev : naturalPct;
+    });
+  }, [dragging, naturalPct]);
 
   const getIndexFromPct = (pct) => {
     // Use actual rendered segment boundaries, not estimated centres
