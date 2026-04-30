@@ -80,5 +80,5 @@
 ## Deployment Notes
 - Frontend stays on Vercel.
 - Worker deployed independently with Wrangler.
-- Keep API base URL in Vercel env: `NEXT_PUBLIC_API_BASE_URL`.
+- Vercel needs `WORKER_API_BASE_URL` or `NEXT_PUBLIC_API_BASE_URL` pointing at the Worker so `/api/worker/*` can proxy; the static marketing bundle reads `apiBaseUrl` `/api/worker` from `site-config.js` (same-origin).
 - Keep Worker secrets with `wrangler secret put`.

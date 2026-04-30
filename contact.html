@@ -58,6 +58,21 @@
       flex-wrap: wrap;
     }
     .form-note { font-size: 0.8rem; color: var(--text-muted); }
+    .form-status {
+      display: none;
+      font-size: 0.82rem;
+      margin-top: 0.5rem;
+    }
+    .form-status.visible { display: block; }
+    .form-status.error { color: #f87171; }
+    .form-status.info { color: var(--text-secondary); }
+    .hp-field {
+      position: absolute !important;
+      left: -9999px !important;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
 
     /* Success state */
     .form-success {
@@ -269,6 +284,10 @@
             <textarea id="message" name="message" placeholder="Describe what you're building, the problem you're solving, and where you're at in the process. The more detail, the better."></textarea>
             <span class="field-error" id="message-error">Please describe your project.</span>
           </div>
+          <div class="hp-field" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off"/>
+          </div>
 
           <div class="form-submit">
             <span class="form-note">We read every message personally. Expect a reply within 24 hours.</span>
@@ -277,6 +296,7 @@
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </button>
           </div>
+          <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
         </form>
 
         <div class="form-success" id="form-success">
@@ -403,6 +423,16 @@
   // Form validation + submission
   const form = document.getElementById('contact-form');
   const success = document.getElementById('form-success');
+  const statusEl = document.getElementById('form-status');
+  const submitBtn = document.getElementById('submit-btn');
+  const CONTACT_ENDPOINT = '/api/worker/public/contact';
+
+  function setFormStatus(message, tone) {
+    statusEl.textContent = message || '';
+    statusEl.classList.remove('error', 'info', 'visible');
+    if (!message) return;
+    statusEl.classList.add('visible', tone || 'info');
+  }
 
   function validate() {
     let valid = true;
@@ -435,13 +465,48 @@
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     if (!validate()) return;
-    const btn = document.getElementById('submit-btn');
-    btn.disabled = true;
-    btn.textContent = 'Sending…';
-    setTimeout(() => {
-      form.style.display = 'none';
-      success.classList.add('visible');
-    }, 900);
+    const originalLabel = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    setFormStatus('Submitting your message...', 'info');
+
+    const payload = {
+      name: document.getElementById('name').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      company: document.getElementById('company').value.trim(),
+      budget: document.getElementById('budget').value || '',
+      service: document.getElementById('service').value || '',
+      message: document.getElementById('message').value.trim(),
+      website: document.getElementById('website').value || '',
+      sourcePage: window.location.pathname
+    };
+
+    fetch(CONTACT_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(async (res) => {
+        const body = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          const errorMessage =
+            body?.error?.message ||
+            'We could not send your message right now. Please email hello@juchheim.dev.';
+          throw new Error(errorMessage);
+        }
+        form.style.display = 'none';
+        success.classList.add('visible');
+      })
+      .catch((err) => {
+        setFormStatus(
+          err?.message || 'We could not send your message right now. Please email hello@juchheim.dev.',
+          'error'
+        );
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalLabel;
+      });
   });
 </script>
 </body>

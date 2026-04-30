@@ -22,6 +22,9 @@ type Env = {
   ADMIN_SHARED_PASSWORD: string;
   ADMIN_SESSION_SECRET?: string;
   CORS_ALLOWLIST?: string;
+  CONTACT_EMAIL_PROVIDER?: string;
+  CONTACT_EMAIL_TO?: string;
+  CONTACT_EMAIL_FROM?: string;
 };
 
 const DEFAULT_SIGNED_URL_TTL_SECONDS = 5 * 60;
@@ -229,6 +232,27 @@ type SignUploadPayload = {
   caseStudySlug?: unknown;
 };
 
+type ContactPayload = {
+  name?: unknown;
+  email?: unknown;
+  company?: unknown;
+  budget?: unknown;
+  service?: unknown;
+  message?: unknown;
+  website?: unknown;
+  sourcePage?: unknown;
+};
+
+type NormalizedContactPayload = {
+  name: string;
+  email: string;
+  company: string;
+  budget: string;
+  service: string;
+  message: string;
+  sourcePage: string;
+};
+
 function slugify(input: string): string {
   return input
     .toLowerCase()
@@ -241,6 +265,10 @@ function isValidHexColor(value: string): boolean {
   return /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(value);
 }
 
+function isValidEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
 function badRequest(message: string, details?: unknown): Response {
   return json({ error: { code: "validation_error", message, details } }, 400);
 }
@@ -251,6 +279,58 @@ function normalizeStringArray(input: unknown): string[] {
     .filter((item): item is string => typeof item === "string")
     .map((item) => item.trim())
     .filter((item) => item.length > 0);
+}
+
+function normalizeContactPayload(body: ContactPayload): NormalizedContactPayload | null {
+  const name = typeof body.name === "string" ? body.name.trim() : "";
+  const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+  const company = typeof body.company === "string" ? body.company.trim() : "";
+  const budget = typeof body.budget === "string" ? body.budget.trim() : "";
+  const service = typeof body.service === "string" ? body.service.trim() : "";
+  const message = typeof body.message === "string" ? body.message.trim() : "";
+  const sourcePage = typeof body.sourcePage === "string" ? body.sourcePage.trim() : "";
+
+  if (!name || name.length > 120) return null;
+  if (!email || email.length > 254 || !isValidEmail(email)) return null;
+  if (company.length > 120 || budget.length > 120 || service.length > 120) return null;
+  if (!message || message.length < 10 || message.length > 4000) return null;
+
+  return {
+    name,
+    email,
+    company,
+    budget,
+    service,
+    message,
+    sourcePage: sourcePage || "/contact.html",
+  };
+}
+
+async function dispatchContactEmail(
+  payload: NormalizedContactPayload,
+  request: Request,
+  env: Env
+): Promise<{ ok: true } | { ok: false; reason: "provider_not_configured" | "provider_not_supported" }> {
+  const provider = (env.CONTACT_EMAIL_PROVIDER ?? "").trim().toLowerCase();
+  const recipient = (env.CONTACT_EMAIL_TO ?? "juchheim@gmail.com").trim();
+  const sender = (env.CONTACT_EMAIL_FROM ?? "website-contact@juchheim.dev").trim();
+
+  if (!provider) {
+    return { ok: false, reason: "provider_not_configured" };
+  }
+
+  if (provider === "log") {
+    logEvent("info", "contact.message.received", {
+      requestId: crypto.randomUUID(),
+      clientIp: getClientIp(request),
+      to: recipient,
+      from: sender,
+      payload,
+    });
+    return { ok: true };
+  }
+
+  return { ok: false, reason: "provider_not_supported" };
 }
 
 function parseTimelineSteps(input: unknown): CreateTimelineStepInput[] | null {
@@ -405,6 +485,55 @@ async function loadCaseStudies(
 async function handlePublicCaseStudies(env: Env): Promise<Response> {
   const caseStudies = await loadCaseStudies(env, false);
   return json({ caseStudies });
+}
+
+async function handlePublicContact(request: Request, env: Env): Promise<Response> {
+  let body: ContactPayload;
+  try {
+    body = (await request.json()) as ContactPayload;
+  } catch {
+    return json({ error: { code: "bad_json", message: "Invalid JSON body." } }, 400);
+  }
+
+  const honeypot = typeof body.website === "string" ? body.website.trim() : "";
+  if (honeypot) {
+    // Pretend success for bots.
+    return json({ ok: true }, 202);
+  }
+
+  const payload = normalizeContactPayload(body);
+  if (!payload) {
+    return badRequest(
+      "name, valid email, and message (10-4000 chars) are required. Optional fields must be <= 120 chars."
+    );
+  }
+
+  const delivery = await dispatchContactEmail(payload, request, env);
+  if (!delivery.ok) {
+    if (delivery.reason === "provider_not_configured") {
+      return json(
+        {
+          error: {
+            code: "email_provider_not_configured",
+            message: "Contact form delivery is not configured yet.",
+          },
+        },
+        503
+      );
+    }
+
+    return json(
+      {
+        error: {
+          code: "email_provider_not_supported",
+          message: "Configured email provider is not supported yet.",
+        },
+      },
+      503
+    );
+  }
+
+  return json({ ok: true }, 202);
 }
 
 async function handleAdminCaseStudies(env: Env): Promise<Response> {
@@ -1007,6 +1136,8 @@ export default {
       let response: Response;
       if (request.method === "GET" && url.pathname === "/public/case-studies") {
         response = await handlePublicCaseStudies(env);
+      } else if (request.method === "POST" && url.pathname === "/public/contact") {
+        response = await handlePublicContact(request, env);
       } else if (request.method === "POST" && url.pathname === "/public/assets/sign-read") {
         response = await handleSignRead(request, env);
       } else if (request.method === "POST" && url.pathname === "/admin/auth/login") {

@@ -37,8 +37,9 @@ Use this checklist in order. It is intentionally one page and execution-focused.
 - [ ] Framework: `Next.js` (auto-detected)
 - [ ] Build command: default (`next build`)
 - [ ] Output: default
-- [ ] Set production env var:
-  - `NEXT_PUBLIC_API_BASE_URL=https://<worker-url>`
+- [ ] Set production env var (server-side proxy upstream; required for `/api/worker/*`):
+  - `WORKER_API_BASE_URL=https://<worker-url>` **or** `NEXT_PUBLIC_API_BASE_URL=https://<worker-url>`
+- [ ] Note: the marketing site loads portfolio data via same-origin `/api/worker` (see `app/site-config.js`). Add any **direct** browser→Worker origins to Worker secret `CORS_ALLOWLIST` only if something still calls the Worker URL from the browser.
 - [ ] (Optional) set:
   - `NEXT_PUBLIC_SITE_URL=https://<your-domain>`
 - [ ] Deploy Vercel production build

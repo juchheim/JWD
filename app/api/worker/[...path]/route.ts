@@ -26,6 +26,9 @@ async function proxyRequest(
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.delete("host");
+  // Avoid forwarding the browser Origin: Worker CORS allowlist is for direct calls;
+  // this request is server-side and should not fail when the site uses a new domain.
+  requestHeaders.delete("origin");
   requestHeaders.set("accept-encoding", "identity");
 
   const method = request.method.toUpperCase();

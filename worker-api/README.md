@@ -8,6 +8,11 @@ This Worker now includes:
 ## Endpoints
 - `GET /public/case-studies`
   - returns `isActive: true` case studies sorted by `sortOrder`
+- `POST /public/contact`
+  - accepts `{ name, email, company?, budget?, service?, message, website?, sourcePage? }`
+  - validates required fields and honeypot spam field (`website`)
+  - currently uses provider adapter: set `CONTACT_EMAIL_PROVIDER=log` for local smoke tests
+  - returns `503 email_provider_not_configured` until a real provider is wired
 - `GET /admin/case-studies`
   - requires admin session cookie
   - returns all case studies (`isActive` true/false)
@@ -68,6 +73,10 @@ This Worker now includes:
 - CORS allowlist:
   - set Worker secret `CORS_ALLOWLIST` as comma-separated origins
   - example: `https://your-vercel-domain.vercel.app,https://juchheim.dev`
+- Contact form delivery adapter:
+  - set Worker secret `CONTACT_EMAIL_PROVIDER` (currently supports: `log`)
+  - optional: `CONTACT_EMAIL_TO` (defaults to `juchheim@gmail.com`)
+  - optional: `CONTACT_EMAIL_FROM` (defaults to `website-contact@juchheim.dev`)
 - Basic auth rate limit:
   - login endpoint rate-limits invalid attempts per client IP
 - Structured logs:

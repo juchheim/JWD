@@ -12,6 +12,7 @@
 - `CrossSiteAdminSession`: Worker cookie policy for admin auth across Vercel frontend and workers.dev API.
 - `NextWorkerProxy`: Next.js same-origin API proxy under `/api/worker/*` forwarding requests to Worker API.
 - `CategoryLifecycle`: Admin category create/delete lifecycle with usage guardrails.
+- `ContactFormDelivery`: Public contact submission flow from site form to Worker endpoint with provider adapter.
 
 ## Relationships
 - `Website` includes `PortfolioModule` on `portfolio.html`.
@@ -29,6 +30,7 @@
 - `CrossSiteAdminSession` depends on `WorkerAPI` setting `SameSite=None; Secure` when requests are HTTPS.
 - `NextAdminUI` now uses `NextWorkerProxy` so browser cookies stay first-party on the Vercel domain.
 - `CategoryLifecycle` is enforced by `WorkerAPI` with a delete safety check preventing removal of categories assigned to case studies.
+- `ContactFormDelivery` is handled by `WorkerAPI` endpoint `POST /public/contact` and consumed by `contact.html` via same-origin proxy path `/api/worker/public/contact`.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -73,3 +75,7 @@
 - Updated admin edit form category prefill to resolve category IDs from category names when IDs are absent in loaded case-study data.
 - Redesigned admin image upload to support multi-file batch selection/upload with visible selected-file list and clear-selection control.
 - Adjusted modal timeline selection flow to set active step immediately (with independent text fade timing) to reduce click-release playhead jank.
+- `contact.html` contact form currently performs client-side validation and simulated success only; no backend submission is wired yet.
+- Implemented `POST /public/contact` with payload validation and honeypot support; added provider adapter mode (`CONTACT_EMAIL_PROVIDER=log`) plus explicit `503` responses when no real provider is configured.
+- Wired `contact.html` form submission to `/api/worker/public/contact` with real async status/error handling and fallback messaging.
+- `site-config.js` exposes browser `apiBaseUrl` as `/api/worker` (same-origin); the Worker proxy strips `Origin` on upstream requests so custom Vercel domains do not require Worker `CORS_ALLOWLIST` updates for portfolio/case-study fetches.
