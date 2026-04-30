@@ -1,0 +1,107 @@
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: #0b0f1a;
+  color: #e8edf5;
+}
+
+a {
+  color: inherit;
+}
+
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.panel {
+  background: #121929;
+  border: 1px solid #263146;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.stack {
+  display: grid;
+  gap: 0.75rem;
+}
+
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+input,
+textarea {
+  width: 100%;
+  background: #0c1322;
+  color: #e8edf5;
+  border: 1px solid #2b3852;
+  border-radius: 8px;
+  padding: 0.6rem 0.7rem;
+}
+
+button {
+  background: #1d4ed8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  cursor: pointer;
+}
+
+button[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.status-text {
+  color: #93c5fd;
+}
+
+.error-text {
+  color: #fca5a5;
+  font-weight: 600;
+}
+
+.timeline-track {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.timeline-segment {
+  min-width: 90px;
+  background: #0c1322;
+  border: 1px solid #2b3852;
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+}
+
+.timeline-name {
+  font-weight: 600;
+}
+
+.timeline-duration {
+  color: #9fb0ce;
+  font-size: 0.85rem;
+}

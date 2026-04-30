@@ -3,8 +3,9 @@ const encoder = new TextEncoder();
 export const ADMIN_SESSION_COOKIE = "admin_session";
 const ADMIN_SESSION_TTL_SECONDS = 60 * 60 * 8;
 
-function toBase64Url(bytes: ArrayBuffer): string {
-  const binary = String.fromCharCode(...new Uint8Array(bytes));
+function toBase64Url(bytes: ArrayBuffer | Uint8Array): string {
+  const array = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+  const binary = String.fromCharCode(...array);
   return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
 }
 

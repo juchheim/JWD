@@ -49,17 +49,22 @@ async function getHmacKey(secret: string): Promise<CryptoKey> {
   );
 }
 
-function payload(key: string, exp: number): string {
-  return `${key}:${exp}`;
+function payload(key: string, exp: number, scope: "read" | "upload"): string {
+  return `${scope}:${key}:${exp}`;
 }
 
 export async function signAssetKey(
   key: string,
   exp: number,
-  secret: string
+  secret: string,
+  scope: "read" | "upload" = "read"
 ): Promise<string> {
   const hmacKey = await getHmacKey(secret);
-  const signature = await crypto.subtle.sign("HMAC", hmacKey, encoder.encode(payload(key, exp)));
+  const signature = await crypto.subtle.sign(
+    "HMAC",
+    hmacKey,
+    encoder.encode(payload(key, exp, scope))
+  );
   return toBase64Url(signature);
 }
 
@@ -67,9 +72,10 @@ export async function verifySignature(
   key: string,
   exp: number,
   sig: string,
-  secret: string
+  secret: string,
+  scope: "read" | "upload" = "read"
 ): Promise<boolean> {
-  const expected = await signAssetKey(key, exp, secret);
+  const expected = await signAssetKey(key, exp, secret, scope);
   return constantTimeEqual(sig, expected);
 }
 
@@ -80,13 +86,50 @@ export async function generateSignedAssetUrl(input: {
   secret: string;
 }): Promise<{ signedUrl: string; expiresAt: string; exp: number }> {
   const exp = Math.floor(Date.now() / 1000) + input.ttlSeconds;
-  const sig = await signAssetKey(input.key, exp, input.secret);
+  const sig = await signAssetKey(input.key, exp, input.secret, "read");
   const encodedKey = encodeURIComponent(input.key);
   const signedUrl = `${input.origin}/public/assets/${encodedKey}?exp=${exp}&sig=${encodeURIComponent(sig)}`;
   return {
     signedUrl,
     expiresAt: new Date(exp * 1000).toISOString(),
     exp,
+  };
+}
+
+export async function generateSignedUploadUrl(input: {
+  origin: string;
+  key: string;
+  ttlSeconds: number;
+  secret: string;
+}): Promise<{ uploadUrl: string; expiresAt: string; exp: number }> {
+  const exp = Math.floor(Date.now() / 1000) + input.ttlSeconds;
+  const sig = await signAssetKey(input.key, exp, input.secret, "upload");
+  const encodedKey = encodeURIComponent(input.key);
+  const uploadUrl = `${input.origin}/admin/uploads/${encodedKey}?exp=${exp}&sig=${encodeURIComponent(sig)}`;
+  return {
+    uploadUrl,
+    expiresAt: new Date(exp * 1000).toISOString(),
+    exp,
+  };
+}
+
+export function parseSignedUploadRequest(url: URL): SignedAssetParams | null {
+  const prefix = "/admin/uploads/";
+  if (!url.pathname.startsWith(prefix)) return null;
+  const rawKey = url.pathname.slice(prefix.length);
+  if (!rawKey) return null;
+
+  const expRaw = url.searchParams.get("exp");
+  const sig = url.searchParams.get("sig");
+  if (!expRaw || !sig) return null;
+
+  const exp = Number.parseInt(expRaw, 10);
+  if (!Number.isFinite(exp)) return null;
+
+  return {
+    key: decodeURIComponent(rawKey),
+    exp,
+    sig,
   };
 }
 

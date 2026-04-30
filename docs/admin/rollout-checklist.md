@@ -14,11 +14,11 @@
 - [x] Add request validation for timeline, colors, and multi-category assignment.
 
 ## Phase 2: Asset Uploads
-- [ ] Implement signed R2 upload endpoint.
-- [ ] Implement upload confirm endpoint.
+- [x] Implement signed R2 upload endpoint.
+- [x] Implement upload confirm endpoint.
 - [x] Implement signed read URL generation for image delivery.
-- [ ] Store image metadata in Mongo.
-- [ ] Add image ordering controls.
+- [x] Store image metadata in D1.
+- [x] Add image ordering controls.
 
 ## Completed Verification
 - [x] Local signed-read smoke test passes (`200` valid, `401` invalid signature).
@@ -26,23 +26,23 @@
 - [x] Worker deployed at [jwd-admin-api.terry-williams-god.workers.dev](https://jwd-admin-api.terry-williams-god.workers.dev).
 
 ## Phase 3: Admin UI
-- [ ] Build `/admin/login`.
-- [ ] Build `/admin/case-studies` list.
-- [ ] Build create/edit form with timeline step repeater.
-- [ ] Build category manager view.
-- [ ] Add optimistic save/refresh behavior.
+- [x] Build `/admin/login`.
+- [x] Build `/admin/case-studies` list.
+- [x] Build create/edit form with timeline step repeater.
+- [x] Build category manager view.
+- [x] Add optimistic save/refresh behavior.
 
 ## Phase 4: Public Integration
-- [ ] Replace hardcoded `projects` with API data fetch.
-- [ ] Map DB model to current card/modal UI.
-- [ ] Render real uploaded images in modal carousel.
-- [ ] Keep timeline segmented proportional by `durationWeeks`.
+- [x] Replace hardcoded `projects` with API data fetch.
+- [x] Map DB model to current card/modal UI.
+- [x] Render real uploaded images in modal carousel.
+- [x] Keep timeline segmented proportional by `durationWeeks`.
 
 ## Phase 5: Production Hardening
-- [ ] Add basic rate limit on auth endpoint.
-- [ ] Add CORS allowlist for frontend domain.
-- [ ] Add structured logging in Worker.
-- [ ] Add backup/export script for D1 data.
+- [x] Add basic rate limit on auth endpoint.
+- [x] Add CORS allowlist for frontend domain.
+- [x] Add structured logging in Worker.
+- [x] Add backup/export script for D1 data.
 
 ## Acceptance Criteria
 - [ ] You can log in to `/admin` with shared password.

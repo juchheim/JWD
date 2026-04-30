@@ -19,6 +19,7 @@
 - `WorkerAPI` now reads public case-study data from D1 via `env.DB`.
 - `D1Schema` is applied through Wrangler migrations to local and remote environments.
 - `WorkerAPI` now also exposes authenticated admin read endpoints for case studies and categories.
+- `NextAdminUI`: Next.js + TypeScript admin shell with login and case-study list pages.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -42,3 +43,9 @@
 - Verified deployed `GET /public/case-studies` returns seeded data and admin endpoints enforce auth.
 - Implemented `POST /admin/case-studies` with validation for required fields, category existence, timeline structure, and color format.
 - Implemented `POST /admin/categories`, `PUT /admin/case-studies/:id`, and `DELETE /admin/case-studies/:id` with auth guards and validation.
+- Added Next.js app foundation (`app/`, `lib/`) and wired `/admin/login` + `/admin/case-studies` to Worker endpoints.
+- Added create/edit case-study form UI with timeline repeater, image rows, and category management on `/admin/case-studies`.
+- Added optimistic save/refresh behavior and inline validation feedback for admin case-study/category writes.
+- Implemented Phase 2 upload flow: signed upload URL endpoint, upload PUT handler, asset confirm endpoint, and admin UI file upload wiring.
+- Implemented Phase 4 public integration on `app/page.tsx` with live case-study API fetch, signed image rendering, and proportional timeline segments.
+- Implemented Phase 5 hardening: CORS allowlist support, login rate limiting, structured JSON logging, and D1 backup export script.

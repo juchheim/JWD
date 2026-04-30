@@ -32,6 +32,14 @@ This Worker now includes:
 - `POST /admin/auth/logout`
   - requires valid `admin_session` cookie
   - clears cookie
+- `POST /admin/uploads/sign`
+  - requires admin session cookie
+  - returns one-time signed upload URL and target `r2Key`
+- `PUT /admin/uploads/:key?exp&sig`
+  - verifies signed upload URL and writes binary payload to R2
+- `POST /admin/assets/confirm`
+  - requires admin session cookie
+  - verifies uploaded object exists in R2 and returns normalized image metadata
 - `POST /public/assets/sign-read`
   - body: `{ "r2Key": "case-studies/flowboard/hero.jpg", "ttlSeconds": 300 }`
   - returns: `{ "signedUrl": "...", "expiresAt": "..." }`
@@ -55,6 +63,21 @@ This Worker now includes:
 5. Ensure `bucket_name` in `wrangler.jsonc` matches your real R2 bucket.
 6. Run locally:
    - `npx wrangler dev`
+
+## Production Hardening
+- CORS allowlist:
+  - set Worker secret `CORS_ALLOWLIST` as comma-separated origins
+  - example: `https://your-vercel-domain.vercel.app,https://juchheim.dev`
+- Basic auth rate limit:
+  - login endpoint rate-limits invalid attempts per client IP
+- Structured logs:
+  - JSON logs emitted for each request (`http.request.complete`) and failures (`http.request.error`)
+
+## Backup / Export
+- Run remote D1 export:
+  - `./scripts/backup-d1.sh`
+- Optional custom DB name:
+  - `./scripts/backup-d1.sh jwd-admin-db`
 
 ## D1 Data Model
 - `case_studies`
