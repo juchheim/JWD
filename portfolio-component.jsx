@@ -1,7 +1,9 @@
 // Portfolio Component — JWD
 // React + Babel inline component shared across index.html & portfolio.html
 
-const projects = [
+const API_BASE_URL = window.__SITE_CONFIG?.apiBaseUrl || "";
+
+const fallbackProjects = [
   {
     id: 1,
     title: "FlowBoard",
@@ -79,8 +81,63 @@ const projects = [
   }
 ];
 
+async function fetchSignedReadUrl(r2Key) {
+  if (!API_BASE_URL || !r2Key) return "";
+  const response = await fetch(`${API_BASE_URL}/public/assets/sign-read`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ r2Key }),
+  });
+  if (!response.ok) throw new Error("Failed to sign image URL");
+  const body = await response.json();
+  return body.signedUrl || "";
+}
+
+async function fetchProjectsFromApi() {
+  if (!API_BASE_URL) return fallbackProjects;
+  const response = await fetch(`${API_BASE_URL}/public/case-studies`);
+  if (!response.ok) throw new Error("Failed to load case studies");
+  const body = await response.json();
+  const caseStudies = body.caseStudies || [];
+  const projects = await Promise.all(caseStudies.map(async (project, index) => {
+    const images = await Promise.all(
+      (project.images || []).map(async (image) => ({
+        ...image,
+        url: await fetchSignedReadUrl(image.r2Key).catch(() => ""),
+      }))
+    );
+
+    return {
+      id: project.id || index + 1,
+      title: project.title || "",
+      category: (project.categories || []).join(" · "),
+      tagline: project.shortDescription || "",
+      accent: project.accentColor || "#00d4a8",
+      bg: project.backgroundColor || "#0a2218",
+      timeline: (project.timelineSteps || []).map((step) => ({
+        phase: step.name,
+        duration: `${step.durationWeeks} wk`,
+        description: step.summary,
+      })),
+      images: images.filter((image) => image.url),
+    };
+  }));
+
+  return projects.length > 0 ? projects : fallbackProjects;
+}
+
 // ── SVG Mockup Screens ──────────────────────────────────────────────────────
 function ProjectMockup({ project, screenIndex = 0 }) {
+  if (project.images && project.images[screenIndex] && project.images[screenIndex].url) {
+    return (
+      <img
+        src={project.images[screenIndex].url}
+        alt={project.images[screenIndex].alt || project.title}
+        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+      />
+    );
+  }
+
   const screens = [
     // Screen 0: Main dashboard
     <svg key={0} viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" style={{width:'100%',height:'100%'}}>
@@ -476,7 +533,7 @@ function CaseStudyModal({ project, onClose }) {
   const [timelineIndex, setTimelineIndex] = React.useState(0);
   const [textVisible, setTextVisible] = React.useState(true);
 
-  const totalScreens = 4;
+  const totalScreens = project.images && project.images.length > 0 ? project.images.length : 4;
 
   const changeTimeline = (i) => {
     setTextVisible(false);
@@ -622,7 +679,33 @@ function CaseStudyModal({ project, onClose }) {
 // ── Portfolio Grid ──────────────────────────────────────────────────────────
 function PortfolioGrid({ limit }) {
   const [activeProject, setActiveProject] = React.useState(null);
+  const [projects, setProjects] = React.useState(fallbackProjects);
+  const [loading, setLoading] = React.useState(Boolean(API_BASE_URL));
+
+  React.useEffect(() => {
+    let mounted = true;
+    fetchProjectsFromApi()
+      .then((nextProjects) => {
+        if (mounted) setProjects(nextProjects);
+      })
+      .catch(() => {
+        if (mounted) setProjects(fallbackProjects);
+      })
+      .finally(() => {
+        if (mounted) setLoading(false);
+      });
+    return () => { mounted = false; };
+  }, []);
+
   const displayProjects = limit ? projects.slice(0, limit) : projects;
+
+  if (loading && displayProjects.length === 0) {
+    return <p style={{ color: "var(--text-secondary)" }}>Loading portfolio...</p>;
+  }
+
+  if (!displayProjects.length) {
+    return <p style={{ color: "var(--text-secondary)" }}>No projects available yet.</p>;
+  }
 
   return (
     <>
