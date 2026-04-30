@@ -474,7 +474,19 @@ function CaseTimeline({ project, activeIndex, onSelect }) {
     onSelect(getIndexFromPct(p));
   };
   const handleMove  = (e) => { if (!dragging) return; if (e.touches) e.preventDefault(); const p = getPctFromEvent(e); setPlayheadPct(p); onSelect(getIndexFromPct(p)); };
-  const handleEnd   = () => { setDragging(false); setPlayheadPct(null); };
+  const handleEnd   = (e) => {
+    if (!dragging) return;
+    const fallbackPct = playheadPct ?? naturalPct ?? 50;
+    const endPct = e ? getPctFromEvent(e) : fallbackPct;
+    const nextIndex = getIndexFromPct(endPct);
+    if (measuredCenters && measuredCenters[nextIndex] !== undefined) {
+      setPlayheadPct(measuredCenters[nextIndex]);
+    } else {
+      setPlayheadPct(endPct);
+    }
+    onSelect(nextIndex);
+    setDragging(false);
+  };
 
   const accent = project.accent;
 
@@ -486,7 +498,7 @@ function CaseTimeline({ project, activeIndex, onSelect }) {
         onMouseDown={handleStart}
         onMouseMove={handleMove}
         onMouseUp={handleEnd}
-        onMouseLeave={() => { handleEnd(); setHoverIndex(null); }}
+        onMouseLeave={(e) => { handleEnd(e); setHoverIndex(null); }}
         onTouchStart={handleStart}
         onTouchMove={handleMove}
         onTouchEnd={handleEnd}
