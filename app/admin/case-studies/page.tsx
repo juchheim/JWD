@@ -408,6 +408,7 @@ export default function AdminCaseStudiesPage() {
         </div>
         <div className="stack">
           <strong>Images</strong>
+          <p className="status-text">R2 keys are managed automatically by uploads.</p>
           <div className="row">
             <input
               type="file"
@@ -421,15 +422,6 @@ export default function AdminCaseStudiesPage() {
           {form.images.map((image, index) => (
             <div key={index} className="panel stack">
               <input
-                placeholder="R2 key"
-                value={image.r2Key}
-                onChange={(e) => {
-                  const next = [...form.images];
-                  next[index] = { ...next[index], r2Key: e.target.value };
-                  setField("images", next);
-                }}
-              />
-              <input
                 placeholder="Alt text"
                 value={image.alt}
                 onChange={(e) => {
@@ -438,6 +430,26 @@ export default function AdminCaseStudiesPage() {
                   setField("images", next);
                 }}
               />
+              {image.r2Key ? (
+                <div className="row">
+                  <span className="status-text">Image linked</span>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      try {
+                        await navigator.clipboard.writeText(image.r2Key);
+                        setMessage("R2 key copied.");
+                      } catch {
+                        setMessage("Failed to copy R2 key.");
+                      }
+                    }}
+                  >
+                    Copy key
+                  </button>
+                </div>
+              ) : (
+                <span className="status-text">No image linked yet</span>
+              )}
               <button
                 type="button"
                 onClick={() => {
