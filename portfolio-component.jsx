@@ -694,7 +694,7 @@ function CaseStudyModal({ project, onClose }) {
 // ── Portfolio Grid ──────────────────────────────────────────────────────────
 function PortfolioGrid({ limit }) {
   const [activeProject, setActiveProject] = React.useState(null);
-  const [projects, setProjects] = React.useState(fallbackProjects);
+  const [projects, setProjects] = React.useState(API_BASE_URL ? [] : fallbackProjects);
   const [loading, setLoading] = React.useState(Boolean(API_BASE_URL));
 
   React.useEffect(() => {
