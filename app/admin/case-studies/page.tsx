@@ -69,7 +69,7 @@ export default function AdminCaseStudiesPage() {
   const [categoryName, setCategoryName] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [fieldError, setFieldError] = useState<string | null>(null);
-  const [uploadFile, setUploadFile] = useState<File | null>(null);
+  const [uploadFiles, setUploadFiles] = useState<File[]>([]);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -221,31 +221,41 @@ export default function AdminCaseStudiesPage() {
     }
   }
 
-  async function onUploadSelectedFile() {
-    if (!uploadFile) {
-      setFieldError("Select a file before uploading.");
+  async function onUploadSelectedFiles() {
+    if (uploadFiles.length < 1) {
+      setFieldError("Select one or more files before uploading.");
       return;
     }
     setSaving(true);
     setMessage(null);
     setFieldError(null);
     try {
-      const { uploadUrl, r2Key } = await signUpload({
-        filename: uploadFile.name,
-        contentType: uploadFile.type || "application/octet-stream",
-        caseStudySlug: form.slug || form.title || "unassigned",
-      });
-      await uploadFileToSignedUrl(uploadUrl, uploadFile);
-      const image = await confirmAsset({
-        r2Key,
-        alt: uploadFile.name,
-        sortOrder: form.images.length + 1,
-      });
-      setField("images", [...form.images, image]);
-      setUploadFile(null);
-      setMessage("Image uploaded.");
+      const uploadedImages: CaseStudyImageInput[] = [];
+      const startSortOrder = form.images.length + 1;
+      for (let i = 0; i < uploadFiles.length; i += 1) {
+        const file = uploadFiles[i];
+        const { uploadUrl, r2Key } = await signUpload({
+          filename: file.name,
+          contentType: file.type || "application/octet-stream",
+          caseStudySlug: form.slug || form.title || "unassigned",
+        });
+        await uploadFileToSignedUrl(uploadUrl, file);
+        const image = await confirmAsset({
+          r2Key,
+          alt: file.name,
+          sortOrder: startSortOrder + i,
+        });
+        uploadedImages.push(image);
+      }
+      setField("images", [...form.images, ...uploadedImages]);
+      setUploadFiles([]);
+      setMessage(
+        uploadedImages.length === 1
+          ? "1 image uploaded."
+          : `${uploadedImages.length} images uploaded.`
+      );
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Failed to upload image.");
+      setMessage(error instanceof Error ? error.message : "Failed to upload images.");
     } finally {
       setSaving(false);
     }
@@ -487,15 +497,42 @@ export default function AdminCaseStudiesPage() {
         <div className="stack">
           <strong>Images</strong>
           <p className="status-text">R2 keys are managed automatically by uploads.</p>
-          <div className="row">
+          <div className="stack">
             <input
               type="file"
-              onChange={(e) => setUploadFile(e.target.files?.[0] ?? null)}
+              multiple
+              onChange={(e) => setUploadFiles(Array.from(e.target.files ?? []))}
               disabled={saving}
             />
-            <button type="button" onClick={onUploadSelectedFile} disabled={saving || !uploadFile}>
-              Upload
-            </button>
+            {uploadFiles.length > 0 ? (
+              <div className="panel stack">
+                <strong>Selected files ({uploadFiles.length})</strong>
+                {uploadFiles.map((file, index) => (
+                  <div key={`${file.name}-${index}`} className="row">
+                    <span>{file.name}</span>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+            <div className="row">
+              <button
+                type="button"
+                onClick={onUploadSelectedFiles}
+                disabled={saving || uploadFiles.length < 1}
+              >
+                Upload Selected
+              </button>
+              <button
+                type="button"
+                onClick={() => setUploadFiles([])}
+                disabled={saving || uploadFiles.length < 1}
+              >
+                Clear Selection
+              </button>
+            </div>
+            <span className="status-text">
+              You can select and upload multiple images in one batch.
+            </span>
           </div>
           {form.images.map((image, index) => (
             <div key={index} className="panel stack">

@@ -574,12 +574,17 @@ function CaseStudyModal({ project, onClose }) {
   const [carouselIndex, setCarouselIndex] = React.useState(0);
   const [timelineIndex, setTimelineIndex] = React.useState(0);
   const [textVisible, setTextVisible] = React.useState(true);
+  const textRevealTimeoutRef = React.useRef(null);
 
   const totalScreens = project.images && project.images.length > 0 ? project.images.length : 4;
 
   const changeTimeline = (i) => {
+    if (textRevealTimeoutRef.current) {
+      clearTimeout(textRevealTimeoutRef.current);
+    }
     setTextVisible(false);
-    setTimeout(() => { setTimelineIndex(i); setTextVisible(true); }, 220);
+    setTimelineIndex(i);
+    textRevealTimeoutRef.current = setTimeout(() => { setTextVisible(true); }, 220);
   };
 
   React.useEffect(() => {
@@ -590,7 +595,11 @@ function CaseStudyModal({ project, onClose }) {
     };
     window.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
-    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+      if (textRevealTimeoutRef.current) clearTimeout(textRevealTimeoutRef.current);
+    };
   }, [onClose]);
 
   const phase = project.timeline[timelineIndex];

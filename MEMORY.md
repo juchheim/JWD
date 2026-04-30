@@ -71,3 +71,5 @@
 - Added admin UI support for deleting case studies with confirmation, wired to existing Worker delete endpoint.
 - Disabled text selection while dragging the public case-study timeline scrubber to prevent accidental highlighted text.
 - Updated admin edit form category prefill to resolve category IDs from category names when IDs are absent in loaded case-study data.
+- Redesigned admin image upload to support multi-file batch selection/upload with visible selected-file list and clear-selection control.
+- Adjusted modal timeline selection flow to set active step immediately (with independent text fade timing) to reduce click-release playhead jank.
