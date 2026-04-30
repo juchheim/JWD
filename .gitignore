@@ -13,6 +13,7 @@
 .envrc
 *.env
 *.env.local
+.dev.vars
 
 # Node / package manager
 node_modules/
