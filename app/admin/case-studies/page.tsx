@@ -180,8 +180,12 @@ export default function AdminCaseStudiesPage() {
       }
 
       await refreshLists();
-      setMessage("Case study saved.");
-      setForm(defaultForm);
+      if (form.id) {
+        setMessage("Case study updated.");
+      } else {
+        setMessage("Case study saved.");
+        setForm(defaultForm);
+      }
     } catch (error) {
       // Roll back optimistic list if API call fails.
       await refreshLists();
