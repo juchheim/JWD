@@ -111,6 +111,7 @@ async function fetchProjectsFromApi() {
       id: project.id || index + 1,
       title: project.title || "",
       category: (project.categories || []).join(" · "),
+      tags: (project.tags || []).filter(Boolean),
       tagline: project.shortDescription || "",
       accent: project.accentColor || "#00d4a8",
       bg: project.backgroundColor || "#0a2218",
@@ -287,6 +288,11 @@ function PortfolioCard({ project, featured, onOpen }) {
 
   const [hovered, setHovered] = React.useState(false);
 
+  const tagsToShow =
+    Array.isArray(project.tags) && project.tags.length > 0
+      ? project.tags
+      : project.timeline.map((t) => t.phase);
+
   return (
     <div
       style={{
@@ -344,15 +350,15 @@ function PortfolioCard({ project, featured, onOpen }) {
         <p style={{ color:'var(--text-secondary)', fontSize:'0.95rem', lineHeight:1.7, marginTop:0 }}>
           {project.tagline}
         </p>
-        {/* Timeline phases */}
+        {/* Tags */}
         <div style={{ display:'flex', gap:'0.4rem', flexWrap:'wrap', marginTop:'0.25rem' }}>
-          {project.timeline.map((t,i) => (
+          {tagsToShow.map((tag, i) => (
             <span key={i} style={{
               fontSize:'0.72rem', fontWeight:600, letterSpacing:'0.05em',
               padding:'0.2rem 0.6rem', borderRadius:'4px',
               background:`${project.accent}14`,
               color: project.accent, border:`1px solid ${project.accent}30`,
-            }}>{t.phase}</span>
+            }}>{tag}</span>
           ))}
         </div>
         <button
