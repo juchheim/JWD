@@ -51,6 +51,17 @@ This Worker now includes:
 - `GET /public/assets/:key?exp=<unix>&sig=<hmac>`
   - validates expiration and signature
   - streams private R2 asset
+- `GET /public/static-content?pageId=home|about|services|contact|portfolio`
+  - returns merged shared + page-scoped static content values for server-side render substitution
+- `GET /admin/auth/session`
+  - requires valid admin session cookie
+  - returns `{ ok: true }` for inline-edit auth gating on public pages
+- `GET /admin/static-content?pageId=...`
+  - requires admin session cookie
+  - returns field metadata and current values for all registered keys on that page
+- `PUT /admin/static-content/:contentKey`
+  - requires admin session cookie
+  - validates payload against the shared static-content registry and upserts one content entry
 
 ## Secrets and Setup
 1. Install Wrangler:

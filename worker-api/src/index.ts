@@ -14,6 +14,13 @@ import {
   safePasswordCompare,
   verifyAdminSessionToken,
 } from "./adminAuth";
+import {
+  STATIC_CONTENT_PAGE_IDS,
+  STATIC_CONTENT_REGISTRY_BY_KEY,
+  getStaticContentEntriesForPage,
+  type StaticContentFieldType,
+  type StaticContentPageId,
+} from "../../lib/staticContentRegistry";
 
 type Env = {
   ASSETS: R2Bucket;
@@ -244,6 +251,19 @@ type ContactPayload = {
   sourcePage?: unknown;
 };
 
+type StaticContentRow = {
+  content_key: string;
+  page_id: string;
+  scope: string;
+  field_type: string;
+  value_json: string;
+  updated_at: string;
+};
+
+type StaticContentUpdatePayload = {
+  value?: unknown;
+};
+
 type NormalizedContactPayload = {
   name: string;
   email: string;
@@ -280,6 +300,107 @@ function normalizeStringArray(input: unknown): string[] {
     .filter((item): item is string => typeof item === "string")
     .map((item) => item.trim())
     .filter((item) => item.length > 0);
+}
+
+function isStaticContentPageId(input: string): input is StaticContentPageId {
+  return (STATIC_CONTENT_PAGE_IDS as readonly string[]).includes(input);
+}
+
+function validateStaticContentValue(
+  fieldType: StaticContentFieldType,
+  value: unknown
+): { ok: true; value: unknown } | { ok: false; message: string } {
+  if (fieldType === "text" || fieldType === "multiline_text") {
+    if (typeof value !== "string") {
+      return { ok: false, message: "value must be a string." };
+    }
+    if (value.trim().length < 1) {
+      return { ok: false, message: "value must not be empty." };
+    }
+    return { ok: true, value: value.trim() };
+  }
+
+  if (fieldType === "string_list") {
+    if (!Array.isArray(value)) return { ok: false, message: "value must be an array of strings." };
+    const parsed = value
+      .filter((item): item is string => typeof item === "string")
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0);
+    if (parsed.length < 1) return { ok: false, message: "value must include at least one string." };
+    return { ok: true, value: parsed };
+  }
+
+  if (fieldType === "faq_items") {
+    if (!Array.isArray(value)) return { ok: false, message: "value must be an array of FAQ items." };
+    const parsed = value
+      .map((item) => {
+        const row = item as Record<string, unknown>;
+        const question = typeof row.question === "string" ? row.question.trim() : "";
+        const answer = typeof row.answer === "string" ? row.answer.trim() : "";
+        if (!question || !answer) return null;
+        return { question, answer };
+      })
+      .filter((item): item is { question: string; answer: string } => item !== null);
+    if (parsed.length < 1) return { ok: false, message: "value must include at least one valid FAQ item." };
+    return { ok: true, value: parsed };
+  }
+
+  if (fieldType === "team_members") {
+    if (!Array.isArray(value)) return { ok: false, message: "value must be an array of team members." };
+    const seenIds = new Set<string>();
+    const parsed = value
+      .map((item, index) => {
+        const row = item as Record<string, unknown>;
+        const id = typeof row.id === "string" ? row.id.trim() : "";
+        const initials = typeof row.initials === "string" ? row.initials.trim() : "";
+        const name = typeof row.name === "string" ? row.name.trim() : "";
+        const role = typeof row.role === "string" ? row.role.trim() : "";
+        const bio = typeof row.bio === "string" ? row.bio.trim() : "";
+        const accentStyle = typeof row.accentStyle === "string" ? row.accentStyle.trim() : "";
+        const sortOrderRaw = Number(row.sortOrder);
+        const sortOrder = Number.isInteger(sortOrderRaw) && sortOrderRaw > 0 ? sortOrderRaw : index + 1;
+        const isActive = row.isActive === undefined ? true : Boolean(row.isActive);
+        if (!id) return null;
+        if (seenIds.has(id)) return null;
+        if (initials.length > 4) return null;
+        if (isActive && (!name || !role || !bio)) return null;
+        seenIds.add(id);
+        return { id, initials, name, role, bio, accentStyle, sortOrder, isActive };
+      })
+      .filter(
+        (
+          item
+        ): item is {
+          id: string;
+          initials: string;
+          name: string;
+          role: string;
+          bio: string;
+          accentStyle: string;
+          sortOrder: number;
+          isActive: boolean;
+        } => item !== null
+      );
+    if (parsed.length < 1) return { ok: false, message: "value must include at least one valid team member." };
+    return { ok: true, value: parsed };
+  }
+
+  if (fieldType === "structured_list") {
+    if (!Array.isArray(value)) return { ok: false, message: "value must be an array of structured rows." };
+    const parsed = value
+      .map((item) => {
+        const row = item as Record<string, unknown>;
+        const category = typeof row.category === "string" ? row.category.trim() : "";
+        const label = typeof row.label === "string" ? row.label.trim() : "";
+        if (!category || !label) return null;
+        return { category, label };
+      })
+      .filter((item): item is { category: string; label: string } => item !== null);
+    if (parsed.length < 1) return { ok: false, message: "value must include at least one valid row." };
+    return { ok: true, value: parsed };
+  }
+
+  return { ok: false, message: "unsupported field type." };
 }
 
 function normalizeContactPayload(body: ContactPayload): NormalizedContactPayload | null {
@@ -595,6 +716,40 @@ async function handlePublicCaseStudies(env: Env): Promise<Response> {
   return json({ caseStudies });
 }
 
+async function handlePublicStaticContent(request: Request, env: Env): Promise<Response> {
+  const url = new URL(request.url);
+  const pageId = url.searchParams.get("pageId")?.trim() ?? "";
+  if (!isStaticContentPageId(pageId)) {
+    return badRequest("pageId must be one of: home, about, services, contact, portfolio.");
+  }
+
+  const entries = getStaticContentEntriesForPage(pageId);
+  const keys = entries.map((entry) => entry.key);
+  if (keys.length < 1) {
+    return json({ pageId, content: {} });
+  }
+
+  const placeholders = keys.map(() => "?").join(", ");
+  const rows = await env.DB.prepare(
+    `SELECT content_key, page_id, scope, field_type, value_json, updated_at
+     FROM static_content
+     WHERE content_key IN (${placeholders})
+       AND (scope = 'shared' OR page_id = ?)`
+  )
+    .bind(...keys, pageId)
+    .all<StaticContentRow>();
+
+  const content: Record<string, unknown> = {};
+  for (const row of rows.results ?? []) {
+    try {
+      content[row.content_key] = JSON.parse(row.value_json);
+    } catch {
+      // Skip malformed values but keep request successful.
+    }
+  }
+  return json({ pageId, content });
+}
+
 async function handlePublicContact(request: Request, env: Env): Promise<Response> {
   let body: ContactPayload;
   try {
@@ -671,6 +826,120 @@ async function handlePublicContact(request: Request, env: Env): Promise<Response
 async function handleAdminCaseStudies(env: Env): Promise<Response> {
   const caseStudies = await loadCaseStudies(env, true);
   return json({ caseStudies });
+}
+
+async function handleAdminSessionCheck(): Promise<Response> {
+  return json({ ok: true });
+}
+
+async function handleAdminStaticContent(request: Request, env: Env): Promise<Response> {
+  const url = new URL(request.url);
+  const pageId = url.searchParams.get("pageId")?.trim() ?? "";
+  if (!isStaticContentPageId(pageId)) {
+    return badRequest("pageId must be one of: home, about, services, contact, portfolio.");
+  }
+
+  const entries = getStaticContentEntriesForPage(pageId);
+  const keys = entries.map((entry) => entry.key);
+  const content: Record<
+    string,
+    { fieldType: StaticContentFieldType; scope: string; pageId: string; value: unknown; updatedAt?: string }
+  > = {};
+  for (const entry of entries) {
+    content[entry.key] = {
+      fieldType: entry.fieldType,
+      scope: entry.scope,
+      pageId: String(entry.pageId),
+      value: null,
+    };
+  }
+
+  if (keys.length > 0) {
+    const placeholders = keys.map(() => "?").join(", ");
+    const rows = await env.DB.prepare(
+      `SELECT content_key, value_json, updated_at
+       FROM static_content
+       WHERE content_key IN (${placeholders})
+         AND (scope = 'shared' OR page_id = ?)`
+    )
+      .bind(...keys, pageId)
+      .all<Pick<StaticContentRow, "content_key" | "value_json" | "updated_at">>();
+
+    for (const row of rows.results ?? []) {
+      const target = content[row.content_key];
+      if (!target) continue;
+      try {
+        target.value = JSON.parse(row.value_json);
+      } catch {
+        target.value = null;
+      }
+      target.updatedAt = row.updated_at;
+    }
+  }
+
+  return json({ pageId, content });
+}
+
+async function handleUpdateStaticContent(
+  request: Request,
+  env: Env,
+  contentKeyRaw: string
+): Promise<Response> {
+  const contentKey = decodeURIComponent(contentKeyRaw).trim();
+  if (!contentKey) return badRequest("contentKey is required.");
+
+  const registryEntry = STATIC_CONTENT_REGISTRY_BY_KEY.get(contentKey);
+  if (!registryEntry) {
+    return json(
+      { error: { code: "unknown_content_key", message: "contentKey is not registered for inline editing." } },
+      404
+    );
+  }
+
+  let body: StaticContentUpdatePayload;
+  try {
+    body = (await request.json()) as StaticContentUpdatePayload;
+  } catch {
+    return json({ error: { code: "bad_json", message: "Invalid JSON body." } }, 400);
+  }
+
+  const validated = validateStaticContentValue(registryEntry.fieldType, body.value);
+  if (!validated.ok) return badRequest(validated.message);
+
+  const now = new Date().toISOString();
+  await env.DB.prepare(
+    `INSERT INTO static_content (
+      content_key, page_id, scope, field_type, value_json, created_at, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(content_key) DO UPDATE SET
+      page_id = excluded.page_id,
+      scope = excluded.scope,
+      field_type = excluded.field_type,
+      value_json = excluded.value_json,
+      updated_at = excluded.updated_at`
+  )
+    .bind(
+      contentKey,
+      String(registryEntry.pageId),
+      registryEntry.scope,
+      registryEntry.fieldType,
+      JSON.stringify(validated.value),
+      now,
+      now
+    )
+    .run();
+
+  return json({
+    ok: true,
+    entry: {
+      contentKey,
+      pageId: registryEntry.pageId,
+      scope: registryEntry.scope,
+      fieldType: registryEntry.fieldType,
+      value: validated.value,
+      updatedAt: now,
+    },
+  });
 }
 
 async function handleAdminCategories(env: Env): Promise<Response> {
@@ -1253,6 +1522,7 @@ export default {
     const url = new URL(request.url);
     const caseStudyMatch = /^\/admin\/case-studies\/([^/]+)$/.exec(url.pathname);
     const categoryMatch = /^\/admin\/categories\/([^/]+)$/.exec(url.pathname);
+    const staticContentMatch = /^\/admin\/static-content\/([^/]+)$/.exec(url.pathname);
     const requestId = crypto.randomUUID();
     const startedAt = Date.now();
 
@@ -1268,18 +1538,26 @@ export default {
       let response: Response;
       if (request.method === "GET" && url.pathname === "/public/case-studies") {
         response = await handlePublicCaseStudies(env);
+      } else if (request.method === "GET" && url.pathname === "/public/static-content") {
+        response = await handlePublicStaticContent(request, env);
       } else if (request.method === "POST" && url.pathname === "/public/contact") {
         response = await handlePublicContact(request, env);
       } else if (request.method === "POST" && url.pathname === "/public/assets/sign-read") {
         response = await handleSignRead(request, env);
       } else if (request.method === "POST" && url.pathname === "/admin/auth/login") {
         response = await handleAdminLogin(request, env);
+      } else if (request.method === "GET" && url.pathname === "/admin/auth/session") {
+        const unauthorized = await requireAdminSession(request, env);
+        response = unauthorized ?? (await handleAdminSessionCheck());
       } else if (request.method === "POST" && url.pathname === "/admin/auth/logout") {
         const unauthorized = await requireAdminSession(request, env);
         response = unauthorized ?? (await handleAdminLogout(request));
       } else if (request.method === "GET" && url.pathname === "/admin/case-studies") {
         const unauthorized = await requireAdminSession(request, env);
         response = unauthorized ?? (await handleAdminCaseStudies(env));
+      } else if (request.method === "GET" && url.pathname === "/admin/static-content") {
+        const unauthorized = await requireAdminSession(request, env);
+        response = unauthorized ?? (await handleAdminStaticContent(request, env));
       } else if (request.method === "GET" && url.pathname === "/admin/categories") {
         const unauthorized = await requireAdminSession(request, env);
         response = unauthorized ?? (await handleAdminCategories(env));
@@ -1306,6 +1584,10 @@ export default {
       } else if (request.method === "DELETE" && caseStudyMatch) {
         const unauthorized = await requireAdminSession(request, env);
         response = unauthorized ?? (await handleDeleteCaseStudy(env, caseStudyMatch[1]));
+      } else if (request.method === "PUT" && staticContentMatch) {
+        const unauthorized = await requireAdminSession(request, env);
+        response =
+          unauthorized ?? (await handleUpdateStaticContent(request, env, staticContentMatch[1]));
       } else if (request.method === "GET" && url.pathname.startsWith("/public/assets/")) {
         response = await handleAssetDelivery(request, env);
       } else {

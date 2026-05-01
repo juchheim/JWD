@@ -16,6 +16,8 @@
 - `StaticInlineEditingPlan`: Admin-only documentation set for editing visible static site copy in place without touching dynamic portfolio case studies.
 - `StaticContentRegistry`: Phase 1 code-defined registry in `lib/staticContentRegistry.ts` that maps inline-editable content keys to page ownership, field types, and DOM selectors.
 - `StaticContentSeedPipeline`: Phase 2 migration and seed tooling for populating `static_content` from template defaults.
+- `StaticContentApiPhase3`: Worker API support for public/admin static-content reads, admin session-check endpoint, and single-key validated static-content updates.
+- `StaticContentRenderPhase4`: Server-side static-content substitution layer in `lib/siteFiles.ts` for public HTML route responses.
 
 ## Relationships
 - `Website` includes `PortfolioModule` on `portfolio.html`.
@@ -39,6 +41,8 @@
 - `StaticInlineEditingPlan` excludes `PortfolioModule` case-study data and instead targets only hardcoded marketing-site copy.
 - `StaticContentRegistry` defines Phase 1 ownership and selectors for `SiteFileRouter` templates before server-side substitution or admin overlay work begins.
 - `StaticContentSeedPipeline` uses `worker-api/scripts/seed-static-content.mjs` to generate SQL from `data-content-key` markup and applies it through Wrangler D1 execute commands.
+- `StaticContentApiPhase3` depends on the shared `lib/staticContentRegistry.ts` for allowed keys and field-type validation at the Worker boundary.
+- `StaticContentRenderPhase4` depends on `StaticContentRegistry` + `GET /public/static-content` and preserves template fallback behavior when API content is unavailable.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -98,3 +102,6 @@
 - Shared nav/footer copy now uses stable repeated keys across templates; page-specific sections use page-scoped keys; `/about.html` team cards are marked as a repeatable collection via `about.team.members`.
 - Added `worker-api/migrations/0002_static_content.sql` creating `static_content` with scope/field-type constraints and lookup indexes.
 - Added `worker-api/scripts/seed-static-content.mjs`, `seed-static-content.sh`, and generated `seed-static-content.sql`; current generation backfills 153 registry keys from template defaults.
+- Implemented Phase 3 endpoints in `worker-api/src/index.ts`: `GET /public/static-content`, `GET /admin/auth/session`, `GET /admin/static-content`, and `PUT /admin/static-content/:contentKey` with registry-backed validation and D1 upsert.
+- Updated `worker-api/README.md` endpoint list to document static-content and admin session-check routes for inline editing.
+- Implemented Phase 4 substitution in `lib/siteFiles.ts`: text/fragment replacement plus structured renderers for string lists, FAQ items, team-member cards, and stack-item rows using `data-content-key` selectors.
