@@ -301,7 +301,6 @@
 
   function applyTeamMembers(key, members) {
     const activeMembers = members.filter((item) => item && item.isActive !== false);
-    if (activeMembers.length < 1) return;
     queryByKey(key).forEach((node) => {
       node.innerHTML = activeMembers
         .map((member, index) => {

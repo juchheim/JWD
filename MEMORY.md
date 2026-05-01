@@ -137,4 +137,4 @@
 - Fixed contact sidebar badge malformed HTML (`</span>` drift causing stray oval/text) by replacing text-field paired-tag regex logic with depth-aware element matching keyed by `data-content-key`, which correctly handles nested same-tag markup like `span` inside `span`.
 - Applied remote D1 hotfix to restore `contact.sidebar.availabilityBadge` text and added renderer guard so contact badge output always includes `<span class="availability-dot"></span>` plus text (with fallback copy) even after future edits.
 - Fixed services “Tools we trust” inline editor showing `[]` by making overlay editor prefer current DOM-derived array values when stored array data is empty, so editors can recover and update visible structured/list content without manual JSON reconstruction.
-- Fixed about-team optimistic disappear issue by using server `entry.value` for post-save UI updates and by preventing optimistic team rendering from clearing cards on empty immediate arrays.
+- Fixed about-team optimistic disappear issue by using server `entry.value` for post-save UI updates; removed an over-restrictive empty-array client guard that could make successful edits appear unsaved.
