@@ -22,6 +22,7 @@
 - `WorkerConfigVars`: Source-controlled Wrangler `vars` in `worker-api/wrangler.jsonc` to preserve non-secret runtime configuration across deploys.
 - `StaticContentOriginFallback`: Site-file rendering fallback that resolves static-content API via same-origin `/api/worker` when direct Worker base URL is unavailable.
 - `StaticContentNoStoreRender`: Public HTML route/render policy that disables caching for static-content-substituted pages to prevent stale post-save reloads.
+- `HomeTweaksSyncGuard`: Homepage tweak bootstrap guard that syncs `TWEAK_DEFAULTS` from live DOM so client tweaks do not overwrite inline-edited server-rendered content.
 
 ## Relationships
 - `Website` includes `PortfolioModule` on `portfolio.html`.
@@ -51,6 +52,7 @@
 - `WorkerConfigVars` is consumed by `WorkerAPI` deploys so `CONTACT_EMAIL_PROVIDER`, `CONTACT_EMAIL_TO`, and `CONTACT_EMAIL_FROM` are not dropped by config sync.
 - `StaticContentOriginFallback` extends `SiteFileRouter` by passing request URL into `serveSiteFile()` so server-side static-content fetches can use request origin + `/api/worker`.
 - `StaticContentNoStoreRender` extends `SiteFileRouter` and page route handlers with `force-dynamic` + `cache-control: no-store` for HTML responses.
+- `HomeTweaksSyncGuard` depends on server-rendered `data-content-key` substitutions being present in `#hero-tagline` and `#footer-tagline` before tweak initialization.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -117,3 +119,4 @@
 - Added `vars` to `worker-api/wrangler.jsonc` for contact delivery (`CONTACT_EMAIL_PROVIDER`, `CONTACT_EMAIL_TO`, `CONTACT_EMAIL_FROM`) so future Worker deploys preserve non-secret email configuration.
 - Fixed “edits save but do not display” render gap by updating `serveSiteFile()` callers (`app/route.ts`, `app/[...slug]/route.ts`) to pass request URL and adding same-origin `/api/worker` fallback resolution in `lib/siteFiles.ts` when Worker base env is unavailable/relative.
 - Added `force-dynamic` to public HTML route handlers and switched HTML response caching to `no-store` in `lib/siteFiles.ts` so refresh shows latest saved static-content values instead of stale cached HTML.
+- Fixed homepage post-refresh revert where tweak bootstrap script reapplied hardcoded `TWEAK_DEFAULTS` over saved content by syncing `TWEAK_DEFAULTS.tagline` and `TWEAK_DEFAULTS.footerTagline` from live DOM in `index.html` before mounting tweaks.

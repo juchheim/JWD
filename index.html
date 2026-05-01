@@ -433,6 +433,24 @@ var TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 <script type="text/babel" src="tweaks-panel.jsx"></script>
 <script type="text/babel" src="portfolio-component.jsx"></script>
 <script type="text/babel">
+  // Keep tweak defaults aligned with live server-rendered content.
+  // This prevents the tweaks bootstrap from overwriting inline-edited values on refresh.
+  (function syncTweakDefaultsFromDom() {
+    const taglineEl = document.getElementById('hero-tagline');
+    if (taglineEl) {
+      const liveTagline = (taglineEl.innerText || taglineEl.textContent || '')
+        .replace(/\r\n/g, '\n')
+        .trim();
+      if (liveTagline) TWEAK_DEFAULTS.tagline = liveTagline;
+    }
+
+    const footerTaglineEl = document.getElementById('footer-tagline');
+    if (footerTaglineEl) {
+      const liveFooterTagline = (footerTaglineEl.textContent || '').trim();
+      if (liveFooterTagline) TWEAK_DEFAULTS.footerTagline = liveFooterTagline;
+    }
+  })();
+
   // Mount portfolio grid
   const portfolioRoot = ReactDOM.createRoot(document.getElementById('portfolio-root'));
   portfolioRoot.render(<PortfolioGrid />);
