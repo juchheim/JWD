@@ -25,6 +25,7 @@ type Env = {
   CONTACT_EMAIL_PROVIDER?: string;
   CONTACT_EMAIL_TO?: string;
   CONTACT_EMAIL_FROM?: string;
+  RESEND_API_KEY?: string;
 };
 
 const DEFAULT_SIGNED_URL_TTL_SECONDS = 5 * 60;
@@ -306,11 +307,114 @@ function normalizeContactPayload(body: ContactPayload): NormalizedContactPayload
   };
 }
 
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function buildContactEmailPlainText(payload: NormalizedContactPayload): string {
+  const lines = [
+    `Name: ${payload.name}`,
+    `Email: ${payload.email}`,
+    payload.company ? `Company: ${payload.company}` : null,
+    payload.budget ? `Budget: ${payload.budget}` : null,
+    payload.service ? `Service: ${payload.service}` : null,
+    `Source page: ${payload.sourcePage}`,
+    "",
+    "Message:",
+    payload.message,
+  ];
+  return lines.filter((line): line is string => line !== null).join("\n");
+}
+
+function buildContactEmailHtml(payload: NormalizedContactPayload): string {
+  const text = buildContactEmailPlainText(payload);
+  return `<pre style="font-family:system-ui,sans-serif;white-space:pre-wrap">${escapeHtml(text)}</pre>`;
+}
+
+async function sendContactViaResend(
+  payload: NormalizedContactPayload,
+  request: Request,
+  env: Env,
+  recipient: string,
+  sender: string
+): Promise<{ ok: true } | { ok: false; reason: "resend_not_configured" | "resend_request_failed" }> {
+  const apiKey = (env.RESEND_API_KEY ?? "").trim();
+  if (!apiKey) {
+    logEvent("error", "contact.resend.missing_api_key", { clientIp: getClientIp(request) });
+    return { ok: false, reason: "resend_not_configured" };
+  }
+
+  const subject = `Site contact: ${payload.name} (${payload.sourcePage})`;
+  const text = buildContactEmailPlainText(payload);
+  const html = buildContactEmailHtml(payload);
+  const fromHeader = sender.includes("<") ? sender : `Website contact <${sender}>`;
+
+  const mailBody: Record<string, unknown> = {
+    from: fromHeader,
+    to: [recipient],
+    subject,
+    text,
+    html,
+    reply_to: payload.email,
+  };
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(mailBody),
+  });
+
+  if (!res.ok) {
+    let resendHint: string | undefined;
+    try {
+      const errText = (await res.text()).slice(0, 500);
+      const parsed = JSON.parse(errText) as { message?: string; name?: string };
+      const msg =
+        typeof parsed.message === "string" && parsed.message.length > 0
+          ? parsed.message
+          : errText.length > 0
+            ? errText
+            : undefined;
+      if (msg) {
+        resendHint = msg.length > 240 ? `${msg.slice(0, 237)}...` : msg;
+      }
+    } catch {
+      // ignore parse failures
+    }
+    logEvent("error", "contact.resend.api_error", {
+      clientIp: getClientIp(request),
+      status: res.status,
+      ...(resendHint ? { resendHint } : {}),
+    });
+    return { ok: false, reason: "resend_request_failed" };
+  }
+
+  logEvent("info", "contact.resend.sent", {
+    requestId: crypto.randomUUID(),
+    clientIp: getClientIp(request),
+    to: recipient,
+  });
+  return { ok: true };
+}
+
+type ContactDispatchFailure =
+  | "provider_not_configured"
+  | "provider_not_supported"
+  | "resend_not_configured"
+  | "resend_request_failed";
+
 async function dispatchContactEmail(
   payload: NormalizedContactPayload,
   request: Request,
   env: Env
-): Promise<{ ok: true } | { ok: false; reason: "provider_not_configured" | "provider_not_supported" }> {
+): Promise<{ ok: true } | { ok: false; reason: ContactDispatchFailure }> {
   const provider = (env.CONTACT_EMAIL_PROVIDER ?? "").trim().toLowerCase();
   const recipient = (env.CONTACT_EMAIL_TO ?? "juchheim@gmail.com").trim();
   const sender = (env.CONTACT_EMAIL_FROM ?? "website-contact@juchheim.dev").trim();
@@ -328,6 +432,10 @@ async function dispatchContactEmail(
       payload,
     });
     return { ok: true };
+  }
+
+  if (provider === "resend") {
+    return sendContactViaResend(payload, request, env, recipient, sender);
   }
 
   return { ok: false, reason: "provider_not_supported" };
@@ -519,6 +627,30 @@ async function handlePublicContact(request: Request, env: Env): Promise<Response
           },
         },
         503
+      );
+    }
+
+    if (delivery.reason === "resend_not_configured") {
+      return json(
+        {
+          error: {
+            code: "email_delivery_misconfigured",
+            message: "Contact form delivery is misconfigured on the server.",
+          },
+        },
+        503
+      );
+    }
+
+    if (delivery.reason === "resend_request_failed") {
+      return json(
+        {
+          error: {
+            code: "email_delivery_failed",
+            message: "We could not send your message right now. Please try again or email us directly.",
+          },
+        },
+        502
       );
     }
 

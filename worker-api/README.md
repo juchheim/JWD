@@ -11,8 +11,8 @@ This Worker now includes:
 - `POST /public/contact`
   - accepts `{ name, email, company?, budget?, service?, message, website?, sourcePage? }`
   - validates required fields and honeypot spam field (`website`)
-  - currently uses provider adapter: set `CONTACT_EMAIL_PROVIDER=log` for local smoke tests
-  - returns `503 email_provider_not_configured` until a real provider is wired
+  - provider adapter: `log` (structured log only) or `resend` ([Resend](https://resend.com/docs) API)
+  - returns `503 email_provider_not_configured` when `CONTACT_EMAIL_PROVIDER` is unset
 - `GET /admin/case-studies`
   - requires admin session cookie
   - returns all case studies (`isActive` true/false)
@@ -67,16 +67,47 @@ This Worker now includes:
    - `npx wrangler d1 migrations apply jwd-admin-db --remote`
 5. Ensure `bucket_name` in `wrangler.jsonc` matches your real R2 bucket.
 6. Run locally:
-   - `npx wrangler dev`
+   - `cd worker-api && npx wrangler dev` (default URL is usually `http://127.0.0.1:8787`)
+
+### Contact form + Next.js (`npm run dev`)
+
+The site posts to same-origin `/api/worker/*`, which Next proxies using **`WORKER_API_BASE_URL`** (or `NEXT_PUBLIC_API_BASE_URL`) from **`.env.local`** — not from `worker-api/.dev.vars`.
+
+To exercise Resend or `CONTACT_EMAIL_PROVIDER` from `.dev.vars`, run **both**:
+
+1. `cd worker-api && npx wrangler dev`
+2. In `.env.local`, set `WORKER_API_BASE_URL` to the URL Wrangler prints (e.g. `http://127.0.0.1:8787`), then `npm run dev`.
+
+Without that, the proxy hits your **deployed** Worker, which will return “not configured” until you set `CONTACT_EMAIL_PROVIDER` and secrets there too.
 
 ## Production Hardening
 - CORS allowlist:
   - set Worker secret `CORS_ALLOWLIST` as comma-separated origins
   - example: `https://your-vercel-domain.vercel.app,https://juchheim.dev`
 - Contact form delivery adapter:
-  - set Worker secret `CONTACT_EMAIL_PROVIDER` (currently supports: `log`)
+  - set `CONTACT_EMAIL_PROVIDER` to `log` or `resend`
+  - set secret `RESEND_API_KEY` (replace `re_xxxxxxxxx` in the curl example with your real key). Same variable name in `worker-api/.dev.vars` for local dev.
   - optional: `CONTACT_EMAIL_TO` (defaults to `juchheim@gmail.com`)
-  - optional: `CONTACT_EMAIL_FROM` (defaults to `website-contact@juchheim.dev`)
+  - optional: `CONTACT_EMAIL_FROM` — must be allowed by Resend (verify a domain or use `onboarding@resend.dev` for limited testing; see [Resend docs](https://resend.com/docs))
+
+### Resend smoke test (curl)
+
+Replace `re_xxxxxxxxx` with your real API key from the Resend dashboard:
+
+```bash
+curl -X POST 'https://api.resend.com/emails' \
+  -H 'Authorization: Bearer re_xxxxxxxxx' \
+  -H 'Content-Type: application/json' \
+  -d $'{
+    "from": "onboarding@resend.dev",
+    "to": "juchheim@gmail.com",
+    "subject": "Hello World",
+    "html": "<p>Congrats on sending your <strong>first email</strong>!</p>"
+  }'
+```
+
+The Worker uses the same `POST https://api.resend.com/emails` endpoint and bearer auth; set `CONTACT_EMAIL_PROVIDER=resend`, `RESEND_API_KEY`, and a valid `CONTACT_EMAIL_FROM`.
+
 - Basic auth rate limit:
   - login endpoint rate-limits invalid attempts per client IP
 - Structured logs:

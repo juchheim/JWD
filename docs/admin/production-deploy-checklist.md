@@ -23,6 +23,7 @@ Use this checklist in order. It is intentionally one page and execution-focused.
   - `npx wrangler secret put ADMIN_SHARED_PASSWORD`
   - `npx wrangler secret put ADMIN_SESSION_SECRET`
   - `npx wrangler secret put CORS_ALLOWLIST`
+  - Contact form (Resend): `npx wrangler secret put RESEND_API_KEY`, set `CONTACT_EMAIL_PROVIDER=resend`, configure `CONTACT_EMAIL_FROM` / `CONTACT_EMAIL_TO` per [Resend docs](https://resend.com/docs)
 - [ ] Apply D1 migrations to remote:
   - `cd worker-api`
   - `npx wrangler d1 migrations apply jwd-admin-db --remote`

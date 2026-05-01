@@ -75,7 +75,8 @@
 - Updated admin edit form category prefill to resolve category IDs from category names when IDs are absent in loaded case-study data.
 - Redesigned admin image upload to support multi-file batch selection/upload with visible selected-file list and clear-selection control.
 - Adjusted modal timeline selection flow to set active step immediately (with independent text fade timing) to reduce click-release playhead jank.
-- `contact.html` contact form currently performs client-side validation and simulated success only; no backend submission is wired yet.
-- Implemented `POST /public/contact` with payload validation and honeypot support; added provider adapter mode (`CONTACT_EMAIL_PROVIDER=log`) plus explicit `503` responses when no real provider is configured.
+- `contact.html` submits to `POST /public/contact` via same-origin `/api/worker/public/contact`.
+- Worker contact delivery: `CONTACT_EMAIL_PROVIDER=log` or `resend` with `RESEND_API_KEY` (`POST https://api.resend.com/emails`); missing key or Resend failure maps to `503` / `502` and stable client error codes.
+- Local contact testing through Next requires `.env.local` `WORKER_API_BASE_URL` pointing at `wrangler dev` (e.g. `http://127.0.0.1:8787`); `.dev.vars` only applies to that local Worker, not to the deployed URL the proxy uses by default.
 - Wired `contact.html` form submission to `/api/worker/public/contact` with real async status/error handling and fallback messaging.
 - `site-config.js` exposes browser `apiBaseUrl` as `/api/worker` (same-origin); the Worker proxy strips `Origin` on upstream requests so custom Vercel domains do not require Worker `CORS_ALLOWLIST` updates for portfolio/case-study fetches.
