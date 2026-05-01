@@ -23,6 +23,10 @@ const SITE_FILE_MAP: Record<string, { file: string; contentType: string }> = {
     file: "tweaks-panel.jsx",
     contentType: "text/javascript; charset=utf-8",
   },
+  "/admin-inline-editor.js": {
+    file: "admin-inline-editor.js",
+    contentType: "text/javascript; charset=utf-8",
+  },
 };
 
 type StaticContentApiResponse = {
@@ -314,14 +318,24 @@ async function applyStaticContent(routePath: string, html: string): Promise<stri
   return rendered;
 }
 
+function withInlineEditorScript(html: string): string {
+  const scriptTag = '<script src="/admin-inline-editor.js" defer></script>';
+  if (html.includes(scriptTag)) return html;
+  if (html.includes("</body>")) {
+    return html.replace("</body>", `  ${scriptTag}\n</body>`);
+  }
+  return `${html}\n${scriptTag}`;
+}
+
 export async function serveSiteFile(routePath: string): Promise<Response | null> {
   const entry = SITE_FILE_MAP[routePath];
   if (!entry) return null;
 
   const filePath = path.join(/* turbopackIgnore: true */ process.cwd(), entry.file);
   const template = await readFile(filePath, "utf8");
-  const contents =
-    entry.contentType.startsWith("text/html") ? await applyStaticContent(routePath, template) : template;
+  const contents = entry.contentType.startsWith("text/html")
+    ? withInlineEditorScript(await applyStaticContent(routePath, template))
+    : template;
   return new Response(contents, {
     headers: {
       "content-type": entry.contentType,

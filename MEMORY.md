@@ -18,6 +18,7 @@
 - `StaticContentSeedPipeline`: Phase 2 migration and seed tooling for populating `static_content` from template defaults.
 - `StaticContentApiPhase3`: Worker API support for public/admin static-content reads, admin session-check endpoint, and single-key validated static-content updates.
 - `StaticContentRenderPhase4`: Server-side static-content substitution layer in `lib/siteFiles.ts` for public HTML route responses.
+- `StaticContentOverlayPhase5`: Client-side admin-only inline editing overlay mounted on public pages for direct static-content updates.
 
 ## Relationships
 - `Website` includes `PortfolioModule` on `portfolio.html`.
@@ -43,6 +44,7 @@
 - `StaticContentSeedPipeline` uses `worker-api/scripts/seed-static-content.mjs` to generate SQL from `data-content-key` markup and applies it through Wrangler D1 execute commands.
 - `StaticContentApiPhase3` depends on the shared `lib/staticContentRegistry.ts` for allowed keys and field-type validation at the Worker boundary.
 - `StaticContentRenderPhase4` depends on `StaticContentRegistry` + `GET /public/static-content` and preserves template fallback behavior when API content is unavailable.
+- `StaticContentOverlayPhase5` depends on `GET /admin/auth/session`, `GET /admin/static-content`, and `PUT /admin/static-content/:contentKey` for authenticated in-place edits.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -105,3 +107,4 @@
 - Implemented Phase 3 endpoints in `worker-api/src/index.ts`: `GET /public/static-content`, `GET /admin/auth/session`, `GET /admin/static-content`, and `PUT /admin/static-content/:contentKey` with registry-backed validation and D1 upsert.
 - Updated `worker-api/README.md` endpoint list to document static-content and admin session-check routes for inline editing.
 - Implemented Phase 4 substitution in `lib/siteFiles.ts`: text/fragment replacement plus structured renderers for string lists, FAQ items, team-member cards, and stack-item rows using `data-content-key` selectors.
+- Implemented Phase 5 overlay via `admin-inline-editor.js` and `lib/siteFiles.ts` script injection: authenticated admins can toggle inline edit mode, edit any `data-content-key` field, save through `PUT /api/worker/admin/static-content/:contentKey`, and see optimistic DOM updates for text, lists, FAQs, team members, and structured rows.

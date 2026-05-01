@@ -2,10 +2,8 @@
 
 PRAGMA foreign_keys = ON;
 
-BEGIN TRANSACTION;
-
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.nav.homeLabel', 'global', 'shared', 'text', '"Home"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.nav.homeLabel', 'global', 'shared', 'text', '"Home"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -14,7 +12,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.nav.servicesLabel', 'global', 'shared', 'text', '"Services"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.nav.servicesLabel', 'global', 'shared', 'text', '"Services"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -23,7 +21,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.nav.portfolioLabel', 'global', 'shared', 'text', '"Portfolio"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.nav.portfolioLabel', 'global', 'shared', 'text', '"Portfolio"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -32,7 +30,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.nav.aboutLabel', 'global', 'shared', 'text', '"About"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.nav.aboutLabel', 'global', 'shared', 'text', '"About"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -41,7 +39,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.nav.primaryCtaLabel', 'global', 'shared', 'text', '"Start a Project"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.nav.primaryCtaLabel', 'global', 'shared', 'text', '"Start a Project"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -50,7 +48,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.footer.tagline', 'global', 'shared', 'multiline_text', '"SaaS, web apps, and WordPress for nonprofits and growing businesses — based in Greenwood, Mississippi, serving clients nationwide."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.footer.tagline', 'global', 'shared', 'multiline_text', '"SaaS, web apps, and WordPress for nonprofits and growing businesses — based in Greenwood, Mississippi, serving clients nationwide."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -59,7 +57,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.footer.pagesHeading', 'global', 'shared', 'text', '"Pages"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.footer.pagesHeading', 'global', 'shared', 'text', '"Pages"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -68,7 +66,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.footer.pages.home', 'global', 'shared', 'text', '"Home"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.footer.pages.home', 'global', 'shared', 'text', '"Home"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -77,7 +75,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.footer.pages.services', 'global', 'shared', 'text', '"Services"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.footer.pages.services', 'global', 'shared', 'text', '"Services"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -86,7 +84,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.footer.pages.portfolio', 'global', 'shared', 'text', '"Portfolio"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.footer.pages.portfolio', 'global', 'shared', 'text', '"Portfolio"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -95,7 +93,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.footer.pages.about', 'global', 'shared', 'text', '"About"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.footer.pages.about', 'global', 'shared', 'text', '"About"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -104,7 +102,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.footer.pages.contact', 'global', 'shared', 'text', '"Contact"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.footer.pages.contact', 'global', 'shared', 'text', '"Contact"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -113,7 +111,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.footer.servicesHeading', 'global', 'shared', 'text', '"Services"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.footer.servicesHeading', 'global', 'shared', 'text', '"Services"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -122,7 +120,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.footer.services.saas', 'global', 'shared', 'text', '"SaaS Development"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.footer.services.saas', 'global', 'shared', 'text', '"SaaS Development"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -131,7 +129,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.footer.services.cms', 'global', 'shared', 'text', '"CMS Solutions"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.footer.services.cms', 'global', 'shared', 'text', '"CMS Solutions"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -140,7 +138,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.footer.services.performance', 'global', 'shared', 'text', '"Performance"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.footer.services.performance', 'global', 'shared', 'text', '"Performance"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -149,7 +147,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.footer.services.api', 'global', 'shared', 'text', '"API & Integrations"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.footer.services.api', 'global', 'shared', 'text', '"API & Integrations"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -158,7 +156,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.footer.contactHeading', 'global', 'shared', 'text', '"Contact"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.footer.contactHeading', 'global', 'shared', 'text', '"Contact"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -167,7 +165,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.contact.emailDisplay', 'global', 'shared', 'text', '"juchheim [at] gmail [dot] com"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.contact.emailDisplay', 'global', 'shared', 'text', '"juchheim [at] gmail [dot] com"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -176,7 +174,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.footer.contact.primaryCta', 'global', 'shared', 'text', '"Start a project"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.footer.contact.primaryCta', 'global', 'shared', 'text', '"Start a project"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -185,7 +183,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.footer.copyright', 'global', 'shared', 'text', '"© 2026 Juchheim Web Development. All rights reserved."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.footer.copyright', 'global', 'shared', 'text', '"© 2026 Juchheim Web Development. All rights reserved."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -194,7 +192,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('global.footer.closingLine', 'global', 'shared', 'text', '"Built with precision."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('global.footer.closingLine', 'global', 'shared', 'text', '"Built with precision."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -203,7 +201,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.hero.brandLabel', 'home', 'page', 'text', '"Juchheim Web Development"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.hero.brandLabel', 'home', 'page', 'text', '"Juchheim Web Development"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -212,7 +210,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.hero.tagline', 'home', 'page', 'multiline_text', '"Straight talk.\nSolid delivery."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.hero.tagline', 'home', 'page', 'multiline_text', '"Straight talk.\nSolid delivery."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -221,7 +219,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.hero.body', 'home', 'page', 'multiline_text', '"We help small and midsize businesses and nonprofits with SaaS, custom web apps, and websites — from full-stack products to WordPress — with honest scope, quick iteration, and dependable delivery."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.hero.body', 'home', 'page', 'multiline_text', '"We help small and midsize businesses and nonprofits with SaaS, custom web apps, and websites — from full-stack products to WordPress — with honest scope, quick iteration, and dependable delivery."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -230,7 +228,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.hero.primaryCta', 'home', 'page', 'text', '"View Our Work"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.hero.primaryCta', 'home', 'page', 'text', '"View Our Work"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -239,7 +237,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.hero.secondaryCta', 'home', 'page', 'text', '"Start a Project"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.hero.secondaryCta', 'home', 'page', 'text', '"Start a Project"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -248,7 +246,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.hero.scrollLabel', 'home', 'page', 'text', '"Scroll"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.hero.scrollLabel', 'home', 'page', 'text', '"Scroll"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -257,7 +255,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.about.label', 'home', 'page', 'text', '"Who We Are"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.about.label', 'home', 'page', 'text', '"Who We Are"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -266,7 +264,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.about.heading', 'home', 'page', 'multiline_text', '"A small shop\nwith a serious standard."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.about.heading', 'home', 'page', 'multiline_text', '"A small shop\nwith a serious standard."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -275,7 +273,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.about.bodyPrimary', 'home', 'page', 'multiline_text', '"Juchheim Web Development is based in Greenwood, Mississippi. We work with U.S. small and midsize businesses and nonprofits that need SaaS, web applications, or WordPress done right — without inflated promises."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.about.bodyPrimary', 'home', 'page', 'multiline_text', '"Juchheim Web Development is based in Greenwood, Mississippi. We work with U.S. small and midsize businesses and nonprofits that need SaaS, web applications, or WordPress done right — without inflated promises."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -284,7 +282,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.about.bodySecondary', 'home', 'page', 'multiline_text', '"With 20+ years building for the web (including years inside an advertising agency) and eight years on our own, we focus on what ships: clear communication, realistic timelines, and reliable systems."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.about.bodySecondary', 'home', 'page', 'multiline_text', '"With 20+ years building for the web (including years inside an advertising agency) and eight years on our own, we focus on what ships: clear communication, realistic timelines, and reliable systems."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -293,7 +291,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.about.teamCta', 'home', 'page', 'text', '"Meet the Team"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.about.teamCta', 'home', 'page', 'text', '"Meet the Team"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -302,7 +300,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.about.servicesCta', 'home', 'page', 'text', '"Our Services"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.about.servicesCta', 'home', 'page', 'text', '"Our Services"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -311,7 +309,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.about.stats.yearsLabel', 'home', 'page', 'text', '"Years building for the web"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.about.stats.yearsLabel', 'home', 'page', 'text', '"Years building for the web"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -320,7 +318,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.about.stats.projectsLabel', 'home', 'page', 'text', '"Projects delivered"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.about.stats.projectsLabel', 'home', 'page', 'text', '"Projects delivered"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -329,7 +327,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.portfolio.label', 'home', 'page', 'text', '"Selected Work"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.portfolio.label', 'home', 'page', 'text', '"Selected Work"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -338,7 +336,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.portfolio.heading', 'home', 'page', 'text', '"Projects we''re proud of."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.portfolio.heading', 'home', 'page', 'text', '"Projects we''re proud of."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -347,7 +345,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.portfolio.body', 'home', 'page', 'multiline_text', '"Every engagement is a long-term partnership. Here''s a selection of what we''ve built."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.portfolio.body', 'home', 'page', 'multiline_text', '"Every engagement is a long-term partnership. Here''s a selection of what we''ve built."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -356,7 +354,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.cta.label', 'home', 'page', 'text', '"Ready?"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.cta.label', 'home', 'page', 'text', '"Ready?"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -365,7 +363,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.cta.heading', 'home', 'page', 'multiline_text', '"Let''s build something\nworth remembering."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.cta.heading', 'home', 'page', 'multiline_text', '"Let''s build something\nworth remembering."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -374,7 +372,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.cta.body', 'home', 'page', 'multiline_text', '"Share your brief and we''ll respond within one business day with a clear plan of action."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.cta.body', 'home', 'page', 'multiline_text', '"Share your brief and we''ll respond within one business day with a clear plan of action."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -383,7 +381,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('home.cta.button', 'home', 'page', 'text', '"Start a Conversation"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('home.cta.button', 'home', 'page', 'text', '"Start a Conversation"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -392,7 +390,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.hero.label', 'about', 'page', 'text', '"Our Story"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.hero.label', 'about', 'page', 'text', '"Our Story"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -401,7 +399,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.hero.heading', 'about', 'page', 'multiline_text', '"Independent practice,\ndeep experience."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.hero.heading', 'about', 'page', 'multiline_text', '"Independent practice,\ndeep experience."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -410,7 +408,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.hero.body', 'about', 'page', 'multiline_text', '"Based in Greenwood, Mississippi, JWD serves U.S. small and midsize businesses and nonprofits — with the same priorities on every project: honest scope, fast iteration, and reliable delivery."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.hero.body', 'about', 'page', 'multiline_text', '"Based in Greenwood, Mississippi, JWD serves U.S. small and midsize businesses and nonprofits — with the same priorities on every project: honest scope, fast iteration, and reliable delivery."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -419,7 +417,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.story.label', 'about', 'page', 'text', '"How we work"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.story.label', 'about', 'page', 'text', '"How we work"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -428,7 +426,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.story.heading', 'about', 'page', 'text', '"Experience without the fairy tale."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.story.heading', 'about', 'page', 'text', '"Experience without the fairy tale."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -437,7 +435,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.story.bodyOne', 'about', 'page', 'multiline_text', '"There is more than twenty years of web work behind this practice — most of it inside an advertising agency, solving real client problems under real deadlines. That time taught what actually matters in production: clear expectations, maintainable code, and communication you do not have to chase."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.story.bodyOne', 'about', 'page', 'multiline_text', '"There is more than twenty years of web work behind this practice — most of it inside an advertising agency, solving real client problems under real deadlines. That time taught what actually matters in production: clear expectations, maintainable code, and communication you do not have to chase."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -446,7 +444,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.story.bodyTwo', 'about', 'page', 'multiline_text', '"For the last eight years, Juchheim Web Development has been an independent shop. We stay deliberately small so we can stay hands-on — SaaS, custom applications, and WordPress sites for organizations that need a partner who will tell them the truth about scope, risk, and timeline."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.story.bodyTwo', 'about', 'page', 'multiline_text', '"For the last eight years, Juchheim Web Development has been an independent shop. We stay deliberately small so we can stay hands-on — SaaS, custom applications, and WordPress sites for organizations that need a partner who will tell them the truth about scope, risk, and timeline."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -455,7 +453,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.story.bodyThree', 'about', 'page', 'multiline_text', '"We work with U.S. clients only, based out of Greenwood, Mississippi. If that sounds like a fit for what you are building, we would like to hear from you."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.story.bodyThree', 'about', 'page', 'multiline_text', '"We work with U.S. clients only, based out of Greenwood, Mississippi. If that sounds like a fit for what you are building, we would like to hear from you."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -464,7 +462,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.story.primaryCta', 'about', 'page', 'text', '"Work With Us"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.story.primaryCta', 'about', 'page', 'text', '"Work With Us"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -473,7 +471,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.story.secondaryCta', 'about', 'page', 'text', '"View Services"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.story.secondaryCta', 'about', 'page', 'text', '"View Services"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -482,7 +480,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.team.label', 'about', 'page', 'text', '"The Team"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.team.label', 'about', 'page', 'text', '"The Team"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -491,7 +489,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.team.heading', 'about', 'page', 'text', '"Small team. Direct access."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.team.heading', 'about', 'page', 'text', '"Small team. Direct access."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -500,7 +498,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.team.body', 'about', 'page', 'multiline_text', '"You will work directly with the people doing the work — every time."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.team.body', 'about', 'page', 'multiline_text', '"You will work directly with the people doing the work — every time."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -509,7 +507,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.team.members', 'about', 'page', 'team_members', '[]', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.team.members', 'about', 'page', 'team_members', '[]', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -518,7 +516,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.values.label', 'about', 'page', 'text', '"What We Stand For"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.values.label', 'about', 'page', 'text', '"What We Stand For"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -527,7 +525,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.values.heading', 'about', 'page', 'text', '"Principles, not platitudes."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.values.heading', 'about', 'page', 'text', '"Principles, not platitudes."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -536,7 +534,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.values.precision.number', 'about', 'page', 'text', '"01 / Precision"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.values.precision.number', 'about', 'page', 'text', '"01 / Precision"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -545,7 +543,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.values.precision.title', 'about', 'page', 'text', '"Measure twice, ship once."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.values.precision.title', 'about', 'page', 'text', '"Measure twice, ship once."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -554,7 +552,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.values.precision.body', 'about', 'page', 'multiline_text', '"We spend time on architecture and scoping upfront so we don''t build the wrong thing with excellence."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.values.precision.body', 'about', 'page', 'multiline_text', '"We spend time on architecture and scoping upfront so we don''t build the wrong thing with excellence."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -563,7 +561,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.values.transparency.number', 'about', 'page', 'text', '"02 / Transparency"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.values.transparency.number', 'about', 'page', 'text', '"02 / Transparency"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -572,7 +570,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.values.transparency.title', 'about', 'page', 'text', '"No black boxes."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.values.transparency.title', 'about', 'page', 'text', '"No black boxes."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -581,7 +579,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.values.transparency.body', 'about', 'page', 'multiline_text', '"Weekly written updates. Staging environments from day one. You always know exactly where your project stands."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.values.transparency.body', 'about', 'page', 'multiline_text', '"Weekly written updates. Staging environments from day one. You always know exactly where your project stands."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -590,7 +588,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.values.longevity.number', 'about', 'page', 'text', '"03 / Longevity"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.values.longevity.number', 'about', 'page', 'text', '"03 / Longevity"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -599,7 +597,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.values.longevity.title', 'about', 'page', 'text', '"Code you can hand off."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.values.longevity.title', 'about', 'page', 'text', '"Code you can hand off."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -608,7 +606,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.values.longevity.body', 'about', 'page', 'multiline_text', '"We write for the next engineer, not just ourselves. Documentation, test coverage, and clean architecture are non-negotiable."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.values.longevity.body', 'about', 'page', 'multiline_text', '"We write for the next engineer, not just ourselves. Documentation, test coverage, and clean architecture are non-negotiable."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -617,7 +615,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.values.selectivity.number', 'about', 'page', 'text', '"04 / Selectivity"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.values.selectivity.number', 'about', 'page', 'text', '"04 / Selectivity"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -626,7 +624,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.values.selectivity.title', 'about', 'page', 'text', '"We say no when it matters."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.values.selectivity.title', 'about', 'page', 'text', '"We say no when it matters."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -635,7 +633,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('about.values.selectivity.body', 'about', 'page', 'multiline_text', '"Keeping the team small means we can only do a few things at a time. We only take on work we can do properly."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('about.values.selectivity.body', 'about', 'page', 'multiline_text', '"Keeping the team small means we can only do a few things at a time. We only take on work we can do properly."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -644,7 +642,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.hero.label', 'services', 'page', 'text', '"What We Do"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.hero.label', 'services', 'page', 'text', '"What We Do"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -653,7 +651,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.hero.heading', 'services', 'page', 'multiline_text', '"Services built for\nserious products."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.hero.heading', 'services', 'page', 'multiline_text', '"Services built for\nserious products."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -662,7 +660,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.hero.body', 'services', 'page', 'multiline_text', '"From greenfield SaaS to complex CMS migrations — we bring engineering depth and design care to every layer of your stack. Based in Greenwood, Mississippi; U.S. clients only."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.hero.body', 'services', 'page', 'multiline_text', '"From greenfield SaaS to complex CMS migrations — we bring engineering depth and design care to every layer of your stack. Based in Greenwood, Mississippi; U.S. clients only."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -671,7 +669,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.saas.title', 'services', 'page', 'text', '"SaaS Architecture & Development"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.saas.title', 'services', 'page', 'text', '"SaaS Architecture & Development"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -680,7 +678,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.saas.body', 'services', 'page', 'multiline_text', '"End-to-end engineering for web-based software products — from schema design to production deployment."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.saas.body', 'services', 'page', 'multiline_text', '"End-to-end engineering for web-based software products — from schema design to production deployment."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -689,7 +687,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.saas.features', 'services', 'page', 'string_list', '["Role-based access control"]', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.saas.features', 'services', 'page', 'string_list', '["Role-based access control"]', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -698,7 +696,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.cms.title', 'services', 'page', 'text', '"Custom CMS Solutions"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.cms.title', 'services', 'page', 'text', '"Custom CMS Solutions"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -707,7 +705,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.cms.body', 'services', 'page', 'multiline_text', '"WordPress, Sanity, and headless CMS builds that empower editors and don''t slow down your frontend."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.cms.body', 'services', 'page', 'multiline_text', '"WordPress, Sanity, and headless CMS builds that empower editors and don''t slow down your frontend."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -716,7 +714,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.cms.features', 'services', 'page', 'string_list', '["Gutenberg block libraries"]', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.cms.features', 'services', 'page', 'string_list', '["Gutenberg block libraries"]', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -725,7 +723,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.design.title', 'services', 'page', 'text', '"Web Application Design"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.design.title', 'services', 'page', 'text', '"Web Application Design"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -734,7 +732,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.design.body', 'services', 'page', 'multiline_text', '"High-fidelity UI/UX for complex applications — component systems, interaction design, and accessibility."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.design.body', 'services', 'page', 'multiline_text', '"High-fidelity UI/UX for complex applications — component systems, interaction design, and accessibility."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -743,7 +741,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.design.features', 'services', 'page', 'string_list', '["Design systems & component libraries"]', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.design.features', 'services', 'page', 'string_list', '["Design systems & component libraries"]', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -752,7 +750,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.performance.title', 'services', 'page', 'text', '"Performance Optimisation"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.performance.title', 'services', 'page', 'text', '"Performance Optimisation"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -761,7 +759,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.performance.body', 'services', 'page', 'multiline_text', '"Systematic audits and targeted fixes to bring your Core Web Vitals into the green."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.performance.body', 'services', 'page', 'multiline_text', '"Systematic audits and targeted fixes to bring your Core Web Vitals into the green."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -770,7 +768,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.performance.features', 'services', 'page', 'string_list', '["Core Web Vitals (LCP, CLS, INP)"]', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.performance.features', 'services', 'page', 'string_list', '["Core Web Vitals (LCP, CLS, INP)"]', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -779,7 +777,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.api.title', 'services', 'page', 'text', '"API & Integrations"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.api.title', 'services', 'page', 'text', '"API & Integrations"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -788,7 +786,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.api.body', 'services', 'page', 'multiline_text', '"Robust REST and GraphQL APIs, third-party integrations, and data pipeline engineering."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.api.body', 'services', 'page', 'multiline_text', '"Robust REST and GraphQL APIs, third-party integrations, and data pipeline engineering."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -797,7 +795,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.api.features', 'services', 'page', 'string_list', '["REST & GraphQL API design"]', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.api.features', 'services', 'page', 'string_list', '["REST & GraphQL API design"]', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -806,7 +804,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.retainer.title', 'services', 'page', 'text', '"Retained Engineering"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.retainer.title', 'services', 'page', 'text', '"Retained Engineering"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -815,7 +813,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.retainer.body', 'services', 'page', 'multiline_text', '"An ongoing technical partnership — sprint-based or on-demand — for teams that need trusted engineers in their corner."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.retainer.body', 'services', 'page', 'multiline_text', '"An ongoing technical partnership — sprint-based or on-demand — for teams that need trusted engineers in their corner."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -824,7 +822,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cards.retainer.features', 'services', 'page', 'string_list', '["Weekly sprint cadence"]', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cards.retainer.features', 'services', 'page', 'string_list', '["Weekly sprint cadence"]', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -833,7 +831,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.process.label', 'services', 'page', 'text', '"How We Work"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.process.label', 'services', 'page', 'text', '"How We Work"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -842,7 +840,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.process.heading', 'services', 'page', 'text', '"A process that removes surprises."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.process.heading', 'services', 'page', 'text', '"A process that removes surprises."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -851,7 +849,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.process.body', 'services', 'page', 'multiline_text', '"We believe clarity at the start leads to confidence at the end."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.process.body', 'services', 'page', 'multiline_text', '"We believe clarity at the start leads to confidence at the end."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -860,7 +858,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.process.discovery.title', 'services', 'page', 'text', '"Discovery Call"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.process.discovery.title', 'services', 'page', 'text', '"Discovery Call"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -869,7 +867,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.process.discovery.body', 'services', 'page', 'multiline_text', '"Understand your goals, constraints, and timeline. No-obligation."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.process.discovery.body', 'services', 'page', 'multiline_text', '"Understand your goals, constraints, and timeline. No-obligation."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -878,7 +876,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.process.scoping.title', 'services', 'page', 'text', '"Scoping & Proposal"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.process.scoping.title', 'services', 'page', 'text', '"Scoping & Proposal"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -887,7 +885,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.process.scoping.body', 'services', 'page', 'multiline_text', '"Detailed technical brief, milestone plan, and fixed-price quote within 48 hours."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.process.scoping.body', 'services', 'page', 'multiline_text', '"Detailed technical brief, milestone plan, and fixed-price quote within 48 hours."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -896,7 +894,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.process.build.title', 'services', 'page', 'text', '"Design & Build"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.process.build.title', 'services', 'page', 'text', '"Design & Build"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -905,7 +903,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.process.build.body', 'services', 'page', 'multiline_text', '"Iterative sprints with staged reviews. You see progress weekly, not at the end."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.process.build.body', 'services', 'page', 'multiline_text', '"Iterative sprints with staged reviews. You see progress weekly, not at the end."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -914,7 +912,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.process.launch.title', 'services', 'page', 'text', '"Launch & Handoff"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.process.launch.title', 'services', 'page', 'text', '"Launch & Handoff"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -923,7 +921,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.process.launch.body', 'services', 'page', 'multiline_text', '"Zero-downtime deploys, full documentation, and onboarding for your team."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.process.launch.body', 'services', 'page', 'multiline_text', '"Zero-downtime deploys, full documentation, and onboarding for your team."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -932,7 +930,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.process.support.title', 'services', 'page', 'text', '"Ongoing Support"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.process.support.title', 'services', 'page', 'text', '"Ongoing Support"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -941,7 +939,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.process.support.body', 'services', 'page', 'multiline_text', '"Optional retained partnership to maintain, monitor, and keep growing your product."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.process.support.body', 'services', 'page', 'multiline_text', '"Optional retained partnership to maintain, monitor, and keep growing your product."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -950,7 +948,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.stack.label', 'services', 'page', 'text', '"Technology"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.stack.label', 'services', 'page', 'text', '"Technology"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -959,7 +957,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.stack.heading', 'services', 'page', 'text', '"Tools we trust."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.stack.heading', 'services', 'page', 'text', '"Tools we trust."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -968,7 +966,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.stack.body', 'services', 'page', 'multiline_text', '"We choose frameworks for longevity and performance — not hype."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.stack.body', 'services', 'page', 'multiline_text', '"We choose frameworks for longevity and performance — not hype."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -977,7 +975,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.stack.items', 'services', 'page', 'structured_list', '[]', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.stack.items', 'services', 'page', 'structured_list', '[]', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -986,7 +984,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cta.label', 'services', 'page', 'text', '"Next Step"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cta.label', 'services', 'page', 'text', '"Next Step"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -995,7 +993,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cta.heading', 'services', 'page', 'text', '"Have a project in mind?"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cta.heading', 'services', 'page', 'text', '"Have a project in mind?"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1004,7 +1002,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cta.body', 'services', 'page', 'multiline_text', '"Tell us what you''re building — we''ll come back with a clear technical plan and honest pricing."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cta.body', 'services', 'page', 'multiline_text', '"Tell us what you''re building — we''ll come back with a clear technical plan and honest pricing."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1013,7 +1011,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('services.cta.button', 'services', 'page', 'text', '"Start a Conversation"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('services.cta.button', 'services', 'page', 'text', '"Start a Conversation"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1022,7 +1020,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.hero.label', 'contact', 'page', 'text', '"Get in Touch"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.hero.label', 'contact', 'page', 'text', '"Get in Touch"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1031,7 +1029,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.hero.heading', 'contact', 'page', 'multiline_text', '"Let''s talk about\nwhat you''re building."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.hero.heading', 'contact', 'page', 'multiline_text', '"Let''s talk about\nwhat you''re building."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1040,7 +1038,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.hero.body', 'contact', 'page', 'multiline_text', '"Share the brief — we''ll respond within one business day with an honest assessment and a clear plan."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.hero.body', 'contact', 'page', 'multiline_text', '"Share the brief — we''ll respond within one business day with an honest assessment and a clear plan."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1049,7 +1047,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.nameLabel', 'contact', 'page', 'text', '"Your Name"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.nameLabel', 'contact', 'page', 'text', '"Your Name"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1058,7 +1056,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.namePlaceholder', 'contact', 'page', 'text', '"James Brown"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.namePlaceholder', 'contact', 'page', 'text', '"James Brown"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1067,7 +1065,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.emailLabel', 'contact', 'page', 'text', '"Email Address"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.emailLabel', 'contact', 'page', 'text', '"Email Address"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1076,7 +1074,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.emailPlaceholder', 'contact', 'page', 'text', '"hello@yourcompany.com"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.emailPlaceholder', 'contact', 'page', 'text', '"hello@yourcompany.com"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1085,7 +1083,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.companyLabel', 'contact', 'page', 'text', '"Company / Product"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.companyLabel', 'contact', 'page', 'text', '"Company / Product"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1094,7 +1092,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.companyPlaceholder', 'contact', 'page', 'text', '"Yourcompany Inc."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.companyPlaceholder', 'contact', 'page', 'text', '"Yourcompany Inc."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1103,7 +1101,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.budgetLabel', 'contact', 'page', 'text', '"Approximate Budget"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.budgetLabel', 'contact', 'page', 'text', '"Approximate Budget"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1112,7 +1110,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.budgetPlaceholder', 'contact', 'page', 'text', '"Select a range"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.budgetPlaceholder', 'contact', 'page', 'text', '"Select a range"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1121,7 +1119,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.budgetOptions', 'contact', 'page', 'string_list', '["Select a range","Under $1k","$5k","$10k – $25k","> $25k","Not sure yet"]', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.budgetOptions', 'contact', 'page', 'string_list', '["Select a range","Under $1k","$5k","$10k – $25k","> $25k","Not sure yet"]', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1130,7 +1128,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.serviceLabel', 'contact', 'page', 'text', '"Type of Project"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.serviceLabel', 'contact', 'page', 'text', '"Type of Project"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1139,7 +1137,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.servicePlaceholder', 'contact', 'page', 'text', '"What are you building?"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.servicePlaceholder', 'contact', 'page', 'text', '"What are you building?"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1148,7 +1146,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.serviceOptions', 'contact', 'page', 'string_list', '["What are you building?","SaaS / Web Application","CMS / WordPress Site","E-Commerce Platform","Performance Optimisation","API & Integrations","Retained Engineering","Something else"]', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.serviceOptions', 'contact', 'page', 'string_list', '["What are you building?","SaaS / Web Application","CMS / WordPress Site","E-Commerce Platform","Performance Optimisation","API & Integrations","Retained Engineering","Something else"]', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1157,7 +1155,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.messageLabel', 'contact', 'page', 'text', '"Tell Us More"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.messageLabel', 'contact', 'page', 'text', '"Tell Us More"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1166,7 +1164,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.messagePlaceholder', 'contact', 'page', 'multiline_text', '"Describe what you''re building, the problem you''re solving, and where you''re at in the process. The more detail, the better."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.messagePlaceholder', 'contact', 'page', 'multiline_text', '"Describe what you''re building, the problem you''re solving, and where you''re at in the process. The more detail, the better."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1175,7 +1173,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.note', 'contact', 'page', 'text', '"We read every message personally. Expect a reply within one business day."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.note', 'contact', 'page', 'text', '"We read every message personally. Expect a reply within one business day."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1184,7 +1182,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.submitButton', 'contact', 'page', 'text', '"Send Message"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.submitButton', 'contact', 'page', 'text', '"Send Message"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1193,7 +1191,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.successHeading', 'contact', 'page', 'text', '"Message received."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.successHeading', 'contact', 'page', 'text', '"Message received."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1202,7 +1200,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.form.successBody', 'contact', 'page', 'multiline_text', '"Thanks for reaching out. We''ll be in touch within one business day."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.form.successBody', 'contact', 'page', 'multiline_text', '"Thanks for reaching out. We''ll be in touch within one business day."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1211,7 +1209,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.sidebar.availabilityBadge', 'contact', 'page', 'text', '""', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.sidebar.availabilityBadge', 'contact', 'page', 'text', '""', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1220,7 +1218,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.sidebar.availabilityBody', 'contact', 'page', 'multiline_text', '"Tell us what you are building — we will let you know if we are a fit."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.sidebar.availabilityBody', 'contact', 'page', 'multiline_text', '"Tell us what you are building — we will let you know if we are a fit."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1229,7 +1227,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.sidebar.emailHeading', 'contact', 'page', 'text', '"Email"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.sidebar.emailHeading', 'contact', 'page', 'text', '"Email"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1238,7 +1236,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.sidebar.emailBody', 'contact', 'page', 'multiline_text', '"For general enquiries and project briefs."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.sidebar.emailBody', 'contact', 'page', 'multiline_text', '"For general enquiries and project briefs."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1247,7 +1245,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.sidebar.responseTimeHeading', 'contact', 'page', 'text', '"Response Time"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.sidebar.responseTimeHeading', 'contact', 'page', 'text', '"Response Time"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1256,7 +1254,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.sidebar.responseTimeValue', 'contact', 'page', 'text', '"Within 1 business day"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.sidebar.responseTimeValue', 'contact', 'page', 'text', '"Within 1 business day"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1265,7 +1263,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.sidebar.responseTimeBody', 'contact', 'page', 'multiline_text', '"Mon–Fri, 9am–6pm Central Time. We read every message ourselves."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.sidebar.responseTimeBody', 'contact', 'page', 'multiline_text', '"Mon–Fri, 9am–6pm Central Time. We read every message ourselves."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1274,7 +1272,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.sidebar.nextHeading', 'contact', 'page', 'text', '"What Happens Next"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.sidebar.nextHeading', 'contact', 'page', 'text', '"What Happens Next"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1283,7 +1281,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.sidebar.nextSteps', 'contact', 'page', 'string_list', '[]', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.sidebar.nextSteps', 'contact', 'page', 'string_list', '[]', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1292,7 +1290,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.faq.label', 'contact', 'page', 'text', '"Common Questions"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.faq.label', 'contact', 'page', 'text', '"Common Questions"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1301,7 +1299,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.faq.heading', 'contact', 'page', 'text', '"Before you write."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.faq.heading', 'contact', 'page', 'text', '"Before you write."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1310,7 +1308,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('contact.faq.items', 'contact', 'page', 'faq_items', '[]', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('contact.faq.items', 'contact', 'page', 'faq_items', '[]', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1319,7 +1317,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('portfolio.hero.label', 'portfolio', 'page', 'text', '"Our Work"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('portfolio.hero.label', 'portfolio', 'page', 'text', '"Our Work"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1328,7 +1326,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('portfolio.hero.heading', 'portfolio', 'page', 'multiline_text', '"Products that perform\nin production."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('portfolio.hero.heading', 'portfolio', 'page', 'multiline_text', '"Products that perform\nin production."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1337,7 +1335,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('portfolio.hero.body', 'portfolio', 'page', 'multiline_text', '"A curated selection of projects across SaaS, CMS, e-commerce, and business intelligence — each with a full case study breakdown."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('portfolio.hero.body', 'portfolio', 'page', 'multiline_text', '"A curated selection of projects across SaaS, CMS, e-commerce, and business intelligence — each with a full case study breakdown."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1346,7 +1344,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('portfolio.cta.label', 'portfolio', 'page', 'text', '"Start Here"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('portfolio.cta.label', 'portfolio', 'page', 'text', '"Start Here"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1355,7 +1353,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('portfolio.cta.heading', 'portfolio', 'page', 'text', '"Your project could be next."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('portfolio.cta.heading', 'portfolio', 'page', 'text', '"Your project could be next."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1364,7 +1362,7 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('portfolio.cta.body', 'portfolio', 'page', 'multiline_text', '"We take on a limited number of new projects each quarter. Tell us what you''re building and we''ll let you know if we''re a fit."', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('portfolio.cta.body', 'portfolio', 'page', 'multiline_text', '"We take on a limited number of new projects each quarter. Tell us what you''re building and we''ll let you know if we''re a fit."', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
@@ -1373,12 +1371,10 @@ ON CONFLICT(content_key) DO UPDATE SET
   updated_at = excluded.updated_at;
 
 INSERT INTO static_content (content_key, page_id, scope, field_type, value_json, created_at, updated_at)
-VALUES ('portfolio.cta.button', 'portfolio', 'page', 'text', '"Get in Touch"', '2026-05-01T17:40:46.290Z', '2026-05-01T17:40:46.290Z')
+VALUES ('portfolio.cta.button', 'portfolio', 'page', 'text', '"Get in Touch"', '2026-05-01T17:51:00.774Z', '2026-05-01T17:51:00.774Z')
 ON CONFLICT(content_key) DO UPDATE SET
   page_id = excluded.page_id,
   scope = excluded.scope,
   field_type = excluded.field_type,
   value_json = excluded.value_json,
   updated_at = excluded.updated_at;
-
-COMMIT;
