@@ -538,20 +538,23 @@ export default function AdminCaseStudiesPage() {
 
             <div className="stack" style={{ marginTop: "2rem" }}>
               {form.images.map((image, index) => (
-                <div key={index} className="image-card">
+                <div key={image.r2Key ? `${image.r2Key}-${index}` : index} className="image-card">
                   <div className="image-card-header">
-                    <strong>Image {index + 1}</strong>
+                    <strong>Image {index + 1}{image.alt ? ` - ${image.alt}` : ''}</strong>
                     <div className="image-actions">
                       <button
                         type="button"
                         className="btn-outline-sm"
                         disabled={index === 0}
-                        onClick={() => {
-                          const next = [...form.images];
-                          const temp = next[index - 1];
-                          next[index - 1] = next[index];
-                          next[index] = temp;
-                          setField("images", next.map((img, i) => ({ ...img, sortOrder: i + 1 })));
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setForm((prev) => {
+                            const next = [...prev.images];
+                            const temp = next[index - 1];
+                            next[index - 1] = next[index];
+                            next[index] = temp;
+                            return { ...prev, images: next.map((img, i) => ({ ...img, sortOrder: i + 1 })) };
+                          });
                         }}
                       >
                         ↑
@@ -560,12 +563,15 @@ export default function AdminCaseStudiesPage() {
                         type="button"
                         className="btn-outline-sm"
                         disabled={index === form.images.length - 1}
-                        onClick={() => {
-                          const next = [...form.images];
-                          const temp = next[index + 1];
-                          next[index + 1] = next[index];
-                          next[index] = temp;
-                          setField("images", next.map((img, i) => ({ ...img, sortOrder: i + 1 })));
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setForm((prev) => {
+                            const next = [...prev.images];
+                            const temp = next[index + 1];
+                            next[index + 1] = next[index];
+                            next[index] = temp;
+                            return { ...prev, images: next.map((img, i) => ({ ...img, sortOrder: i + 1 })) };
+                          });
                         }}
                       >
                         ↓
@@ -573,7 +579,8 @@ export default function AdminCaseStudiesPage() {
                       <button
                         type="button"
                         className="delete-btn"
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.preventDefault();
                           if (form.images.length === 1) return;
                           setField("images", form.images.filter((_, i) => i !== index));
                         }}
