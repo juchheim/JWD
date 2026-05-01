@@ -332,15 +332,16 @@ function validateStaticContentValue(
 
   if (fieldType === "faq_items") {
     if (!Array.isArray(value)) return { ok: false, message: "value must be an array of FAQ items." };
-    const parsed = value
-      .map((item) => {
-        const row = item as Record<string, unknown>;
-        const question = typeof row.question === "string" ? row.question.trim() : "";
-        const answer = typeof row.answer === "string" ? row.answer.trim() : "";
-        if (!question || !answer) return null;
-        return { question, answer };
-      })
-      .filter((item): item is { question: string; answer: string } => item !== null);
+    const parsed: Array<{ question: string; answer: string }> = [];
+    for (const [index, item] of value.entries()) {
+      const row = item as Record<string, unknown>;
+      const question = typeof row.question === "string" ? row.question.trim() : "";
+      const answer = typeof row.answer === "string" ? row.answer.trim() : "";
+      if (!question || !answer) {
+        return { ok: false, message: `FAQ item ${index + 1} must include both question and answer.` };
+      }
+      parsed.push({ question, answer });
+    }
     if (parsed.length < 1) return { ok: false, message: "value must include at least one valid FAQ item." };
     return { ok: true, value: parsed };
   }
@@ -348,54 +349,62 @@ function validateStaticContentValue(
   if (fieldType === "team_members") {
     if (!Array.isArray(value)) return { ok: false, message: "value must be an array of team members." };
     const seenIds = new Set<string>();
-    const parsed = value
-      .map((item, index) => {
-        const row = item as Record<string, unknown>;
-        const id = typeof row.id === "string" ? row.id.trim() : "";
-        const initials = typeof row.initials === "string" ? row.initials.trim() : "";
-        const name = typeof row.name === "string" ? row.name.trim() : "";
-        const role = typeof row.role === "string" ? row.role.trim() : "";
-        const bio = typeof row.bio === "string" ? row.bio.trim() : "";
-        const accentStyle = typeof row.accentStyle === "string" ? row.accentStyle.trim() : "";
-        const sortOrderRaw = Number(row.sortOrder);
-        const sortOrder = Number.isInteger(sortOrderRaw) && sortOrderRaw > 0 ? sortOrderRaw : index + 1;
-        const isActive = row.isActive === undefined ? true : Boolean(row.isActive);
-        if (!id) return null;
-        if (seenIds.has(id)) return null;
-        if (initials.length > 4) return null;
-        if (isActive && (!name || !role || !bio)) return null;
-        seenIds.add(id);
-        return { id, initials, name, role, bio, accentStyle, sortOrder, isActive };
-      })
-      .filter(
-        (
-          item
-        ): item is {
-          id: string;
-          initials: string;
-          name: string;
-          role: string;
-          bio: string;
-          accentStyle: string;
-          sortOrder: number;
-          isActive: boolean;
-        } => item !== null
-      );
+    const parsed: Array<{
+      id: string;
+      initials: string;
+      name: string;
+      role: string;
+      bio: string;
+      accentStyle: string;
+      sortOrder: number;
+      isActive: boolean;
+    }> = [];
+    for (const [index, item] of value.entries()) {
+      const row = item as Record<string, unknown>;
+      const id = typeof row.id === "string" ? row.id.trim() : "";
+      const initials = typeof row.initials === "string" ? row.initials.trim() : "";
+      const name = typeof row.name === "string" ? row.name.trim() : "";
+      const role = typeof row.role === "string" ? row.role.trim() : "";
+      const bio = typeof row.bio === "string" ? row.bio.trim() : "";
+      const accentStyle = typeof row.accentStyle === "string" ? row.accentStyle.trim() : "";
+      const sortOrderRaw = Number(row.sortOrder);
+      const sortOrder = Number.isInteger(sortOrderRaw) && sortOrderRaw > 0 ? sortOrderRaw : index + 1;
+      const isActive = row.isActive === undefined ? true : Boolean(row.isActive);
+
+      if (!id) {
+        return { ok: false, message: `Team member ${index + 1} must include a unique id.` };
+      }
+      if (seenIds.has(id)) {
+        return { ok: false, message: `Team member ${index + 1} uses duplicate id "${id}".` };
+      }
+      if (initials.length > 4) {
+        return { ok: false, message: `Team member ${index + 1} initials must be 4 characters or fewer.` };
+      }
+      if (isActive && (!name || !role || !bio)) {
+        return {
+          ok: false,
+          message: `Active team member ${index + 1} must include name, role, and bio.`,
+        };
+      }
+      seenIds.add(id);
+      parsed.push({ id, initials, name, role, bio, accentStyle, sortOrder, isActive });
+    }
     if (parsed.length < 1) return { ok: false, message: "value must include at least one valid team member." };
     return { ok: true, value: parsed };
   }
 
   if (fieldType === "structured_list") {
     if (!Array.isArray(value)) return { ok: false, message: "value must be an array of structured rows." };
-    const parsed = value
-      .map((item) => {
-        const row = item as Record<string, unknown>;
-        const category = typeof row.category === "string" ? row.category.trim() : "";
-        const label = typeof row.label === "string" ? row.label.trim() : "";
-        if (!category || !label) return null;
-        return { category, label };
-      })
-      .filter((item): item is { category: string; label: string } => item !== null);
+    const parsed: Array<{ category: string; label: string }> = [];
+    for (const [index, item] of value.entries()) {
+      const row = item as Record<string, unknown>;
+      const category = typeof row.category === "string" ? row.category.trim() : "";
+      const label = typeof row.label === "string" ? row.label.trim() : "";
+      if (!category || !label) {
+        return { ok: false, message: `Structured row ${index + 1} must include both category and label.` };
+      }
+      parsed.push({ category, label });
+    }
     if (parsed.length < 1) return { ok: false, message: "value must include at least one valid row." };
     return { ok: true, value: parsed };
   }

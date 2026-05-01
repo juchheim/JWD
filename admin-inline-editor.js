@@ -304,7 +304,10 @@
     queryByKey(key).forEach((node) => {
       node.innerHTML = activeMembers
         .map((member, index) => {
-          const revealClass = index === 0 ? "reveal" : `reveal reveal-delay-${Math.min(index, 3)}`;
+          const revealClass =
+            index === 0
+              ? "reveal visible"
+              : `reveal visible reveal-delay-${Math.min(index, 3)}`;
           const styleAttr = member.accentStyle ? ` style="${String(member.accentStyle).replace(/"/g, "&quot;")}"` : "";
           return `<div class="team-card ${revealClass}">
         <div class="team-avatar">

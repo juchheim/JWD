@@ -29,6 +29,8 @@
 - `AvailabilityBadgeRenderGuard`: Contact-page text render guard that preserves `availability-dot` icon and fallback text for `contact.sidebar.availabilityBadge`.
 - `InlineEditorArrayDomFallback`: Overlay editor behavior that prefers visible DOM array data when stored array values are empty.
 - `InlineEditorServerValueSync`: Overlay save path behavior that applies canonical server-returned values for optimistic UI updates.
+- `InlineEditorRevealVisibilityFix`: Overlay team-card optimistic renderer now marks newly injected reveal cards as visible so they do not disappear post-save.
+- `StaticContentStrictRowValidation`: Worker-side validation policy that rejects malformed FAQ/team/structured rows instead of silently dropping them.
 
 ## Relationships
 - `Website` includes `PortfolioModule` on `portfolio.html`.
@@ -65,6 +67,8 @@
 - `AvailabilityBadgeRenderGuard` is applied inside `withTextReplacement` for `contact.sidebar.availabilityBadge` to preserve badge icon + label structure.
 - `InlineEditorArrayDomFallback` is used by `admin-inline-editor.js` open-editor flow for `string_list`, `faq_items`, `team_members`, and `structured_list`.
 - `InlineEditorServerValueSync` ensures `admin-inline-editor.js` uses API `entry.value` (post-validation normalization) instead of raw editor payload when applying optimistic updates.
+- `InlineEditorRevealVisibilityFix` keeps team-card optimistic updates visible without waiting for intersection-observer re-registration.
+- `StaticContentStrictRowValidation` is enforced in `worker-api/src/index.ts` for `faq_items`, `team_members`, and `structured_list` saves so inline editing failures surface as explicit errors.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -138,3 +142,5 @@
 - Applied remote D1 hotfix to restore `contact.sidebar.availabilityBadge` text and added renderer guard so contact badge output always includes `<span class="availability-dot"></span>` plus text (with fallback copy) even after future edits.
 - Fixed services “Tools we trust” inline editor showing `[]` by making overlay editor prefer current DOM-derived array values when stored array data is empty, so editors can recover and update visible structured/list content without manual JSON reconstruction.
 - Fixed about-team optimistic disappear issue by using server `entry.value` for post-save UI updates; removed an over-restrictive empty-array client guard that could make successful edits appear unsaved.
+- Fixed silent data-loss behavior in static-content saves by making Worker validation reject invalid FAQ/team/structured rows with row-specific messages instead of partially saving and dropping bad entries.
+- Fixed team cards disappearing until refresh after save by adding `visible` class during client-side optimistic team-card render (`admin-inline-editor.js`), preventing cards from staying in hidden pre-reveal state.
