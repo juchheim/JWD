@@ -301,6 +301,7 @@
 
   function applyTeamMembers(key, members) {
     const activeMembers = members.filter((item) => item && item.isActive !== false);
+    if (activeMembers.length < 1) return;
     queryByKey(key).forEach((node) => {
       node.innerHTML = activeMembers
         .map((member, index) => {
@@ -480,11 +481,15 @@
         throw new Error(body?.error?.message || "Save failed.");
       }
 
+      const savedValue =
+        body && body.entry && Object.prototype.hasOwnProperty.call(body.entry, "value")
+          ? body.entry.value
+          : parsed;
       state.contentByKey[key] = {
         fieldType,
-        value: parsed,
+        value: savedValue,
       };
-      applyOptimisticValue(key, fieldType, parsed);
+      applyOptimisticValue(key, fieldType, savedValue);
       loadingLabel.textContent = "Saved.";
       setTimeout(() => {
         loadingLabel.textContent = "";

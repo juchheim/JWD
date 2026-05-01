@@ -28,6 +28,7 @@
 - `StaticElementInnerSafeReplace`: Generic nested-element inner-HTML replacement keyed by `data-content-key`, preventing malformed markup when same-tag elements are nested.
 - `AvailabilityBadgeRenderGuard`: Contact-page text render guard that preserves `availability-dot` icon and fallback text for `contact.sidebar.availabilityBadge`.
 - `InlineEditorArrayDomFallback`: Overlay editor behavior that prefers visible DOM array data when stored array values are empty.
+- `InlineEditorServerValueSync`: Overlay save path behavior that applies canonical server-returned values for optimistic UI updates.
 
 ## Relationships
 - `Website` includes `PortfolioModule` on `portfolio.html`.
@@ -63,6 +64,7 @@
 - `StaticElementInnerSafeReplace` is used by text replacement so nested `span`/same-tag structures (e.g., availability badge) remain balanced.
 - `AvailabilityBadgeRenderGuard` is applied inside `withTextReplacement` for `contact.sidebar.availabilityBadge` to preserve badge icon + label structure.
 - `InlineEditorArrayDomFallback` is used by `admin-inline-editor.js` open-editor flow for `string_list`, `faq_items`, `team_members`, and `structured_list`.
+- `InlineEditorServerValueSync` ensures `admin-inline-editor.js` uses API `entry.value` (post-validation normalization) instead of raw editor payload when applying optimistic updates.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -135,3 +137,4 @@
 - Fixed contact sidebar badge malformed HTML (`</span>` drift causing stray oval/text) by replacing text-field paired-tag regex logic with depth-aware element matching keyed by `data-content-key`, which correctly handles nested same-tag markup like `span` inside `span`.
 - Applied remote D1 hotfix to restore `contact.sidebar.availabilityBadge` text and added renderer guard so contact badge output always includes `<span class="availability-dot"></span>` plus text (with fallback copy) even after future edits.
 - Fixed services “Tools we trust” inline editor showing `[]` by making overlay editor prefer current DOM-derived array values when stored array data is empty, so editors can recover and update visible structured/list content without manual JSON reconstruction.
+- Fixed about-team optimistic disappear issue by using server `entry.value` for post-save UI updates and by preventing optimistic team rendering from clearing cards on empty immediate arrays.
