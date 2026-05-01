@@ -34,6 +34,23 @@ type StaticContentApiResponse = {
   content?: Record<string, unknown>;
 };
 
+function resolveWorkerBaseUrl(requestUrl?: string): string {
+  const rawBase = process.env.WORKER_API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || "";
+  if (rawBase) {
+    if (/^https?:\/\//i.test(rawBase)) {
+      return rawBase.endsWith("/") ? rawBase.slice(0, -1) : rawBase;
+    }
+    if (rawBase.startsWith("/") && requestUrl) {
+      const origin = new URL(requestUrl).origin;
+      return `${origin}${rawBase}`.replace(/\/$/, "");
+    }
+  }
+
+  if (!requestUrl) return "";
+  const origin = new URL(requestUrl).origin;
+  return `${origin}/api/worker`;
+}
+
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
@@ -237,11 +254,12 @@ function withStructuredListReplacement(
   return html.replace(containerRegex, `$1\n      ${markup}\n    $4`);
 }
 
-async function fetchStaticContentForPage(pageId: StaticContentPageId): Promise<Record<string, unknown> | null> {
-  const rawBase = process.env.WORKER_API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || "";
-  if (!rawBase) return null;
-
-  const base = rawBase.endsWith("/") ? rawBase.slice(0, -1) : rawBase;
+async function fetchStaticContentForPage(
+  pageId: StaticContentPageId,
+  requestUrl?: string
+): Promise<Record<string, unknown> | null> {
+  const base = resolveWorkerBaseUrl(requestUrl);
+  if (!base) return null;
   const url = new URL(`${base}/public/static-content`);
   url.searchParams.set("pageId", pageId);
 
@@ -260,11 +278,11 @@ async function fetchStaticContentForPage(pageId: StaticContentPageId): Promise<R
   }
 }
 
-async function applyStaticContent(routePath: string, html: string): Promise<string> {
+async function applyStaticContent(routePath: string, html: string, requestUrl?: string): Promise<string> {
   const pageId = STATIC_CONTENT_ROUTE_PAGE_MAP[routePath];
   if (!pageId) return html;
 
-  const content = await fetchStaticContentForPage(pageId);
+  const content = await fetchStaticContentForPage(pageId, requestUrl);
   if (!content) return html;
 
   let rendered = html;
@@ -327,14 +345,14 @@ function withInlineEditorScript(html: string): string {
   return `${html}\n${scriptTag}`;
 }
 
-export async function serveSiteFile(routePath: string): Promise<Response | null> {
+export async function serveSiteFile(routePath: string, requestUrl?: string): Promise<Response | null> {
   const entry = SITE_FILE_MAP[routePath];
   if (!entry) return null;
 
   const filePath = path.join(/* turbopackIgnore: true */ process.cwd(), entry.file);
   const template = await readFile(filePath, "utf8");
   const contents = entry.contentType.startsWith("text/html")
-    ? withInlineEditorScript(await applyStaticContent(routePath, template))
+    ? withInlineEditorScript(await applyStaticContent(routePath, template, requestUrl))
     : template;
   return new Response(contents, {
     headers: {
