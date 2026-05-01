@@ -3,7 +3,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Juchheim Web Development",
-  description: "Engineering precision. Building futures.",
+  description:
+    "SaaS, web apps, and WordPress for nonprofits and growing businesses — based in Greenwood, Mississippi, serving clients nationwide.",
 };
 
 export default function RootLayout({

@@ -417,7 +417,7 @@ async function dispatchContactEmail(
 ): Promise<{ ok: true } | { ok: false; reason: ContactDispatchFailure }> {
   const provider = (env.CONTACT_EMAIL_PROVIDER ?? "").trim().toLowerCase();
   const recipient = (env.CONTACT_EMAIL_TO ?? "juchheim@gmail.com").trim();
-  const sender = (env.CONTACT_EMAIL_FROM ?? "website-contact@juchheim.dev").trim();
+  const sender = (env.CONTACT_EMAIL_FROM ?? "contact@tripjuchheim.com").trim();
 
   if (!provider) {
     return { ok: false, reason: "provider_not_configured" };

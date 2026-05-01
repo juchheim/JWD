@@ -3,53 +3,21 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Meet Trip Juchheim and the JWD team — web engineering for U.S. small businesses and nonprofits, based in Greenwood, Mississippi."/>
+  <meta property="og:title" content="About — Juchheim Web Development"/>
+  <meta property="og:description" content="Twenty-plus years building for the web; eight years as an independent practice. Honesty, speed, and reliability."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://tripjuchheim.com/about.html"/>
+  <meta name="twitter:card" content="summary_large_image"/>
   <title>About — Juchheim Web Development</title>
   <link rel="stylesheet" href="styles.css"/>
   <style>
     /* Story */
     .story-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: clamp(2rem, 6vw, 5rem);
-      align-items: start;
+      max-width: 52rem;
     }
     .story-text h2 { margin-bottom: 1.25rem; }
     .story-text p { margin-bottom: 1rem; }
-
-    .story-visual {
-      position: sticky;
-      top: 8rem;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-    .timeline-item {
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-    }
-    .tl-dot-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      flex-shrink: 0;
-      padding-top: 4px;
-    }
-    .tl-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: var(--accent-teal);
-      box-shadow: 0 0 10px rgba(0,212,168,0.5);
-      flex-shrink: 0;
-    }
-    .tl-line { width: 1px; flex: 1; background: var(--border); min-height: 24px; margin-top: 4px; }
-    .tl-year { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent-teal); margin-bottom: 0.25rem; }
-    .tl-event { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; }
-    .tl-event strong { color: var(--text-primary); font-weight: 600; display: block; margin-bottom: 0.15rem; }
 
     /* Team */
     #team { background: var(--bg-surface); }
@@ -127,10 +95,6 @@
     .value-card h4 { color: var(--text-primary); font-size: 1rem; margin-bottom: 0.5rem; }
     .value-card p { font-size: 0.88rem; }
 
-    @media (max-width: 768px) {
-      .story-grid { grid-template-columns: 1fr; }
-      .story-visual { position: static; }
-    }
   </style>
 </head>
 <body>
@@ -158,8 +122,8 @@
 <section class="page-hero">
   <div class="container">
     <span class="label">Our Story</span>
-    <h1>Built by engineers<br/><em>who care about craft.</em></h1>
-    <p>Juchheim Web Development was founded on the belief that the gap between good and great software is entirely intentional — and entirely worth closing.</p>
+    <h1>Independent practice,<br/><em>deep experience.</em></h1>
+    <p>Based in Greenwood, Mississippi, JWD serves U.S. small and midsize businesses and nonprofits — with the same priorities on every project: honest scope, fast iteration, and reliable delivery.</p>
   </div>
 </section>
 
@@ -168,41 +132,14 @@
   <div class="container">
     <div class="story-grid">
       <div class="story-text reveal">
-        <span class="label" style="margin-bottom:0.75rem;display:block;">The Long Version</span>
-        <h2>Eight years of building things the right way.</h2>
-        <p>Juchheim Web Development started as a one-person consultancy in 2018, founded by Marcus Juchheim after spending five years as a lead engineer at a Series B SaaS company. The premise was simple: most agencies over-promise and under-deliver because they're optimised for sales, not craft.</p>
-        <p>We set out to do the opposite — keep the team small, stay close to the code, and build only the kind of products we'd be proud to put our names on. That meant turning down projects that didn't fit and investing deeply in the ones that did.</p>
-        <p>Over eight years, that approach compounded. We earned a reputation for shipping on time, writing code that didn't need to be rewritten, and communicating with the clarity that most clients rarely get from technical teams.</p>
-        <p>Today we're a tight team of four: two engineers, a designer, and a project lead. We take on a handful of new projects per quarter. Every client gets our full attention — not a junior team member managed at arm's length.</p>
+        <span class="label" style="margin-bottom:0.75rem;display:block;">How we work</span>
+        <h2>Experience without the fairy tale.</h2>
+        <p>There is more than twenty years of web work behind this practice — most of it inside an advertising agency, solving real client problems under real deadlines. That time taught what actually matters in production: clear expectations, maintainable code, and communication you do not have to chase.</p>
+        <p>For the last eight years, Juchheim Web Development has been an independent shop. We stay deliberately small so we can stay hands-on — SaaS, custom applications, and WordPress sites for organizations that need a partner who will tell them the truth about scope, risk, and timeline.</p>
+        <p>We work with U.S. clients only, based out of Greenwood, Mississippi. If that sounds like a fit for what you are building, we would like to hear from you.</p>
         <div style="margin-top:1.75rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
           <a href="contact.html" class="btn btn-primary" style="font-size:0.9rem;">Work With Us</a>
           <a href="services.html" class="btn btn-outline" style="font-size:0.9rem;">View Services</a>
-        </div>
-      </div>
-
-      <!-- Timeline -->
-      <div class="story-visual reveal reveal-delay-2">
-        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;">Studio Timeline</div>
-
-        <div class="timeline-item">
-          <div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
-          <div><div class="tl-year">2018</div><div class="tl-event"><strong>Studio Founded</strong>Marcus Juchheim launches JWD as a solo consultancy, focusing on WordPress and custom PHP.</div></div>
-        </div>
-        <div class="timeline-item">
-          <div class="tl-dot-wrap"><div class="tl-dot" style="background:var(--accent-blue);box-shadow:0 0 10px rgba(59,111,245,0.5);"></div><div class="tl-line"></div></div>
-          <div><div class="tl-year" style="color:var(--accent-blue);">2020</div><div class="tl-event"><strong>First SaaS Engagement</strong>Delivered a multi-tenant project management app — a pivot into modern React and Node.js stacks.</div></div>
-        </div>
-        <div class="timeline-item">
-          <div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
-          <div><div class="tl-year">2021</div><div class="tl-event"><strong>Team Grows to Four</strong>Hired a senior designer and two engineers. Adopted a sprint-based project model.</div></div>
-        </div>
-        <div class="timeline-item">
-          <div class="tl-dot-wrap"><div class="tl-dot" style="background:var(--accent-blue);box-shadow:0 0 10px rgba(59,111,245,0.5);"></div><div class="tl-line"></div></div>
-          <div><div class="tl-year" style="color:var(--accent-blue);">2023</div><div class="tl-event"><strong>Healthcare Vertical</strong>Completed first HIPAA-compliant SaaS project, establishing compliance expertise.</div></div>
-        </div>
-        <div class="timeline-item">
-          <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
-          <div><div class="tl-year">2026</div><div class="tl-event"><strong>60+ Projects Shipped</strong>Across SaaS, CMS, e-commerce, and BI — with a 99% client retention rate.</div></div>
         </div>
       </div>
     </div>
@@ -214,31 +151,21 @@
   <div class="container">
     <div class="section-header reveal">
       <span class="label">The Team</span>
-      <h2>Four people. Zero middlemen.</h2>
-      <p>You'll work directly with the people doing the work — every time.</p>
+      <h2>Small team. Direct access.</h2>
+      <p>You will work directly with the people doing the work — every time.</p>
     </div>
     <div class="team-grid">
       <div class="team-card reveal">
         <div class="team-avatar">
-          <div class="team-avatar-initials" style="background:rgba(0,212,168,0.1);color:var(--accent-teal);">MJ</div>
+          <div class="team-avatar-initials" style="background:rgba(0,212,168,0.1);color:var(--accent-teal);">TJ</div>
         </div>
         <div class="team-info">
-          <div class="team-name">Marcus Juchheim</div>
+          <div class="team-name">Trip Juchheim</div>
           <div class="team-role">Founder · Lead Engineer</div>
-          <div class="team-bio">Full-stack architect with 13 years of experience. Specialises in SaaS systems design, API architecture, and performance engineering.</div>
+          <div class="team-bio">Full-stack engineer with twenty-plus years building for the web. Leads architecture, delivery, and client communication across SaaS, applications, and WordPress engagements.</div>
         </div>
       </div>
       <div class="team-card reveal reveal-delay-1">
-        <div class="team-avatar">
-          <div class="team-avatar-initials" style="background:rgba(59,111,245,0.1);color:var(--accent-blue);">SR</div>
-        </div>
-        <div class="team-info">
-          <div class="team-name">Sofia Reyes</div>
-          <div class="team-role">Senior Designer</div>
-          <div class="team-bio">UX and design systems lead. Translates complex application logic into intuitive, accessible interfaces that hold up under real-world use.</div>
-        </div>
-      </div>
-      <div class="team-card reveal reveal-delay-2">
         <div class="team-avatar">
           <div class="team-avatar-initials" style="background:rgba(167,139,250,0.1);color:#a78bfa;">TK</div>
         </div>
@@ -248,7 +175,7 @@
           <div class="team-bio">Backend and infrastructure specialist. Expert in cloud-native deployments, database optimisation, and high-throughput data systems.</div>
         </div>
       </div>
-      <div class="team-card reveal reveal-delay-3">
+      <div class="team-card reveal reveal-delay-2">
         <div class="team-avatar">
           <div class="team-avatar-initials" style="background:rgba(16,185,129,0.1);color:#10b981;">AL</div>
         </div>
@@ -297,10 +224,10 @@
 <footer>
   <div class="container">
     <div class="footer-inner">
-      <div class="footer-brand"><div class="nav-logo" style="font-size:1rem;"><span class="bracket">&lt;</span><span class="logo-name"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span></div><p>Engineering precision. Building futures.</p></div>
+      <div class="footer-brand"><div class="nav-logo" style="font-size:1rem;"><span class="bracket">&lt;</span><span class="logo-name"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span></div><p>SaaS, web apps, and WordPress for nonprofits and growing businesses — based in Greenwood, Mississippi, serving clients nationwide.</p></div>
       <div class="footer-col"><h5>Pages</h5><a href="index.html">Home</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
       <div class="footer-col"><h5>Services</h5><a href="services.html">SaaS Development</a><a href="services.html">CMS Solutions</a><a href="services.html">Performance</a><a href="services.html">API & Integrations</a></div>
-      <div class="footer-col"><h5>Contact</h5><a href="mailto:hello@juchheim.dev">hello@juchheim.dev</a><a href="contact.html">Start a project</a></div>
+      <div class="footer-col"><h5>Contact</h5><a href="#" class="obf-email" data-user="juchheim" data-domain="gmail" data-tld="com">juchheim [at] gmail [dot] com</a><a href="contact.html">Start a project</a></div>
     </div>
     <div class="footer-bottom"><span>© 2026 Juchheim Web Development.</span><span>Built with precision.</span></div>
   </div>
@@ -321,6 +248,17 @@
   }));
   const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }}), {threshold:0.1});
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.obf-email').forEach((el) => {
+    el.addEventListener('click', (event) => {
+      event.preventDefault();
+      const user = el.dataset.user || '';
+      const domain = el.dataset.domain || '';
+      const tld = el.dataset.tld || '';
+      if (!user || !domain || !tld) return;
+      window.location.href = `mailto:${user}@${domain}.${tld}`;
+    });
+  });
 </script>
 </body>
 </html>

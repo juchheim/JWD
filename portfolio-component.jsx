@@ -3,84 +3,6 @@
 
 const API_BASE_URL = window.__SITE_CONFIG?.apiBaseUrl || "";
 
-const fallbackProjects = [
-  {
-    id: 1,
-    title: "FlowBoard",
-    category: "SaaS · Project Management",
-    tagline: "A real-time collaborative workspace for distributed engineering teams.",
-    accent: "#00d4a8",
-    bg: "#0a2218",
-    timeline: [
-      { phase: "Discovery", duration: "2 wk", description: "Conducted 14 stakeholder interviews and a full competitive audit across Asana, Linear, and Notion. Identified three core friction points: async handoff confusion, context fragmentation, and lack of engineer-native views. Distilled findings into a 40-page insights report that anchored every subsequent decision." },
-      { phase: "Strategy", duration: "1 wk", description: "Mapped user journeys for four distinct personas — engineering lead, IC developer, product manager, and executive sponsor. Defined the MVP feature set and established a 'GitHub-first' data model. Aligned stakeholders on a phased rollout with measurable success KPIs." },
-      { phase: "Design", duration: "4 wk", description: "Delivered a full design system of 80+ components in Figma. Prototyped six divergent interaction models for the board canvas, ran two rounds of usability testing, and converged on a hybrid kanban/timeline hybrid that tested 38% faster for task triaging than the leading competitor." },
-      { phase: "Development", duration: "10 wk", description: "Built with Next.js 14, TypeScript, and a Supabase realtime backend. Implemented optimistic UI updates with sub-50ms perceived latency, end-to-end encrypted payloads, and a custom React drag-and-drop engine. CI/CD via GitHub Actions; zero-downtime deploys on Vercel Edge." },
-      { phase: "Launch", duration: "1 wk", description: "Coordinated a phased rollout to 800 beta users. Monitored Core Web Vitals (LCP 1.2s, CLS 0.01), set up error tracking via Sentry, and delivered a live performance dashboard for the client. Achieved 94 NPS in the first post-launch survey." }
-    ]
-  },
-  {
-    id: 2,
-    title: "Meridian Commerce",
-    category: "Web App · E-Commerce",
-    tagline: "A headless commerce platform built for high-growth DTC brands.",
-    accent: "#3b6ff5",
-    bg: "#0a0f28",
-    timeline: [
-      { phase: "Discovery", duration: "1 wk", description: "Audited legacy Shopify theme performance: 7.8s LCP, 42 render-blocking scripts. Mapped the entire purchase funnel and identified a 68% cart-abandonment rate tied to a slow checkout flow. Defined a headless architecture as the solution path." },
-      { phase: "Strategy", duration: "1 wk", description: "Selected a Shopify Storefront API + Next.js stack. Planned content modelling in Sanity CMS, defined CDN and edge caching strategy, and scoped a 12-week migration timeline with zero sales disruption as a hard constraint." },
-      { phase: "Design", duration: "3 wk", description: "Redesigned the full storefront from category browse through post-purchase. Developed a product page template that increased above-the-fold trust signals, A/B tested two checkout flows, and created a reusable component library for the client's internal team." },
-      { phase: "Development", duration: "9 wk", description: "Delivered a fully headless storefront with sub-1s TTFB via Vercel Edge Network. Integrated Stripe for PCI-compliant checkout, built a custom inventory sync service, and instrumented analytics with Segment + Google Analytics 4." },
-      { phase: "Launch", duration: "1 wk", description: "Executed a dark-launch cutover with instant rollback capability. Post-launch: LCP dropped from 7.8s to 0.9s, conversion rate increased 31%, and mobile revenue grew 55% in the first 30 days." }
-    ]
-  },
-  {
-    id: 3,
-    title: "PulseHealth",
-    category: "SaaS · Healthcare Dashboard",
-    tagline: "A HIPAA-compliant patient analytics platform for mid-size clinical networks.",
-    accent: "#a78bfa",
-    bg: "#130a2a",
-    timeline: [
-      { phase: "Discovery", duration: "3 wk", description: "Embedded with clinical staff across three hospital sites. Documented 24 distinct reporting workflows, mapped data flows from six EHR systems, and produced a HIPAA compliance gap analysis that shaped the entire technical architecture." },
-      { phase: "Strategy", duration: "2 wk", description: "Defined a role-based access control matrix (RBAC) covering nine staff personas. Selected AWS GovCloud for BAA compliance, planned audit logging requirements, and established data anonymization pipelines for analytics workloads." },
-      { phase: "Design", duration: "5 wk", description: "Designed a dashboard system optimized for clinical scanning patterns — F-pattern layouts, high-contrast data visualizations, and a color system that passes WCAG AA at all data density levels. Ran accessibility audits with screen-reader testing at every prototype stage." },
-      { phase: "Development", duration: "14 wk", description: "Built on React + Django REST, deployed on AWS ECS with RDS PostgreSQL. Implemented end-to-end encryption, automated audit trails, HL7 FHIR integration for EHR data ingestion, and a custom charting library built on D3 with accessible SVG markup." },
-      { phase: "Launch", duration: "2 wk", description: "Completed a third-party HIPAA security audit with zero critical findings. Onboarded 340 clinical staff with custom training documentation. Platform processes 2.4M patient records and has maintained 99.97% uptime for 18 months post-launch." }
-    ]
-  },
-  {
-    id: 4,
-    title: "Chronicle CMS",
-    category: "CMS · Editorial Publishing",
-    tagline: "A bespoke WordPress-based publishing platform for a national media brand.",
-    accent: "#f59e0b",
-    bg: "#1a1000",
-    timeline: [
-      { phase: "Discovery", duration: "1 wk", description: "Audited the client's existing Drupal 7 installation: 230+ content types, a decade of technical debt, and a staff of 60 editors relying on unintuitive workflows. Extracted core editorial requirements through workshop sessions and a content inventory sprint." },
-      { phase: "Strategy", duration: "1 wk", description: "Recommended a WordPress + ACF Pro + Gutenberg block library architecture. Designed a phased content migration plan using WP Migrate DB and custom import scripts, with a staging freeze window to prevent data loss." },
-      { phase: "Design", duration: "3 wk", description: "Created a Gutenberg block library of 28 purpose-built editorial components. Designed the editor experience with the 60-person newsroom in mind — keyboard-first navigation, live preview mode, and a media asset manager with AI-assisted tagging." },
-      { phase: "Development", duration: "8 wk", description: "Built a custom WordPress theme with full site editing support, ACF blocks, and a REST API extension layer for the mobile app. Implemented full-text search via Elasticsearch, automated image optimization via Cloudinary, and a staging/production pipeline on WP Engine." },
-      { phase: "Launch", duration: "1 wk", description: "Migrated 14 years of content — 180,000+ articles — with full URL preservation and SEO redirect mapping. Editor onboarding time dropped from 3 days to 4 hours. Page speed scores improved from 41 to 94 on mobile Lighthouse." }
-    ]
-  },
-  {
-    id: 5,
-    title: "NexGen Analytics",
-    category: "SaaS · Business Intelligence",
-    tagline: "A self-serve BI platform that turns raw data pipelines into boardroom-ready insights.",
-    accent: "#10b981",
-    bg: "#021810",
-    timeline: [
-      { phase: "Discovery", duration: "2 wk", description: "Interviewed analysts, data engineers, and C-suite stakeholders at five enterprise clients. Mapped the full data-to-decision journey and identified that 73% of analyst time was lost to manual report formatting. Defined a 'write once, visualize everywhere' product vision." },
-      { phase: "Strategy", duration: "2 wk", description: "Architected a multi-tenant SaaS model on AWS, defined a SQL-native query engine interface, and planned a connector marketplace for 40+ data sources at launch. Established a pricing model and self-serve onboarding funnel." },
-      { phase: "Design", duration: "6 wk", description: "Designed a query builder with progressive disclosure — approachable for business users, powerful for data engineers. Built a visualization layer with 18 chart types, a drag-and-drop dashboard composer, and a white-label theming system for enterprise clients." },
-      { phase: "Development", duration: "16 wk", description: "Built on React + FastAPI, with a Rust-based query execution engine for sub-second results on billion-row datasets. Implemented OAuth 2.0 SSO, usage-based billing via Stripe, real-time collaboration on dashboards, and a REST + GraphQL API for embedding." },
-      { phase: "Launch", duration: "2 wk", description: "Launched to 12 design partners, reaching $180k ARR within 90 days. P95 query latency on 500M-row tables: 340ms. Achieved SOC 2 Type I certification at launch, with Type II audit in progress." }
-    ]
-  }
-];
-
 async function fetchSignedReadUrl(r2Key) {
   if (!API_BASE_URL || !r2Key) return "";
   const response = await fetch(`${API_BASE_URL}/public/assets/sign-read`, {
@@ -94,7 +16,7 @@ async function fetchSignedReadUrl(r2Key) {
 }
 
 async function fetchProjectsFromApi() {
-  if (!API_BASE_URL) return fallbackProjects;
+  if (!API_BASE_URL) return [];
   const response = await fetch(`${API_BASE_URL}/public/case-studies`);
   if (!response.ok) throw new Error("Failed to load case studies");
   const body = await response.json();
@@ -124,7 +46,7 @@ async function fetchProjectsFromApi() {
     };
   }));
 
-  return projects.length > 0 ? projects : fallbackProjects;
+  return projects;
 }
 
 // ── SVG Mockup Screens ──────────────────────────────────────────────────────
@@ -291,7 +213,7 @@ function PortfolioCard({ project, featured, onOpen }) {
   const tagsToShow =
     Array.isArray(project.tags) && project.tags.length > 0
       ? project.tags
-      : project.timeline.map((t) => t.phase);
+      : (project.timeline || []).map((t) => t.phase);
 
   return (
     <div
@@ -730,17 +652,22 @@ function CaseStudyModal({ project, onClose }) {
 // ── Portfolio Grid ──────────────────────────────────────────────────────────
 function PortfolioGrid({ limit }) {
   const [activeProject, setActiveProject] = React.useState(null);
-  const [projects, setProjects] = React.useState(API_BASE_URL ? [] : fallbackProjects);
-  const [loading, setLoading] = React.useState(Boolean(API_BASE_URL));
+  const [projects, setProjects] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [loadError, setLoadError] = React.useState(null);
 
   React.useEffect(() => {
     let mounted = true;
+    setLoadError(null);
     fetchProjectsFromApi()
       .then((nextProjects) => {
         if (mounted) setProjects(nextProjects);
       })
       .catch(() => {
-        if (mounted) setProjects(fallbackProjects);
+        if (mounted) {
+          setProjects([]);
+          setLoadError("We could not load case studies right now. Please try again later.");
+        }
       })
       .finally(() => {
         if (mounted) setLoading(false);
@@ -754,8 +681,12 @@ function PortfolioGrid({ limit }) {
     return <p style={{ color: "var(--text-secondary)" }}>Loading portfolio...</p>;
   }
 
+  if (loadError) {
+    return <p style={{ color: "var(--text-secondary)" }}>{loadError}</p>;
+  }
+
   if (!displayProjects.length) {
-    return <p style={{ color: "var(--text-secondary)" }}>No projects available yet.</p>;
+    return <p style={{ color: "var(--text-secondary)" }}>Case studies will appear here once they are published.</p>;
   }
 
   return (

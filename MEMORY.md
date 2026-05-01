@@ -79,4 +79,6 @@
 - Worker contact delivery: `CONTACT_EMAIL_PROVIDER=log` or `resend` with `RESEND_API_KEY` (`POST https://api.resend.com/emails`); missing key or Resend failure maps to `503` / `502` and stable client error codes.
 - Local contact testing through Next requires `.env.local` `WORKER_API_BASE_URL` pointing at `wrangler dev` (e.g. `http://127.0.0.1:8787`); `.dev.vars` only applies to that local Worker, not to the deployed URL the proxy uses by default.
 - Wired `contact.html` form submission to `/api/worker/public/contact` with real async status/error handling and fallback messaging.
+- Public marketing copy now reflects Trip Juchheim, Greenwood MS, U.S.-only positioning, `contact@tripjuchheim.com`, and portfolio UI loads case studies from the API only (no hardcoded fallback projects).
 - `site-config.js` exposes browser `apiBaseUrl` as `/api/worker` (same-origin); the Worker proxy strips `Origin` on upstream requests so custom Vercel domains do not require Worker `CORS_ALLOWLIST` updates for portfolio/case-study fetches.
+- Contact budget ranges now use: Under $1k, $5k, $10k-$25k, >$25k, Not sure yet; website email display is obfuscated as `juchheim [at] gmail [dot] com` with click-to-compose runtime mailto assembly.

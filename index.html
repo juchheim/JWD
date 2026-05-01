@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Juchheim Web Development — Engineering Precision. Building Futures.</title>
+  <meta name="description" content="Juchheim Web Development helps small and midsize businesses and nonprofits with SaaS, web apps, and WordPress — with honesty, speed, and reliability. Based in Greenwood, Mississippi; U.S. clients only."/>
+  <meta property="og:title" content="Juchheim Web Development — SaaS, web apps &amp; WordPress"/>
+  <meta property="og:description" content="Honest scope, fast iteration, and dependable delivery for nonprofits and growing businesses. Greenwood, MS — serving clients nationwide."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://tripjuchheim.com/"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Juchheim Web Development"/>
+  <meta name="twitter:description" content="SaaS, web apps, and WordPress for small businesses and nonprofits — honesty, speed, and reliability."/>
+  <title>Juchheim Web Development — SaaS, web apps &amp; WordPress</title>
   <link rel="stylesheet" href="styles.css"/>
   <style>
     /* ── Hero ────────────────────────────────────────────── */
@@ -196,6 +204,8 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.25rem;
+      max-width: 28rem;
+      margin-inline: auto;
     }
     .stat-card {
       background: var(--bg-elevated);
@@ -291,10 +301,10 @@
 
     <p style="font-family:var(--font-sans);font-size:clamp(0.72rem,1.5vw,0.85rem);font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:#6a7d9e;opacity:0;animation:fadeUp 0.6s ease 1.55s forwards;margin-top:-0.5rem;">Juchheim Web Development</p>
 
-    <h1 class="hero-tagline" id="hero-tagline">Precision<br/>is the product.</h1>
+    <h1 class="hero-tagline" id="hero-tagline">Straight talk.<br/>Solid delivery.</h1>
 
     <p class="hero-sub">
-      We design and build web products that are fast, secure, and built to grow with your business — from custom SaaS to headless CMS.
+      We help small and midsize businesses and nonprofits with SaaS, custom web apps, and websites — from full-stack products to WordPress — with honest scope, quick iteration, and dependable delivery.
     </p>
 
     <div class="hero-actions">
@@ -315,12 +325,12 @@
     <div class="about-grid">
       <div class="reveal">
         <span class="label">Who We Are</span>
-        <h2 style="margin-top:0.75rem; margin-bottom:1.25rem;">A small team.<br/>A serious standard.</h2>
+        <h2 style="margin-top:0.75rem; margin-bottom:1.25rem;">A small shop<br/>with a serious standard.</h2>
         <p style="margin-bottom:1rem;">
-          Juchheim Web Development is a boutique digital engineering studio specialising in high-performance web applications, SaaS architecture, and custom CMS solutions.
+          Juchheim Web Development is based in Greenwood, Mississippi. We work with U.S. small and midsize businesses and nonprofits that need SaaS, web applications, or WordPress done right — without inflated promises.
         </p>
         <p style="margin-bottom:1.75rem;">
-          We work closely with founders, product teams, and agencies who need a technical partner they can trust — one that brings both engineering rigour and design sensitivity to every engagement.
+          With more than twenty years building for the web (including many years inside an advertising agency) and eight years out on our own, we focus on what actually ships: clear communication, realistic timelines, and systems you can rely on.
         </p>
         <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
           <a href="about.html" class="btn btn-outline" style="font-size:0.85rem;padding:0.6rem 1.25rem;">Meet the Team</a>
@@ -330,20 +340,12 @@
 
       <div class="about-stats reveal reveal-delay-2">
         <div class="stat-card">
-          <div class="stat-num">8<span>+</span></div>
-          <div class="stat-label">Years of practice</div>
+          <div class="stat-num">20<span>+</span></div>
+          <div class="stat-label">Years building for the web</div>
         </div>
         <div class="stat-card">
-          <div class="stat-num">60<span>+</span></div>
-          <div class="stat-label">Projects shipped</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">99<span>%</span></div>
-          <div class="stat-label">Client retention</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">0<span>.</span>9<span>s</span></div>
-          <div class="stat-label">Avg. LCP target</div>
+          <div class="stat-num">50<span>+</span></div>
+          <div class="stat-label">Projects delivered</div>
         </div>
       </div>
     </div>
@@ -380,7 +382,7 @@
         <div class="nav-logo" style="font-size:1rem;">
           <span class="bracket">&lt;</span><span class="logo-name"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span>
         </div>
-        <p id="footer-tagline">Engineering precision. Building futures. A boutique web development studio.</p>
+        <p id="footer-tagline">SaaS, web apps, and WordPress for nonprofits and growing businesses — based in Greenwood, Mississippi, serving clients nationwide.</p>
       </div>
       <div class="footer-col">
         <h5>Pages</h5>
@@ -399,7 +401,7 @@
       </div>
       <div class="footer-col">
         <h5>Contact</h5>
-        <a href="mailto:hello@juchheim.dev">hello@juchheim.dev</a>
+        <a href="#" class="obf-email" data-user="juchheim" data-domain="gmail" data-tld="com">juchheim [at] gmail [dot] com</a>
         <a href="contact.html">Start a project</a>
       </div>
     </div>
@@ -415,12 +417,12 @@
 <!-- ── Scripts ───────────────────────────────────────────────── -->
 <script>
 var TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "tagline": "No shortcuts.\nNo excuses.",
+  "tagline": "Straight talk.\nSolid delivery.",
   "accentTeal": "#00d4a8",
   "accentBlue": "#3b6ff5",
   "showGrid": true,
   "heroAlign": "center",
-  "footerTagline": "Small team. High standards. Real results."
+  "footerTagline": "SaaS, web apps, and WordPress for nonprofits and growing businesses — based in Greenwood, Mississippi, serving clients nationwide."
 }/*EDITMODE-END*/;
 </script>
 
@@ -437,20 +439,20 @@ var TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 
   // ── Tweaks ──────────────────────────────────────────────
   const TAGLINE_OPTIONS = [
-    "Precision\nis the product.",
-    "Built right.\nThe first time.",
-    "No shortcuts.\nNo excuses.",
-    "Craft at\nevery commit.",
-    "The web,\nwithout compromise.",
+    "Straight talk.\nSolid delivery.",
+    "Honesty, speed,\nreliability.",
+    "Built on clarity.\nShipped with care.",
+    "From SaaS\nto WordPress.",
+    "U.S. clients.\nStraight answers.",
   ];
 
   const FOOTER_OPTIONS = [
-    "Precision-built web products for ambitious teams.",
-    "Where engineering rigour meets product craft.",
-    "Serious software for serious businesses.",
-    "Small team. High standards. Real results.",
-    "Built to perform. Designed to last.",
-    "The web, without compromise.",
+    "SaaS, web apps, and WordPress for nonprofits and growing businesses — based in Greenwood, Mississippi, serving clients nationwide.",
+    "Independent web engineering for small and midsize U.S. organizations — Greenwood, MS.",
+    "Honest scope, fast iteration, dependable delivery — SaaS, apps, and WordPress.",
+    "Your technical partner for serious web work — based in Greenwood, Mississippi.",
+    "Small shop, high bar — web products nonprofits and businesses can rely on.",
+    "From custom SaaS to WordPress — clarity first, delivery that holds up.",
   ];
 
   function applyTweaks(t) {
@@ -559,6 +561,17 @@ var TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.obf-email').forEach((el) => {
+    el.addEventListener('click', (event) => {
+      event.preventDefault();
+      const user = el.dataset.user || '';
+      const domain = el.dataset.domain || '';
+      const tld = el.dataset.tld || '';
+      if (!user || !domain || !tld) return;
+      window.location.href = `mailto:${user}@${domain}.${tld}`;
+    });
+  });
 </script>
 </body>
 </html>

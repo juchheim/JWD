@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Selected case studies from Juchheim Web Development — SaaS, web apps, and WordPress for U.S. nonprofits and businesses."/>
+  <meta property="og:title" content="Portfolio — Juchheim Web Development"/>
+  <meta property="og:description" content="Products and platforms we have shipped — case studies load from our live catalog when published."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://tripjuchheim.com/portfolio.html"/>
+  <meta name="twitter:card" content="summary_large_image"/>
   <title>Portfolio — Juchheim Web Development</title>
   <link rel="stylesheet" href="styles.css"/>
 </head>
@@ -54,10 +60,10 @@
 <footer>
   <div class="container">
     <div class="footer-inner">
-      <div class="footer-brand"><div class="nav-logo" style="font-size:1rem;"><span class="bracket">&lt;</span><span class="logo-name"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span></div><p>Engineering precision. Building futures.</p></div>
+      <div class="footer-brand"><div class="nav-logo" style="font-size:1rem;"><span class="bracket">&lt;</span><span class="logo-name"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span></div><p>SaaS, web apps, and WordPress for nonprofits and growing businesses — based in Greenwood, Mississippi, serving clients nationwide.</p></div>
       <div class="footer-col"><h5>Pages</h5><a href="index.html">Home</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
       <div class="footer-col"><h5>Services</h5><a href="services.html">SaaS Development</a><a href="services.html">CMS Solutions</a><a href="services.html">Performance</a><a href="services.html">API & Integrations</a></div>
-      <div class="footer-col"><h5>Contact</h5><a href="mailto:hello@juchheim.dev">hello@juchheim.dev</a><a href="contact.html">Start a project</a></div>
+      <div class="footer-col"><h5>Contact</h5><a href="#" class="obf-email" data-user="juchheim" data-domain="gmail" data-tld="com">juchheim [at] gmail [dot] com</a><a href="contact.html">Start a project</a></div>
     </div>
     <div class="footer-bottom"><span>© 2026 Juchheim Web Development.</span><span>Built with precision.</span></div>
   </div>
@@ -85,6 +91,17 @@
   mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
     hamburger.classList.remove('open'); mobileNav.classList.remove('open'); document.body.style.overflow = '';
   }));
+
+  document.querySelectorAll('.obf-email').forEach((el) => {
+    el.addEventListener('click', (event) => {
+      event.preventDefault();
+      const user = el.dataset.user || '';
+      const domain = el.dataset.domain || '';
+      const tld = el.dataset.tld || '';
+      if (!user || !domain || !tld) return;
+      window.location.href = `mailto:${user}@${domain}.${tld}`;
+    });
+  });
 </script>
 </body>
 </html>

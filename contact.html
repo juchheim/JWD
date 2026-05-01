@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Contact Juchheim Web Development — Trip Juchheim, Greenwood MS. SaaS, web apps, and WordPress for U.S. small businesses and nonprofits."/>
+  <meta property="og:title" content="Contact — Juchheim Web Development"/>
+  <meta property="og:description" content="Start a project or ask a question. We reply within one business day."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://tripjuchheim.com/contact.html"/>
+  <meta name="twitter:card" content="summary_large_image"/>
   <title>Contact — Juchheim Web Development</title>
   <link rel="stylesheet" href="styles.css"/>
   <style>
@@ -236,7 +242,7 @@
           <div class="field-group">
             <div class="field">
               <label for="name">Your Name</label>
-              <input type="text" id="name" name="name" placeholder="Marcus Juchheim" autocomplete="name"/>
+              <input type="text" id="name" name="name" placeholder="James Brown" autocomplete="name"/>
               <span class="field-error" id="name-error">Please enter your name.</span>
             </div>
             <div class="field">
@@ -249,17 +255,16 @@
           <div class="field-group">
             <div class="field">
               <label for="company">Company / Product</label>
-              <input type="text" id="company" name="company" placeholder="Acme Inc."/>
+              <input type="text" id="company" name="company" placeholder="Yourcompany Inc."/>
             </div>
             <div class="field">
               <label for="budget">Approximate Budget</label>
               <select id="budget" name="budget">
                 <option value="" disabled selected>Select a range</option>
-                <option>Under $10k</option>
+                <option>Under $1k</option>
+                <option>$5k</option>
                 <option>$10k – $25k</option>
-                <option>$25k – $50k</option>
-                <option>$50k – $100k</option>
-                <option>$100k+</option>
+                <option>> $25k</option>
                 <option>Not sure yet</option>
               </select>
             </div>
@@ -290,7 +295,7 @@
           </div>
 
           <div class="form-submit">
-            <span class="form-note">We read every message personally. Expect a reply within 24 hours.</span>
+            <span class="form-note">We read every message personally. Expect a reply within one business day.</span>
             <button type="submit" class="btn btn-primary" id="submit-btn" style="font-size:0.95rem;padding:0.8rem 2rem;">
               Send Message
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -310,21 +315,21 @@
       <div class="contact-sidebar reveal reveal-delay-2">
         <div class="contact-detail">
           <div style="margin-bottom:0.75rem;">
-            <span class="availability-badge"><span class="availability-dot"></span>Taking new projects — Q3 2026</span>
+            <span class="availability-badge"><span class="availability-dot"></span>Currently taking new projects</span>
           </div>
-          <div class="contact-detail-sub">We typically have capacity for 2–3 new engagements per quarter.</div>
+          <div class="contact-detail-sub">Tell us what you are building — we will let you know if we are a fit.</div>
         </div>
 
         <div class="contact-detail">
           <div class="contact-detail-label">Email</div>
-          <div class="contact-detail-value"><a href="mailto:hello@juchheim.dev" style="color:var(--accent-teal);">hello@juchheim.dev</a></div>
+          <div class="contact-detail-value"><a href="#" class="obf-email" data-user="juchheim" data-domain="gmail" data-tld="com" style="color:var(--accent-teal);">juchheim [at] gmail [dot] com</a></div>
           <div class="contact-detail-sub">For general enquiries and project briefs.</div>
         </div>
 
         <div class="contact-detail">
           <div class="contact-detail-label">Response Time</div>
           <div class="contact-detail-value">Within 1 business day</div>
-          <div class="contact-detail-sub">Mon–Fri, 9am–6pm CET. We read every message ourselves.</div>
+          <div class="contact-detail-sub">Mon–Fri, 9am–6pm Central Time. We read every message ourselves.</div>
         </div>
 
         <div class="contact-detail">
@@ -395,10 +400,10 @@
 <footer>
   <div class="container">
     <div class="footer-inner">
-      <div class="footer-brand"><div class="nav-logo" style="font-size:1rem;"><span class="bracket">&lt;</span><span class="logo-name"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span></div><p>Engineering precision. Building futures.</p></div>
+      <div class="footer-brand"><div class="nav-logo" style="font-size:1rem;"><span class="bracket">&lt;</span><span class="logo-name"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span></div><p>SaaS, web apps, and WordPress for nonprofits and growing businesses — based in Greenwood, Mississippi, serving clients nationwide.</p></div>
       <div class="footer-col"><h5>Pages</h5><a href="index.html">Home</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
       <div class="footer-col"><h5>Services</h5><a href="services.html">SaaS Development</a><a href="services.html">CMS Solutions</a><a href="services.html">Performance</a><a href="services.html">API & Integrations</a></div>
-      <div class="footer-col"><h5>Contact</h5><a href="mailto:hello@juchheim.dev">hello@juchheim.dev</a><a href="contact.html">Start a project</a></div>
+      <div class="footer-col"><h5>Contact</h5><a href="#" class="obf-email" data-user="juchheim" data-domain="gmail" data-tld="com">juchheim [at] gmail [dot] com</a><a href="contact.html">Start a project</a></div>
     </div>
     <div class="footer-bottom"><span>© 2026 Juchheim Web Development.</span><span>Built with precision.</span></div>
   </div>
@@ -491,7 +496,7 @@
         if (!res.ok) {
           const errorMessage =
             body?.error?.message ||
-            'We could not send your message right now. Please email hello@juchheim.dev.';
+            'We could not send your message right now. Please email juchheim [at] gmail [dot] com.';
           throw new Error(errorMessage);
         }
         form.style.display = 'none';
@@ -499,7 +504,7 @@
       })
       .catch((err) => {
         setFormStatus(
-          err?.message || 'We could not send your message right now. Please email hello@juchheim.dev.',
+          err?.message || 'We could not send your message right now. Please email juchheim [at] gmail [dot] com.',
           'error'
         );
       })
@@ -507,6 +512,17 @@
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalLabel;
       });
+  });
+
+  document.querySelectorAll('.obf-email').forEach((el) => {
+    el.addEventListener('click', (event) => {
+      event.preventDefault();
+      const user = el.dataset.user || '';
+      const domain = el.dataset.domain || '';
+      const tld = el.dataset.tld || '';
+      if (!user || !domain || !tld) return;
+      window.location.href = `mailto:${user}@${domain}.${tld}`;
+    });
   });
 </script>
 </body>
