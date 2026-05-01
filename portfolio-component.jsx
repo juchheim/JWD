@@ -678,7 +678,99 @@ function PortfolioGrid({ limit }) {
   const displayProjects = limit ? projects.slice(0, limit) : projects;
 
   if (loading && displayProjects.length === 0) {
-    return <p style={{ color: "var(--text-secondary)" }}>Loading portfolio...</p>;
+    const shimmerAnimation = `
+      @keyframes shimmer-loading {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+    `;
+
+    const SkeletonBox = ({ width, height, borderRadius, style }) => (
+      <div style={{
+        width, height, borderRadius,
+        background: 'var(--bg-elevated)',
+        position: 'relative',
+        overflow: 'hidden',
+        ...style
+      }}>
+        <div style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%)',
+          animation: 'shimmer-loading 2s infinite cubic-bezier(0.4, 0, 0.2, 1)',
+        }} />
+      </div>
+    );
+
+    return (
+      <div style={{
+        display:'grid',
+        gridTemplateColumns:'repeat(auto-fill, minmax(min(100%, 420px), 1fr))',
+        gap:'1.5rem',
+        opacity: 0.8,
+      }}>
+        <style>{shimmerAnimation}</style>
+        {/* Featured Skeleton (Full width) */}
+        <div style={{
+          gridColumn:'1 / -1',
+          background: 'var(--bg-surface)',
+          border: '1px solid var(--border)',
+          borderRadius: '16px',
+          display: 'flex',
+          flexDirection: 'row',
+          overflow: 'hidden',
+        }}>
+          <div style={{ flex: '0 0 55%', minHeight: '320px', background: 'var(--bg-elevated)', position: 'relative', overflow: 'hidden' }}>
+            <div style={{
+              position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+              background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.03) 50%, transparent 100%)',
+              animation: 'shimmer-loading 2s infinite cubic-bezier(0.4, 0, 0.2, 1)',
+            }} />
+          </div>
+          <div style={{ flex: 1, padding: 'clamp(1.5rem,4vw,2.5rem)', display: 'flex', flexDirection: 'column', gap: '1rem', justifyContent: 'center' }}>
+            <SkeletonBox width="65%" height="2.2rem" borderRadius="8px" />
+            <SkeletonBox width="90%" height="1rem" borderRadius="4px" style={{ marginTop: '0.2rem' }} />
+            <SkeletonBox width="75%" height="1rem" borderRadius="4px" />
+            <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.5rem' }}>
+               <SkeletonBox width="60px" height="24px" borderRadius="4px" />
+               <SkeletonBox width="85px" height="24px" borderRadius="4px" />
+               <SkeletonBox width="55px" height="24px" borderRadius="4px" />
+            </div>
+            <SkeletonBox width="150px" height="38px" borderRadius="6px" style={{ marginTop: '1rem' }} />
+          </div>
+        </div>
+
+        {/* Standard Skeletons */}
+        {[1, 2].map((i) => (
+          <div key={i} style={{
+            background: 'var(--bg-surface)',
+            border: '1px solid var(--border)',
+            borderRadius: '16px',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+          }}>
+             <div style={{ height: '220px', background: 'var(--bg-elevated)', position: 'relative', overflow: 'hidden' }}>
+               <div style={{
+                  position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                  background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.03) 50%, transparent 100%)',
+                  animation: 'shimmer-loading 2s infinite cubic-bezier(0.4, 0, 0.2, 1)',
+                }} />
+             </div>
+             <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <SkeletonBox width="70%" height="1.4rem" borderRadius="6px" />
+                <SkeletonBox width="100%" height="0.95rem" borderRadius="4px" style={{ marginTop: '0.2rem' }} />
+                <SkeletonBox width="80%" height="0.95rem" borderRadius="4px" />
+                <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.5rem' }}>
+                   <SkeletonBox width="50px" height="24px" borderRadius="4px" />
+                   <SkeletonBox width="70px" height="24px" borderRadius="4px" />
+                </div>
+                <SkeletonBox width="150px" height="38px" borderRadius="6px" style={{ marginTop: '1rem' }} />
+             </div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
   if (loadError) {
