@@ -13,6 +13,7 @@
 - `NextWorkerProxy`: Next.js same-origin API proxy under `/api/worker/*` forwarding requests to Worker API.
 - `CategoryLifecycle`: Admin category create/delete lifecycle with usage guardrails.
 - `ContactFormDelivery`: Public contact submission flow from site form to Worker endpoint with provider adapter.
+- `StaticInlineEditingPlan`: Admin-only documentation set for editing visible static site copy in place without touching dynamic portfolio case studies.
 
 ## Relationships
 - `Website` includes `PortfolioModule` on `portfolio.html`.
@@ -31,6 +32,9 @@
 - `NextAdminUI` now uses `NextWorkerProxy` so browser cookies stay first-party on the Vercel domain.
 - `CategoryLifecycle` is enforced by `WorkerAPI` with a delete safety check preventing removal of categories assigned to case studies.
 - `ContactFormDelivery` is handled by `WorkerAPI` endpoint `POST /public/contact` and consumed by `contact.html` via same-origin proxy path `/api/worker/public/contact`.
+- `StaticInlineEditingPlan` extends `SiteFileRouter` by proposing a server-side static-content resolver on top of the existing HTML template routes.
+- `StaticInlineEditingPlan` depends on `WorkerAPI` and `NextWorkerProxy` for authenticated inline-copy writes from public pages.
+- `StaticInlineEditingPlan` excludes `PortfolioModule` case-study data and instead targets only hardcoded marketing-site copy.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -82,3 +86,7 @@
 - Public marketing copy now reflects Trip Juchheim, Greenwood MS, U.S.-only positioning, `contact@tripjuchheim.com`, and portfolio UI loads case studies from the API only (no hardcoded fallback projects).
 - `site-config.js` exposes browser `apiBaseUrl` as `/api/worker` (same-origin); the Worker proxy strips `Origin` on upstream requests so custom Vercel domains do not require Worker `CORS_ALLOWLIST` updates for portfolio/case-study fetches.
 - Contact budget ranges now use: Under $1k, $5k, $10k-$25k, >$25k, Not sure yet; website email display is obfuscated as `juchheim [at] gmail [dot] com` with click-to-compose runtime mailto assembly.
+- Added planning docs under `docs/admin/edit-in-place/`: `overview.md`, `content-inventory.md`, `architecture.md`, `api-and-schema.md`, and `implementation-phases.md`.
+- The recommended inline-editing approach uses a code-defined content registry, D1-backed static content values, server-side HTML substitution, and an admin-only overlay mounted on public pages after session verification.
+- The editable surface inventory covers `index.html`, `about.html`, `services.html`, `contact.html`, and the static shell of `portfolio.html`; dynamic case-study content in `portfolio-component.jsx` remains out of scope.
+- Updated inline-editing docs so `/about.html` team members are an MVP repeatable list (`about.team.members`) supporting add/remove/reorder/edit instead of fixed per-person keys.
