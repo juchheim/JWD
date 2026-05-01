@@ -26,6 +26,7 @@
 - `StaticDivContainerSafeReplace`: HTML replacement helper that preserves nested `div` structure when rewriting `data-content-key` container content.
 - `StaticReplacementDollarSafe`: Renderer safeguard that uses callback-based replacements so `$` in content (e.g., `$1k`) is treated literally.
 - `StaticElementInnerSafeReplace`: Generic nested-element inner-HTML replacement keyed by `data-content-key`, preventing malformed markup when same-tag elements are nested.
+- `AvailabilityBadgeRenderGuard`: Contact-page text render guard that preserves `availability-dot` icon and fallback text for `contact.sidebar.availabilityBadge`.
 
 ## Relationships
 - `Website` includes `PortfolioModule` on `portfolio.html`.
@@ -59,6 +60,7 @@
 - `StaticDivContainerSafeReplace` is used by static-content list/FAQ/team/structured renderers to avoid malformed HTML and downstream layout breakage.
 - `StaticReplacementDollarSafe` is used by text and select replacements in `lib/siteFiles.ts` to prevent regex backreference interpolation from user content.
 - `StaticElementInnerSafeReplace` is used by text replacement so nested `span`/same-tag structures (e.g., availability badge) remain balanced.
+- `AvailabilityBadgeRenderGuard` is applied inside `withTextReplacement` for `contact.sidebar.availabilityBadge` to preserve badge icon + label structure.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -129,3 +131,4 @@
 - Fixed services card layout regression caused by regex-based `div` container replacement truncating nested markup; `lib/siteFiles.ts` now replaces `data-content-key` `div` inner HTML using a depth-aware matcher so sibling cards keep original width/layout.
 - Fixed contact form corruption where values like `Under $1k` triggered `$1` regex backreference expansion inside `String.replace` replacement strings; renderer now uses function-based replacements for text/select updates so `$` remains literal.
 - Fixed contact sidebar badge malformed HTML (`</span>` drift causing stray oval/text) by replacing text-field paired-tag regex logic with depth-aware element matching keyed by `data-content-key`, which correctly handles nested same-tag markup like `span` inside `span`.
+- Applied remote D1 hotfix to restore `contact.sidebar.availabilityBadge` text and added renderer guard so contact badge output always includes `<span class="availability-dot"></span>` plus text (with fallback copy) even after future edits.

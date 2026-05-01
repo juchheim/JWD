@@ -127,9 +127,12 @@ function replaceDivContainerInnerHtml(html: string, contentKey: string, innerHtm
 }
 
 function withTextReplacement(html: string, contentKey: string, value: string, preserveBreaks = false): string {
-  const inner = preserveBreaks
-    ? escapeHtml(value).replace(/\n/g, "<br/>")
-    : escapeHtml(value);
+  const inner =
+    contentKey === "contact.sidebar.availabilityBadge"
+      ? `<span class="availability-dot"></span>${escapeHtml(value || "Currently taking new projects")}`
+      : preserveBreaks
+        ? escapeHtml(value).replace(/\n/g, "<br/>")
+        : escapeHtml(value);
   const withElementReplacement = replaceElementInnerHtmlByKey(html, contentKey, inner);
   if (withElementReplacement !== html) return withElementReplacement;
 
