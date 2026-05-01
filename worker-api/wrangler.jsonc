@@ -4,6 +4,11 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-04-30",
   "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "CONTACT_EMAIL_PROVIDER": "resend",
+    "CONTACT_EMAIL_TO": "juchheim@gmail.com",
+    "CONTACT_EMAIL_FROM": "contact@tripjuchheim.com"
+  },
   "observability": {
     "enabled": true,
     "head_sampling_rate": 1
