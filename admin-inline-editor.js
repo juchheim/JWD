@@ -170,6 +170,10 @@
     return Array.from(document.querySelectorAll(`[data-content-key="${key}"]`));
   }
 
+  function hasNonEmptyArray(value) {
+    return Array.isArray(value) && value.length > 0;
+  }
+
   function inferValueFromDom(key, fieldType) {
     const nodes = queryByKey(key);
     if (nodes.length < 1) return fieldType === "string_list" ? [] : "";
@@ -407,7 +411,15 @@
     const fieldType = getFieldType(key);
     const currentStored = getStoredValue(key);
     const fallback = inferValueFromDom(key, fieldType);
-    const effectiveValue = currentStored == null ? fallback : currentStored;
+    const prefersDomFallback =
+      (fieldType === "string_list" ||
+        fieldType === "faq_items" ||
+        fieldType === "team_members" ||
+        fieldType === "structured_list") &&
+      Array.isArray(currentStored) &&
+      currentStored.length === 0 &&
+      hasNonEmptyArray(fallback);
+    const effectiveValue = currentStored == null || prefersDomFallback ? fallback : currentStored;
 
     editorKeyLabel.textContent = key;
     editorTypeLabel.textContent = fieldType;

@@ -27,6 +27,7 @@
 - `StaticReplacementDollarSafe`: Renderer safeguard that uses callback-based replacements so `$` in content (e.g., `$1k`) is treated literally.
 - `StaticElementInnerSafeReplace`: Generic nested-element inner-HTML replacement keyed by `data-content-key`, preventing malformed markup when same-tag elements are nested.
 - `AvailabilityBadgeRenderGuard`: Contact-page text render guard that preserves `availability-dot` icon and fallback text for `contact.sidebar.availabilityBadge`.
+- `InlineEditorArrayDomFallback`: Overlay editor behavior that prefers visible DOM array data when stored array values are empty.
 
 ## Relationships
 - `Website` includes `PortfolioModule` on `portfolio.html`.
@@ -61,6 +62,7 @@
 - `StaticReplacementDollarSafe` is used by text and select replacements in `lib/siteFiles.ts` to prevent regex backreference interpolation from user content.
 - `StaticElementInnerSafeReplace` is used by text replacement so nested `span`/same-tag structures (e.g., availability badge) remain balanced.
 - `AvailabilityBadgeRenderGuard` is applied inside `withTextReplacement` for `contact.sidebar.availabilityBadge` to preserve badge icon + label structure.
+- `InlineEditorArrayDomFallback` is used by `admin-inline-editor.js` open-editor flow for `string_list`, `faq_items`, `team_members`, and `structured_list`.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -132,3 +134,4 @@
 - Fixed contact form corruption where values like `Under $1k` triggered `$1` regex backreference expansion inside `String.replace` replacement strings; renderer now uses function-based replacements for text/select updates so `$` remains literal.
 - Fixed contact sidebar badge malformed HTML (`</span>` drift causing stray oval/text) by replacing text-field paired-tag regex logic with depth-aware element matching keyed by `data-content-key`, which correctly handles nested same-tag markup like `span` inside `span`.
 - Applied remote D1 hotfix to restore `contact.sidebar.availabilityBadge` text and added renderer guard so contact badge output always includes `<span class="availability-dot"></span>` plus text (with fallback copy) even after future edits.
+- Fixed services “Tools we trust” inline editor showing `[]` by making overlay editor prefer current DOM-derived array values when stored array data is empty, so editors can recover and update visible structured/list content without manual JSON reconstruction.
