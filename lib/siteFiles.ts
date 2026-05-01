@@ -351,13 +351,14 @@ export async function serveSiteFile(routePath: string, requestUrl?: string): Pro
 
   const filePath = path.join(/* turbopackIgnore: true */ process.cwd(), entry.file);
   const template = await readFile(filePath, "utf8");
+  const isHtml = entry.contentType.startsWith("text/html");
   const contents = entry.contentType.startsWith("text/html")
     ? withInlineEditorScript(await applyStaticContent(routePath, template, requestUrl))
     : template;
   return new Response(contents, {
     headers: {
       "content-type": entry.contentType,
-      "cache-control": "public, max-age=0, must-revalidate",
+      "cache-control": isHtml ? "no-store" : "public, max-age=0, must-revalidate",
     },
   });
 }

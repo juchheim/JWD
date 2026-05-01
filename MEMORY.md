@@ -21,6 +21,7 @@
 - `StaticContentOverlayPhase5`: Client-side admin-only inline editing overlay mounted on public pages for direct static-content updates.
 - `WorkerConfigVars`: Source-controlled Wrangler `vars` in `worker-api/wrangler.jsonc` to preserve non-secret runtime configuration across deploys.
 - `StaticContentOriginFallback`: Site-file rendering fallback that resolves static-content API via same-origin `/api/worker` when direct Worker base URL is unavailable.
+- `StaticContentNoStoreRender`: Public HTML route/render policy that disables caching for static-content-substituted pages to prevent stale post-save reloads.
 
 ## Relationships
 - `Website` includes `PortfolioModule` on `portfolio.html`.
@@ -49,6 +50,7 @@
 - `StaticContentOverlayPhase5` depends on `GET /admin/auth/session`, `GET /admin/static-content`, and `PUT /admin/static-content/:contentKey` for authenticated in-place edits.
 - `WorkerConfigVars` is consumed by `WorkerAPI` deploys so `CONTACT_EMAIL_PROVIDER`, `CONTACT_EMAIL_TO`, and `CONTACT_EMAIL_FROM` are not dropped by config sync.
 - `StaticContentOriginFallback` extends `SiteFileRouter` by passing request URL into `serveSiteFile()` so server-side static-content fetches can use request origin + `/api/worker`.
+- `StaticContentNoStoreRender` extends `SiteFileRouter` and page route handlers with `force-dynamic` + `cache-control: no-store` for HTML responses.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -114,3 +116,4 @@
 - Implemented Phase 5 overlay via `admin-inline-editor.js` and `lib/siteFiles.ts` script injection: authenticated admins can toggle inline edit mode, edit any `data-content-key` field, save through `PUT /api/worker/admin/static-content/:contentKey`, and see optimistic DOM updates for text, lists, FAQs, team members, and structured rows.
 - Added `vars` to `worker-api/wrangler.jsonc` for contact delivery (`CONTACT_EMAIL_PROVIDER`, `CONTACT_EMAIL_TO`, `CONTACT_EMAIL_FROM`) so future Worker deploys preserve non-secret email configuration.
 - Fixed “edits save but do not display” render gap by updating `serveSiteFile()` callers (`app/route.ts`, `app/[...slug]/route.ts`) to pass request URL and adding same-origin `/api/worker` fallback resolution in `lib/siteFiles.ts` when Worker base env is unavailable/relative.
+- Added `force-dynamic` to public HTML route handlers and switched HTML response caching to `no-store` in `lib/siteFiles.ts` so refresh shows latest saved static-content values instead of stale cached HTML.
