@@ -64,6 +64,39 @@ function keyRegexFragment(contentKey: string): string {
   return contentKey.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function replaceElementInnerHtmlByKey(html: string, contentKey: string, innerHtml: string): string {
+  const key = keyRegexFragment(contentKey);
+  const openTagRegex = new RegExp(
+    `<([a-zA-Z0-9]+)([^>]*\\bdata-content-key="${key}"[^>]*)>`,
+    "i"
+  );
+  const openMatch = openTagRegex.exec(html);
+  if (!openMatch || openMatch.index < 0) return html;
+
+  const tagName = openMatch[1].toLowerCase();
+  const openEnd = openMatch.index + openMatch[0].length;
+  const tokenRegex = new RegExp(`<\\/?${tagName}\\b[^>]*>`, "gi");
+  tokenRegex.lastIndex = openEnd;
+
+  let depth = 1;
+  let token = tokenRegex.exec(html);
+  while (token) {
+    const tag = token[0];
+    const isClose = tag.startsWith("</");
+    const isSelfClosing = /\/>$/.test(tag);
+    if (!isClose && !isSelfClosing) depth += 1;
+    if (isClose) depth -= 1;
+
+    if (depth === 0) {
+      const closeStart = token.index;
+      return `${html.slice(0, openEnd)}${innerHtml}${html.slice(closeStart)}`;
+    }
+    token = tokenRegex.exec(html);
+  }
+
+  return html;
+}
+
 function replaceDivContainerInnerHtml(html: string, contentKey: string, innerHtml: string): string {
   const key = keyRegexFragment(contentKey);
   const openTagRegex = new RegExp(`<div([^>]*\\bdata-content-key="${key}"[^>]*)>`, "i");
@@ -94,24 +127,20 @@ function replaceDivContainerInnerHtml(html: string, contentKey: string, innerHtm
 }
 
 function withTextReplacement(html: string, contentKey: string, value: string, preserveBreaks = false): string {
-  const key = keyRegexFragment(contentKey);
   const inner = preserveBreaks
     ? escapeHtml(value).replace(/\n/g, "<br/>")
     : escapeHtml(value);
+  const withElementReplacement = replaceElementInnerHtmlByKey(html, contentKey, inner);
+  if (withElementReplacement !== html) return withElementReplacement;
 
-  const pairedRegex = new RegExp(
-    `(<([a-zA-Z0-9]+)([^>]*\\bdata-content-key="${key}"[^>]*)>)([\\s\\S]*?)(<\\/\\2>)`,
-    "i"
-  );
-  if (pairedRegex.test(html)) {
-    return html.replace(pairedRegex, `$1${inner}$5`);
-  }
-
+  const key = keyRegexFragment(contentKey);
   const placeholderRegex = new RegExp(
     `(<(?:input|textarea)([^>]*\\bdata-content-key="${key}"[^>]*\\bplaceholder="))([^"]*)(")`,
     "i"
   );
-  return html.replace(placeholderRegex, `$1${escapeHtml(value)}$4`);
+  return html.replace(placeholderRegex, (_match, prefix, _existingValue, suffix) => {
+    return `${prefix}${escapeHtml(value)}${suffix}`;
+  });
 }
 
 function withStringListReplacement(html: string, contentKey: string, values: string[]): string {
@@ -133,7 +162,9 @@ function withStringListReplacement(html: string, contentKey: string, values: str
           : `<option>${escapeHtml(value)}</option>`
       )
       .join("");
-    return html.replace(selectRegex, `$1${options}$4`);
+    return html.replace(selectRegex, (_match, openTag, _attrs, _existingInner, closeTag) => {
+      return `${openTag}${options}${closeTag}`;
+    });
   }
 
   const featuresRegex = new RegExp(

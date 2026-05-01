@@ -24,6 +24,8 @@
 - `StaticContentNoStoreRender`: Public HTML route/render policy that disables caching for static-content-substituted pages to prevent stale post-save reloads.
 - `HomeTweaksSyncGuard`: Homepage tweak bootstrap guard that syncs `TWEAK_DEFAULTS` from live DOM so client tweaks do not overwrite inline-edited server-rendered content.
 - `StaticDivContainerSafeReplace`: HTML replacement helper that preserves nested `div` structure when rewriting `data-content-key` container content.
+- `StaticReplacementDollarSafe`: Renderer safeguard that uses callback-based replacements so `$` in content (e.g., `$1k`) is treated literally.
+- `StaticElementInnerSafeReplace`: Generic nested-element inner-HTML replacement keyed by `data-content-key`, preventing malformed markup when same-tag elements are nested.
 
 ## Relationships
 - `Website` includes `PortfolioModule` on `portfolio.html`.
@@ -55,6 +57,8 @@
 - `StaticContentNoStoreRender` extends `SiteFileRouter` and page route handlers with `force-dynamic` + `cache-control: no-store` for HTML responses.
 - `HomeTweaksSyncGuard` depends on server-rendered `data-content-key` substitutions being present in `#hero-tagline` and `#footer-tagline` before tweak initialization.
 - `StaticDivContainerSafeReplace` is used by static-content list/FAQ/team/structured renderers to avoid malformed HTML and downstream layout breakage.
+- `StaticReplacementDollarSafe` is used by text and select replacements in `lib/siteFiles.ts` to prevent regex backreference interpolation from user content.
+- `StaticElementInnerSafeReplace` is used by text replacement so nested `span`/same-tag structures (e.g., availability badge) remain balanced.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -123,3 +127,5 @@
 - Added `force-dynamic` to public HTML route handlers and switched HTML response caching to `no-store` in `lib/siteFiles.ts` so refresh shows latest saved static-content values instead of stale cached HTML.
 - Fixed homepage post-refresh revert where tweak bootstrap script reapplied hardcoded `TWEAK_DEFAULTS` over saved content by syncing `TWEAK_DEFAULTS.tagline` and `TWEAK_DEFAULTS.footerTagline` from live DOM in `index.html` before mounting tweaks.
 - Fixed services card layout regression caused by regex-based `div` container replacement truncating nested markup; `lib/siteFiles.ts` now replaces `data-content-key` `div` inner HTML using a depth-aware matcher so sibling cards keep original width/layout.
+- Fixed contact form corruption where values like `Under $1k` triggered `$1` regex backreference expansion inside `String.replace` replacement strings; renderer now uses function-based replacements for text/select updates so `$` remains literal.
+- Fixed contact sidebar badge malformed HTML (`</span>` drift causing stray oval/text) by replacing text-field paired-tag regex logic with depth-aware element matching keyed by `data-content-key`, which correctly handles nested same-tag markup like `span` inside `span`.
