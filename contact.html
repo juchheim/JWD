@@ -209,26 +209,26 @@
   <div class="container nav-inner">
     <a href="index.html" class="nav-logo" style="font-size:1.45rem;"><span class="bracket">&lt;</span><span class="logo-name" style="letter-spacing:-0.12em;margin-right:0.12em;"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span></a>
     <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="services.html">Services</a>
-      <a href="portfolio.html">Portfolio</a>
-      <a href="about.html">About</a>
-      <a href="contact.html" class="active nav-cta">Start a Project</a>
+      <a href="index.html" data-content-key="global.nav.homeLabel">Home</a>
+      <a href="services.html" data-content-key="global.nav.servicesLabel">Services</a>
+      <a href="portfolio.html" data-content-key="global.nav.portfolioLabel">Portfolio</a>
+      <a href="about.html" data-content-key="global.nav.aboutLabel">About</a>
+      <a href="contact.html" class="active nav-cta" data-content-key="global.nav.primaryCtaLabel">Start a Project</a>
     </div>
     <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
   </div>
 </nav>
 <div class="nav-mobile-overlay" id="mobile-nav">
-  <a href="index.html">Home</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a><a href="about.html">About</a>
-  <a href="contact.html" class="btn btn-primary nav-cta active">Start a Project</a>
+  <a href="index.html" data-content-key="global.nav.homeLabel">Home</a><a href="services.html" data-content-key="global.nav.servicesLabel">Services</a><a href="portfolio.html" data-content-key="global.nav.portfolioLabel">Portfolio</a><a href="about.html" data-content-key="global.nav.aboutLabel">About</a>
+  <a href="contact.html" class="btn btn-primary nav-cta active" data-content-key="global.nav.primaryCtaLabel">Start a Project</a>
 </div>
 
 <!-- Page Hero -->
 <section class="page-hero">
   <div class="container">
-    <span class="label">Get in Touch</span>
-    <h1>Let's talk about<br/><em>what you're building.</em></h1>
-    <p>Share the brief — we'll respond within one business day with an honest assessment and a clear plan.</p>
+    <span class="label" data-content-key="contact.hero.label">Get in Touch</span>
+    <h1 data-content-key="contact.hero.heading">Let's talk about<br/><em>what you're building.</em></h1>
+    <p data-content-key="contact.hero.body">Share the brief — we'll respond within one business day with an honest assessment and a clear plan.</p>
   </div>
 </section>
 
@@ -242,26 +242,26 @@
         <form class="contact-form" id="contact-form" novalidate>
           <div class="field-group">
             <div class="field">
-              <label for="name">Your Name</label>
-              <input type="text" id="name" name="name" placeholder="James Brown" autocomplete="name"/>
+              <label for="name" data-content-key="contact.form.nameLabel">Your Name</label>
+              <input type="text" id="name" name="name" placeholder="James Brown" autocomplete="name" data-content-key="contact.form.namePlaceholder"/>
               <span class="field-error" id="name-error">Please enter your name.</span>
             </div>
             <div class="field">
-              <label for="email">Email Address</label>
-              <input type="email" id="email" name="email" placeholder="hello@yourcompany.com" autocomplete="email"/>
+              <label for="email" data-content-key="contact.form.emailLabel">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="hello@yourcompany.com" autocomplete="email" data-content-key="contact.form.emailPlaceholder"/>
               <span class="field-error" id="email-error">Please enter a valid email.</span>
             </div>
           </div>
 
           <div class="field-group">
             <div class="field">
-              <label for="company">Company / Product</label>
-              <input type="text" id="company" name="company" placeholder="Yourcompany Inc."/>
+              <label for="company" data-content-key="contact.form.companyLabel">Company / Product</label>
+              <input type="text" id="company" name="company" placeholder="Yourcompany Inc." data-content-key="contact.form.companyPlaceholder"/>
             </div>
             <div class="field">
-              <label for="budget">Approximate Budget</label>
-              <select id="budget" name="budget">
-                <option value="" disabled selected>Select a range</option>
+              <label for="budget" data-content-key="contact.form.budgetLabel">Approximate Budget</label>
+              <select id="budget" name="budget" data-content-key="contact.form.budgetOptions">
+                <option value="" disabled selected data-content-key="contact.form.budgetPlaceholder">Select a range</option>
                 <option>Under $1k</option>
                 <option>$5k</option>
                 <option>$10k – $25k</option>
@@ -272,9 +272,9 @@
           </div>
 
           <div class="field">
-            <label for="service">Type of Project</label>
-            <select id="service" name="service">
-              <option value="" disabled selected>What are you building?</option>
+            <label for="service" data-content-key="contact.form.serviceLabel">Type of Project</label>
+            <select id="service" name="service" data-content-key="contact.form.serviceOptions">
+              <option value="" disabled selected data-content-key="contact.form.servicePlaceholder">What are you building?</option>
               <option>SaaS / Web Application</option>
               <option>CMS / WordPress Site</option>
               <option>E-Commerce Platform</option>
@@ -286,8 +286,8 @@
           </div>
 
           <div class="field">
-            <label for="message">Tell Us More</label>
-            <textarea id="message" name="message" placeholder="Describe what you're building, the problem you're solving, and where you're at in the process. The more detail, the better."></textarea>
+            <label for="message" data-content-key="contact.form.messageLabel">Tell Us More</label>
+            <textarea id="message" name="message" placeholder="Describe what you're building, the problem you're solving, and where you're at in the process. The more detail, the better." data-content-key="contact.form.messagePlaceholder"></textarea>
             <span class="field-error" id="message-error">Please describe your project.</span>
           </div>
           <div class="hp-field" aria-hidden="true">
@@ -296,9 +296,9 @@
           </div>
 
           <div class="form-submit">
-            <span class="form-note">We read every message personally. Expect a reply within one business day.</span>
+            <span class="form-note" data-content-key="contact.form.note">We read every message personally. Expect a reply within one business day.</span>
             <button type="submit" class="btn btn-primary" id="submit-btn" style="font-size:0.95rem;padding:0.8rem 2rem;">
-              Send Message
+              <span data-content-key="contact.form.submitButton">Send Message</span>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </button>
           </div>
@@ -307,8 +307,8 @@
 
         <div class="form-success" id="form-success">
           <div style="font-size:2rem;margin-bottom:0.75rem;">✓</div>
-          <h3>Message received.</h3>
-          <p>Thanks for reaching out. We'll be in touch within one business day.</p>
+          <h3 data-content-key="contact.form.successHeading">Message received.</h3>
+          <p data-content-key="contact.form.successBody">Thanks for reaching out. We'll be in touch within one business day.</p>
         </div>
       </div>
 
@@ -316,26 +316,26 @@
       <div class="contact-sidebar reveal reveal-delay-2">
         <div class="contact-detail">
           <div style="margin-bottom:0.75rem;">
-            <span class="availability-badge"><span class="availability-dot"></span>Currently taking new projects</span>
+            <span class="availability-badge" data-content-key="contact.sidebar.availabilityBadge"><span class="availability-dot"></span>Currently taking new projects</span>
           </div>
-          <div class="contact-detail-sub balance-wrap">Tell us what you are building — we will let you know if we are a fit.</div>
+          <div class="contact-detail-sub balance-wrap" data-content-key="contact.sidebar.availabilityBody">Tell us what you are building — we will let you know if we are a fit.</div>
         </div>
 
         <div class="contact-detail">
-          <div class="contact-detail-label">Email</div>
-          <div class="contact-detail-value"><a href="#" class="obf-email" data-user="juchheim" data-domain="gmail" data-tld="com" style="color:var(--accent-teal);">juchheim [at] gmail [dot] com</a></div>
-          <div class="contact-detail-sub">For general enquiries and project briefs.</div>
+          <div class="contact-detail-label" data-content-key="contact.sidebar.emailHeading">Email</div>
+          <div class="contact-detail-value"><a href="#" class="obf-email" data-user="juchheim" data-domain="gmail" data-tld="com" style="color:var(--accent-teal);" data-content-key="global.contact.emailDisplay">juchheim [at] gmail [dot] com</a></div>
+          <div class="contact-detail-sub" data-content-key="contact.sidebar.emailBody">For general enquiries and project briefs.</div>
         </div>
 
         <div class="contact-detail">
-          <div class="contact-detail-label">Response Time</div>
-          <div class="contact-detail-value">Within 1 business day</div>
-          <div class="contact-detail-sub balance-wrap">Mon–Fri, 9am–6pm Central Time. We read every message ourselves.</div>
+          <div class="contact-detail-label" data-content-key="contact.sidebar.responseTimeHeading">Response Time</div>
+          <div class="contact-detail-value" data-content-key="contact.sidebar.responseTimeValue">Within 1 business day</div>
+          <div class="contact-detail-sub balance-wrap" data-content-key="contact.sidebar.responseTimeBody">Mon–Fri, 9am–6pm Central Time. We read every message ourselves.</div>
         </div>
 
         <div class="contact-detail">
-          <div class="contact-detail-label">What Happens Next</div>
-          <div style="display:flex;flex-direction:column;gap:0.75rem;margin-top:0.5rem;">
+          <div class="contact-detail-label" data-content-key="contact.sidebar.nextHeading">What Happens Next</div>
+          <div style="display:flex;flex-direction:column;gap:0.75rem;margin-top:0.5rem;" data-content-key="contact.sidebar.nextSteps">
             <div style="display:flex;gap:0.75rem;align-items:flex-start;">
               <div style="width:22px;height:22px;border-radius:50%;background:var(--accent-teal-dim);border:1px solid rgba(0,212,168,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.65rem;font-weight:700;color:var(--accent-teal);">1</div>
               <div style="font-size:0.85rem;color:var(--text-secondary);">We review your brief and reply with initial thoughts.</div>
@@ -359,10 +359,10 @@
 <section id="faq" class="section-pad">
   <div class="container" style="max-width:800px;">
     <div class="section-header reveal">
-      <span class="label">Common Questions</span>
-      <h2>Before you write.</h2>
+      <span class="label" data-content-key="contact.faq.label">Common Questions</span>
+      <h2 data-content-key="contact.faq.heading">Before you write.</h2>
     </div>
-    <div class="faq-list reveal reveal-delay-1">
+    <div class="faq-list reveal reveal-delay-1" data-content-key="contact.faq.items">
 
       <details class="faq-item">
         <summary class="faq-q">How do you price projects?<span class="faq-icon">+</span></summary>
@@ -401,12 +401,12 @@
 <footer>
   <div class="container">
     <div class="footer-inner">
-      <div class="footer-brand"><div class="nav-logo" style="font-size:1.45rem;"><span class="bracket">&lt;</span><span class="logo-name" style="letter-spacing:-0.12em;margin-right:0.12em;"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span></div><p>SaaS, web apps, and WordPress for nonprofits and growing businesses — based in Greenwood, Mississippi, serving clients nationwide.</p></div>
-      <div class="footer-col"><h5>Pages</h5><a href="index.html">Home</a><a href="services.html">Services</a><a href="portfolio.html">Portfolio</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
-      <div class="footer-col"><h5>Services</h5><a href="services.html">SaaS Development</a><a href="services.html">CMS Solutions</a><a href="services.html">Performance</a><a href="services.html">API & Integrations</a></div>
-      <div class="footer-col"><h5>Contact</h5><a href="#" class="obf-email" data-user="juchheim" data-domain="gmail" data-tld="com">juchheim [at] gmail [dot] com</a><a href="contact.html">Start a project</a></div>
+      <div class="footer-brand"><div class="nav-logo" style="font-size:1.45rem;"><span class="bracket">&lt;</span><span class="logo-name" style="letter-spacing:-0.12em;margin-right:0.12em;"><span class="logo-nav-letter">J</span><span class="logo-nav-letter">W</span><span class="logo-nav-letter">D</span></span><span class="bracket slash"> /&gt;</span></div><p data-content-key="global.footer.tagline">SaaS, web apps, and WordPress for nonprofits and growing businesses — based in Greenwood, Mississippi, serving clients nationwide.</p></div>
+      <div class="footer-col"><h5 data-content-key="global.footer.pagesHeading">Pages</h5><a href="index.html" data-content-key="global.footer.pages.home">Home</a><a href="services.html" data-content-key="global.footer.pages.services">Services</a><a href="portfolio.html" data-content-key="global.footer.pages.portfolio">Portfolio</a><a href="about.html" data-content-key="global.footer.pages.about">About</a><a href="contact.html" data-content-key="global.footer.pages.contact">Contact</a></div>
+      <div class="footer-col"><h5 data-content-key="global.footer.servicesHeading">Services</h5><a href="services.html" data-content-key="global.footer.services.saas">SaaS Development</a><a href="services.html" data-content-key="global.footer.services.cms">CMS Solutions</a><a href="services.html" data-content-key="global.footer.services.performance">Performance</a><a href="services.html" data-content-key="global.footer.services.api">API & Integrations</a></div>
+      <div class="footer-col"><h5 data-content-key="global.footer.contactHeading">Contact</h5><a href="#" class="obf-email" data-user="juchheim" data-domain="gmail" data-tld="com" data-content-key="global.contact.emailDisplay">juchheim [at] gmail [dot] com</a><a href="contact.html" data-content-key="global.footer.contact.primaryCta">Start a project</a></div>
     </div>
-    <div class="footer-bottom"><span>© 2026 Juchheim Web Development.</span><span>Built with precision.</span></div>
+    <div class="footer-bottom"><span data-content-key="global.footer.copyright">© 2026 Juchheim Web Development.</span><span data-content-key="global.footer.closingLine">Built with precision.</span></div>
   </div>
 </footer>
 

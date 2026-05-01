@@ -14,6 +14,8 @@
 - `CategoryLifecycle`: Admin category create/delete lifecycle with usage guardrails.
 - `ContactFormDelivery`: Public contact submission flow from site form to Worker endpoint with provider adapter.
 - `StaticInlineEditingPlan`: Admin-only documentation set for editing visible static site copy in place without touching dynamic portfolio case studies.
+- `StaticContentRegistry`: Phase 1 code-defined registry in `lib/staticContentRegistry.ts` that maps inline-editable content keys to page ownership, field types, and DOM selectors.
+- `StaticContentSeedPipeline`: Phase 2 migration and seed tooling for populating `static_content` from template defaults.
 
 ## Relationships
 - `Website` includes `PortfolioModule` on `portfolio.html`.
@@ -35,6 +37,8 @@
 - `StaticInlineEditingPlan` extends `SiteFileRouter` by proposing a server-side static-content resolver on top of the existing HTML template routes.
 - `StaticInlineEditingPlan` depends on `WorkerAPI` and `NextWorkerProxy` for authenticated inline-copy writes from public pages.
 - `StaticInlineEditingPlan` excludes `PortfolioModule` case-study data and instead targets only hardcoded marketing-site copy.
+- `StaticContentRegistry` defines Phase 1 ownership and selectors for `SiteFileRouter` templates before server-side substitution or admin overlay work begins.
+- `StaticContentSeedPipeline` uses `worker-api/scripts/seed-static-content.mjs` to generate SQL from `data-content-key` markup and applies it through Wrangler D1 execute commands.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -90,3 +94,7 @@
 - The recommended inline-editing approach uses a code-defined content registry, D1-backed static content values, server-side HTML substitution, and an admin-only overlay mounted on public pages after session verification.
 - The editable surface inventory covers `index.html`, `about.html`, `services.html`, `contact.html`, and the static shell of `portfolio.html`; dynamic case-study content in `portfolio-component.jsx` remains out of scope.
 - Updated inline-editing docs so `/about.html` team members are an MVP repeatable list (`about.team.members`) supporting add/remove/reorder/edit instead of fixed per-person keys.
+- Implemented Phase 1 by adding `lib/staticContentRegistry.ts` plus `data-content-key` hooks across `index.html`, `about.html`, `services.html`, `contact.html`, and `portfolio.html`.
+- Shared nav/footer copy now uses stable repeated keys across templates; page-specific sections use page-scoped keys; `/about.html` team cards are marked as a repeatable collection via `about.team.members`.
+- Added `worker-api/migrations/0002_static_content.sql` creating `static_content` with scope/field-type constraints and lookup indexes.
+- Added `worker-api/scripts/seed-static-content.mjs`, `seed-static-content.sh`, and generated `seed-static-content.sql`; current generation backfills 153 registry keys from template defaults.

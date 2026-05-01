@@ -119,6 +119,16 @@ The Worker uses the same `POST https://api.resend.com/emails` endpoint and beare
 - Optional custom DB name:
   - `./scripts/backup-d1.sh jwd-admin-db`
 
+## Static Content Seed (Phase 2)
+- Generate SQL from current template defaults + `data-content-key` markup:
+  - `node ./scripts/seed-static-content.mjs`
+- Apply locally:
+  - `./scripts/seed-static-content.sh jwd-admin-db local`
+- Apply remotely:
+  - `./scripts/seed-static-content.sh jwd-admin-db remote`
+
+This seed targets the `static_content` table introduced in `migrations/0002_static_content.sql`.
+
 ## D1 Data Model
 - `case_studies`
 - `categories`
