@@ -23,6 +23,7 @@
 - `StaticContentOriginFallback`: Site-file rendering fallback that resolves static-content API via same-origin `/api/worker` when direct Worker base URL is unavailable.
 - `StaticContentNoStoreRender`: Public HTML route/render policy that disables caching for static-content-substituted pages to prevent stale post-save reloads.
 - `HomeTweaksSyncGuard`: Homepage tweak bootstrap guard that syncs `TWEAK_DEFAULTS` from live DOM so client tweaks do not overwrite inline-edited server-rendered content.
+- `StaticDivContainerSafeReplace`: HTML replacement helper that preserves nested `div` structure when rewriting `data-content-key` container content.
 
 ## Relationships
 - `Website` includes `PortfolioModule` on `portfolio.html`.
@@ -53,6 +54,7 @@
 - `StaticContentOriginFallback` extends `SiteFileRouter` by passing request URL into `serveSiteFile()` so server-side static-content fetches can use request origin + `/api/worker`.
 - `StaticContentNoStoreRender` extends `SiteFileRouter` and page route handlers with `force-dynamic` + `cache-control: no-store` for HTML responses.
 - `HomeTweaksSyncGuard` depends on server-rendered `data-content-key` substitutions being present in `#hero-tagline` and `#footer-tagline` before tweak initialization.
+- `StaticDivContainerSafeReplace` is used by static-content list/FAQ/team/structured renderers to avoid malformed HTML and downstream layout breakage.
 
 ## Observations
 - Current portfolio data is hardcoded in a `projects` array.
@@ -120,3 +122,4 @@
 - Fixed “edits save but do not display” render gap by updating `serveSiteFile()` callers (`app/route.ts`, `app/[...slug]/route.ts`) to pass request URL and adding same-origin `/api/worker` fallback resolution in `lib/siteFiles.ts` when Worker base env is unavailable/relative.
 - Added `force-dynamic` to public HTML route handlers and switched HTML response caching to `no-store` in `lib/siteFiles.ts` so refresh shows latest saved static-content values instead of stale cached HTML.
 - Fixed homepage post-refresh revert where tweak bootstrap script reapplied hardcoded `TWEAK_DEFAULTS` over saved content by syncing `TWEAK_DEFAULTS.tagline` and `TWEAK_DEFAULTS.footerTagline` from live DOM in `index.html` before mounting tweaks.
+- Fixed services card layout regression caused by regex-based `div` container replacement truncating nested markup; `lib/siteFiles.ts` now replaces `data-content-key` `div` inner HTML using a depth-aware matcher so sibling cards keep original width/layout.

@@ -64,6 +64,35 @@ function keyRegexFragment(contentKey: string): string {
   return contentKey.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function replaceDivContainerInnerHtml(html: string, contentKey: string, innerHtml: string): string {
+  const key = keyRegexFragment(contentKey);
+  const openTagRegex = new RegExp(`<div([^>]*\\bdata-content-key="${key}"[^>]*)>`, "i");
+  const openMatch = openTagRegex.exec(html);
+  if (!openMatch || openMatch.index < 0) return html;
+
+  const openEnd = openMatch.index + openMatch[0].length;
+  const tokenRegex = /<\/?div\b[^>]*>/gi;
+  tokenRegex.lastIndex = openEnd;
+  let depth = 1;
+  let token = tokenRegex.exec(html);
+
+  while (token) {
+    const tag = token[0];
+    const isClose = tag.startsWith("</");
+    const isSelfClosing = /\/>$/.test(tag);
+    if (!isClose && !isSelfClosing) depth += 1;
+    if (isClose) depth -= 1;
+
+    if (depth === 0) {
+      const closeStart = token.index;
+      return `${html.slice(0, openEnd)}${innerHtml}${html.slice(closeStart)}`;
+    }
+    token = tokenRegex.exec(html);
+  }
+
+  return html;
+}
+
 function withTextReplacement(html: string, contentKey: string, value: string, preserveBreaks = false): string {
   const key = keyRegexFragment(contentKey);
   const inner = preserveBreaks
@@ -113,7 +142,7 @@ function withStringListReplacement(html: string, contentKey: string, values: str
   );
   if (featuresRegex.test(html)) {
     const rows = list.map((value) => `<div class="service-feature">${escapeHtml(value)}</div>`).join("");
-    return html.replace(featuresRegex, `$1${rows}$4`);
+    return replaceDivContainerInnerHtml(html, contentKey, rows);
   }
 
   const nextStepsRegex = new RegExp(
@@ -129,7 +158,7 @@ function withStringListReplacement(html: string, contentKey: string, values: str
             </div>`
       )
       .join("");
-    return html.replace(nextStepsRegex, `$1${rows}$4`);
+    return replaceDivContainerInnerHtml(html, contentKey, rows);
   }
 
   return html;
@@ -147,13 +176,6 @@ function withFaqItemsReplacement(
     }))
     .filter((item) => item.question && item.answer);
   if (rows.length < 1) return html;
-  const key = keyRegexFragment(contentKey);
-  const containerRegex = new RegExp(
-    `(<div([^>]*\\bdata-content-key="${key}"[^>]*)>)([\\s\\S]*?)(<\\/div>)`,
-    "i"
-  );
-  if (!containerRegex.test(html)) return html;
-
   const details = rows
     .map(
       (item) => `<details class="faq-item">
@@ -163,7 +185,7 @@ function withFaqItemsReplacement(
     )
     .join("\n\n      ");
 
-  return html.replace(containerRegex, `$1\n\n      ${details}\n\n    $4`);
+  return replaceDivContainerInnerHtml(html, contentKey, `\n\n      ${details}\n\n    `);
 }
 
 function withTeamMembersReplacement(
@@ -197,13 +219,6 @@ function withTeamMembersReplacement(
     );
   if (members.length < 1) return html;
 
-  const key = keyRegexFragment(contentKey);
-  const containerRegex = new RegExp(
-    `(<div([^>]*\\bdata-content-key="${key}"[^>]*)>)([\\s\\S]*?)(<\\/div>)`,
-    "i"
-  );
-  if (!containerRegex.test(html)) return html;
-
   const cards = members
     .map((member) => {
       const revealClass = member.index === 0 ? "reveal" : `reveal reveal-delay-${Math.min(member.index, 3)}`;
@@ -221,7 +236,7 @@ function withTeamMembersReplacement(
     })
     .join("\n      ");
 
-  return html.replace(containerRegex, `$1\n      ${cards}\n    $4`);
+  return replaceDivContainerInnerHtml(html, contentKey, `\n      ${cards}\n    `);
 }
 
 function withStructuredListReplacement(
@@ -237,13 +252,6 @@ function withStructuredListReplacement(
     .filter((item) => item.category && item.label);
   if (rows.length < 1) return html;
 
-  const key = keyRegexFragment(contentKey);
-  const containerRegex = new RegExp(
-    `(<div([^>]*\\bdata-content-key="${key}"[^>]*)>)([\\s\\S]*?)(<\\/div>)`,
-    "i"
-  );
-  if (!containerRegex.test(html)) return html;
-
   const markup = rows
     .map(
       (row) =>
@@ -251,7 +259,7 @@ function withStructuredListReplacement(
     )
     .join("\n      ");
 
-  return html.replace(containerRegex, `$1\n      ${markup}\n    $4`);
+  return replaceDivContainerInnerHtml(html, contentKey, `\n      ${markup}\n    `);
 }
 
 async function fetchStaticContentForPage(
